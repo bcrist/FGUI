@@ -2,8 +2,9 @@
 
 About:
    FGUI is a C++ library for creating user interfaces rendered on an OpenGL
-   context.  It is primarily designed for games and game-related projects.
-   (level editors, etc.)
+   context.  It is primarily designed for games and game-related projects
+   (level editors, etc.) for which common frameworks like Qt and wxWidgets may
+   be ill-suited or overly complex.
 
 License:
    Copyright (c) 2012 Benjamin M. Crist
@@ -26,3 +27,32 @@ License:
    FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
    IN THE SOFTWARE.
 
+Style:
+   FGUI adheres mostly to the Google Style Guide with a few modifications:
+
+   1. Indentation is three spaces, not two.  Access modifier lines in class
+      declarations are not indented at all (Google specifies one space).
+      Multiline constructor initializer lists are indented six spaces:
+
+      ReallyLongConstructorNameIsReallyLong()
+            : some_member_variable_(NULL),
+              other_member_variable_(true)
+      {
+         ...
+      }
+
+   2. Function names (including getters and setters) use camelCase, not
+      PascalCase or underscored_lowercase.  Setter functions always begin with
+      "set" and getter functions always begin with "get" (except for boolean
+      getters, which may begin with "is").
+
+   3. Compile-time constants and enum values use the form "kCONSTANT_NAME"
+      instead of "kConstantName".
+
+   4. Except for empty blocks and short inline functions defined in one line,
+      block braces always appear alone on a separate line from control
+      structures, function signatures, etc.
+
+   The Google Style Guide can be found at:
+
+   http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml

@@ -1,0 +1,228 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\platform">
+      <UniqueIdentifier>{293b80a0-7bce-4d72-86c4-c6bc37404889}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\platform\allegro">
+      <UniqueIdentifier>{d9e5d49e-55ab-427a-aae0-8da9eb142c51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\platform\windows">
+      <UniqueIdentifier>{a1ed7c96-bed3-4ca1-b235-5eee50c72a26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\platform">
+      <UniqueIdentifier>{31e5ea9a-eb29-41a7-bb9e-462cff557136}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\platform\allegro">
+      <UniqueIdentifier>{a99e84e1-0abe-4daf-ba05-41cf04348a7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\platform\windows">
+      <UniqueIdentifier>{018fd832-de8a-41a9-8aad-a0ac144d9fc9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\_">
+      <UniqueIdentifier>{d9a895c9-fa0d-47d4-93ee-46fb7be39be2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\component">
+      <UniqueIdentifier>{137e4427-6a15-4369-95e9-0d5ceff973da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\component">
+      <UniqueIdentifier>{0dc949c0-0777-40bd-b9d4-4df07e5778fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\event">
+      <UniqueIdentifier>{4701d511-693d-4595-85bb-4da28dd5fa03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\event">
+      <UniqueIdentifier>{59a1ff69-da82-4a81-805d-cd72f11dd896}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\platform\opengl">
+      <UniqueIdentifier>{d113e6b6-178e-48b6-9d25-aa9864ab97eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\platform\opengl">
+      <UniqueIdentifier>{fa6fa47d-fc94-4405-8c6e-e17842015937}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\default_focus_manager.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dimension.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\keyboard.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mouse.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\point.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\platform\windows\win_unicode.cc">
+      <Filter>Source Files\platform\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\platform\windows\win_clipboard.cc">
+      <Filter>Source Files\platform\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\platform\allegro\allegro_font.cc">
+      <Filter>Source Files\platform\allegro</Filter>
+    </ClCompile>
+    <ClCompile Include="src\platform\allegro\allegro_font_provider.cc">
+      <Filter>Source Files\platform\allegro</Filter>
+    </ClCompile>
+    <ClCompile Include="src\color.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\component\f_colored_rectangle.cc">
+      <Filter>Source Files\component</Filter>
+    </ClCompile>
+    <ClCompile Include="src\component\f_component.cc">
+      <Filter>Source Files\component</Filter>
+    </ClCompile>
+    <ClCompile Include="src\component\f_ui.cc">
+      <Filter>Source Files\component</Filter>
+    </ClCompile>
+    <ClCompile Include="src\event\event.cc">
+      <Filter>Source Files\event</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render_task.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\platform\opengl\opengl_fui_cleanup_renderer.cc">
+      <Filter>Source Files\platform\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\platform\opengl\opengl_fui_prepare_renderer.cc">
+      <Filter>Source Files\platform\opengl</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\color.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\default_focus_manager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\dimension.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\focus_manager_interface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\keyboard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\layout_manager_interface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\mouse.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\point.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\platform\windows\win_clipboard.h">
+      <Filter>Header Files\platform\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="include\platform\windows\win_unicode.h">
+      <Filter>Header Files\platform\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="include\platform\allegro\allegro_font.h">
+      <Filter>Header Files\platform\allegro</Filter>
+    </ClInclude>
+    <ClInclude Include="include\platform\allegro\allegro_font_provider.h">
+      <Filter>Header Files\platform\allegro</Filter>
+    </ClInclude>
+    <ClInclude Include="include\platform\clipboard_interface.h">
+      <Filter>Header Files\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="include\platform\font_interface.h">
+      <Filter>Header Files\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="include\platform\font_provider_interface.h">
+      <Filter>Header Files\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="include\platform\local_clipboard.h">
+      <Filter>Header Files\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="include\platform\logger_interface.h">
+      <Filter>Header Files\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="include\platform\null_font_provider.h">
+      <Filter>Header Files\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="include\fgui.h">
+      <Filter>Header Files\_</Filter>
+    </ClInclude>
+    <ClInclude Include="include\fgui_clipboard.h">
+      <Filter>Header Files\_</Filter>
+    </ClInclude>
+    <ClInclude Include="include\fgui_font.h">
+      <Filter>Header Files\_</Filter>
+    </ClInclude>
+    <ClInclude Include="include\fgui_std.h">
+      <Filter>Header Files\_</Filter>
+    </ClInclude>
+    <ClInclude Include="include\text_metrics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\component\f_colored_rectangle.h">
+      <Filter>Header Files\component</Filter>
+    </ClInclude>
+    <ClInclude Include="include\component\f_component.h">
+      <Filter>Header Files\component</Filter>
+    </ClInclude>
+    <ClInclude Include="include\component\f_component_cfg.h">
+      <Filter>Header Files\component</Filter>
+    </ClInclude>
+    <ClInclude Include="include\component\f_ui.h">
+      <Filter>Header Files\component</Filter>
+    </ClInclude>
+    <ClInclude Include="include\component\f_ui_cfg.h">
+      <Filter>Header Files\component</Filter>
+    </ClInclude>
+    <ClInclude Include="include\event\event.h">
+      <Filter>Header Files\event</Filter>
+    </ClInclude>
+    <ClInclude Include="include\event\focus_event.h">
+      <Filter>Header Files\event</Filter>
+    </ClInclude>
+    <ClInclude Include="include\event\keyboard_event.h">
+      <Filter>Header Files\event</Filter>
+    </ClInclude>
+    <ClInclude Include="include\event\mouse_event.h">
+      <Filter>Header Files\event</Filter>
+    </ClInclude>
+    <ClInclude Include="include\event\simulate_event.h">
+      <Filter>Header Files\event</Filter>
+    </ClInclude>
+    <ClInclude Include="include\event\component_listener.h">
+      <Filter>Header Files\event</Filter>
+    </ClInclude>
+    <ClInclude Include="include\renderer_interface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\render_task.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\platform\opengl\opengl.h">
+      <Filter>Header Files\platform\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="include\platform\opengl\opengl_fui_prepare_renderer.h">
+      <Filter>Header Files\platform\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="include\platform\opengl\opengl_fui_cleanup_renderer.h">
+      <Filter>Header Files\platform\opengl</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\color.cc" />
+    <ClCompile Include="src\component\f_colored_rectangle.cc" />
+    <ClCompile Include="src\component\f_component.cc" />
+    <ClCompile Include="src\component\f_ui.cc" />
+    <ClCompile Include="src\default_focus_manager.cc" />
+    <ClCompile Include="src\dimension.cc" />
+    <ClCompile Include="src\event\event.cc" />
+    <ClCompile Include="src\keyboard.cc" />
+    <ClCompile Include="src\mouse.cc" />
+    <ClCompile Include="src\platform\allegro\allegro_font.cc" />
+    <ClCompile Include="src\platform\allegro\allegro_font_provider.cc" />
+    <ClCompile Include="src\platform\opengl\opengl_fui_cleanup_renderer.cc" />
+    <ClCompile Include="src\platform\opengl\opengl_fui_prepare_renderer.cc" />
+    <ClCompile Include="src\platform\windows\win_clipboard.cc" />
+    <ClCompile Include="src\platform\windows\win_unicode.cc" />
+    <ClCompile Include="src\point.cc" />
+    <ClCompile Include="src\render_task.cc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\color.h" />
+    <ClInclude Include="include\component\f_colored_rectangle.h" />
+    <ClInclude Include="include\component\f_component.h" />
+    <ClInclude Include="include\component\f_component_cfg.h" />
+    <ClInclude Include="include\component\f_ui.h" />
+    <ClInclude Include="include\component\f_ui_cfg.h" />
+    <ClInclude Include="include\default_focus_manager.h" />
+    <ClInclude Include="include\dimension.h" />
+    <ClInclude Include="include\event\component_listener.h" />
+    <ClInclude Include="include\event\event.h" />
+    <ClInclude Include="include\event\focus_event.h" />
+    <ClInclude Include="include\event\keyboard_event.h" />
+    <ClInclude Include="include\event\mouse_event.h" />
+    <ClInclude Include="include\event\simulate_event.h" />
+    <ClInclude Include="include\fgui.h" />
+    <ClInclude Include="include\fgui_clipboard.h" />
+    <ClInclude Include="include\fgui_font.h" />
+    <ClInclude Include="include\fgui_std.h" />
+    <ClInclude Include="include\focus_manager_interface.h" />
+    <ClInclude Include="include\platform\opengl\opengl.h" />
+    <ClInclude Include="include\platform\opengl\opengl_fui_cleanup_renderer.h" />
+    <ClInclude Include="include\platform\opengl\opengl_fui_prepare_renderer.h" />
+    <ClInclude Include="include\renderer_interface.h" />
+    <ClInclude Include="include\render_task.h" />
+    <ClInclude Include="include\text_metrics.h" />
+    <ClInclude Include="include\keyboard.h" />
+    <ClInclude Include="include\layout_manager_interface.h" />
+    <ClInclude Include="include\mouse.h" />
+    <ClInclude Include="include\platform\allegro\allegro_font.h" />
+    <ClInclude Include="include\platform\allegro\allegro_font_provider.h" />
+    <ClInclude Include="include\platform\clipboard_interface.h" />
+    <ClInclude Include="include\platform\font_interface.h" />
+    <ClInclude Include="include\platform\font_provider_interface.h" />
+    <ClInclude Include="include\platform\local_clipboard.h" />
+    <ClInclude Include="include\platform\logger_interface.h" />
+    <ClInclude Include="include\platform\null_font_provider.h" />
+    <ClInclude Include="include\platform\windows\win_clipboard.h" />
+    <ClInclude Include="include\platform\windows\win_unicode.h" />
+    <ClInclude Include="include\point.h" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{65212034-0337-41BC-AB67-EBE25F3EF3DE}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>FGUI</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DebugInformationFormat>OldStyle</DebugInformationFormat>
+      <AdditionalIncludeDirectories>include;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MinimalRebuild>false</MinimalRebuild>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>include;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
