@@ -52,23 +52,14 @@
     <Filter Include="Source Files\platform\opengl">
       <UniqueIdentifier>{fa6fa47d-fc94-4405-8c6e-e17842015937}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\misc">
+      <UniqueIdentifier>{b3d14189-22ad-4e92-bc64-1c3f648feec0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\misc">
+      <UniqueIdentifier>{afbd1dc1-3e3e-4835-9308-5a336bc1c412}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\default_focus_manager.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\dimension.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\keyboard.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\mouse.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\point.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\platform\windows\win_unicode.cc">
       <Filter>Source Files\platform\windows</Filter>
     </ClCompile>
@@ -80,9 +71,6 @@
     </ClCompile>
     <ClCompile Include="src\platform\allegro\allegro_font_provider.cc">
       <Filter>Source Files\platform\allegro</Filter>
-    </ClCompile>
-    <ClCompile Include="src\color.cc">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\component\f_colored_rectangle.cc">
       <Filter>Source Files\component</Filter>
@@ -99,32 +87,26 @@
     <ClCompile Include="src\platform\opengl\opengl_fui_prepare_renderer.cc">
       <Filter>Source Files\platform\opengl</Filter>
     </ClCompile>
+    <ClCompile Include="src\color.cc">
+      <Filter>Source Files\misc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\point.cc">
+      <Filter>Source Files\misc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\default_focus_manager.cc">
+      <Filter>Source Files\misc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dimension.cc">
+      <Filter>Source Files\misc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\keyboard.cc">
+      <Filter>Source Files\misc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mouse.cc">
+      <Filter>Source Files\misc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\color.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\default_focus_manager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\dimension.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\focus_manager_interface.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\keyboard.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\layout_manager_interface.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\mouse.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\point.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\platform\windows\win_clipboard.h">
       <Filter>Header Files\platform\windows</Filter>
     </ClInclude>
@@ -167,9 +149,6 @@
     <ClInclude Include="include\fgui_std.h">
       <Filter>Header Files\_</Filter>
     </ClInclude>
-    <ClInclude Include="include\text_metrics.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\component\f_colored_rectangle.h">
       <Filter>Header Files\component</Filter>
     </ClInclude>
@@ -203,9 +182,6 @@
     <ClInclude Include="include\event\component_listener.h">
       <Filter>Header Files\event</Filter>
     </ClInclude>
-    <ClInclude Include="include\renderer_interface.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\platform\opengl\opengl.h">
       <Filter>Header Files\platform\opengl</Filter>
     </ClInclude>
@@ -215,25 +191,55 @@
     <ClInclude Include="include\platform\opengl\opengl_fui_cleanup_renderer.h">
       <Filter>Header Files\platform\opengl</Filter>
     </ClInclude>
+    <ClInclude Include="include\color.h">
+      <Filter>Header Files\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="include\text_metrics.h">
+      <Filter>Header Files\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="include\default_focus_manager.h">
+      <Filter>Header Files\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="include\dimension.h">
+      <Filter>Header Files\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="include\focus_manager_interface.h">
+      <Filter>Header Files\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="include\keyboard.h">
+      <Filter>Header Files\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="include\layout_manager_interface.h">
+      <Filter>Header Files\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="include\mouse.h">
+      <Filter>Header Files\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="include\point.h">
+      <Filter>Header Files\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="include\renderer_interface.h">
+      <Filter>Header Files\misc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="include\point.inl">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="include\color.inl">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="include\dimension.inl">
-      <Filter>Header Files</Filter>
-    </None>
     <None Include="include\event\event.inl">
       <Filter>Header Files\event</Filter>
     </None>
-    <None Include="include\render_task.inl">
-      <Filter>Header Files</Filter>
-    </None>
     <None Include="include\component\f_ui.inl">
       <Filter>Header Files\component</Filter>
+    </None>
+    <None Include="include\color.inl">
+      <Filter>Header Files\misc</Filter>
+    </None>
+    <None Include="include\dimension.inl">
+      <Filter>Header Files\misc</Filter>
+    </None>
+    <None Include="include\point.inl">
+      <Filter>Header Files\misc</Filter>
+    </None>
+    <None Include="include\render_task.inl">
+      <Filter>Header Files\misc</Filter>
     </None>
   </ItemGroup>
 </Project>

@@ -56,10 +56,10 @@ struct Event
 private:
    // allows copying of event objects where copies are linked to the original's state
    bool &cancelled;
-   bool &propagationStopped;
+   bool &propagation_stopped;
 
    bool cancelled_;
-   bool propagationStopped_;
+   bool propagation_stopped_;
 };
 
 FGUI_END
