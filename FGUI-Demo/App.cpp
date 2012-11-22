@@ -7,6 +7,7 @@
 #	include <tchar.h>
 #endif
 
+using fgui::FComponent;
 using fgui::FUI;
 using fgui::FColoredRectangle;
 using fgui::Dimension;
@@ -126,6 +127,12 @@ int App::run()
 {
 	if (!init_successful_)
 		return -1;
+
+    std::ostringstream oss;
+    oss << "sizeof(FComponent): " << sizeof(FComponent) << std::endl;
+    oss << "sizeof(FUI):        " << sizeof(FUI) << std::endl;
+
+    log_.log(oss.str().c_str());
 
 	while (true) {
 		ALLEGRO_EVENT ae;
