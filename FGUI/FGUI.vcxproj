@@ -17,7 +17,6 @@
     <ClCompile Include="src\component\f_ui.cc" />
     <ClCompile Include="src\default_focus_manager.cc" />
     <ClCompile Include="src\dimension.cc" />
-    <ClCompile Include="src\event\event.cc" />
     <ClCompile Include="src\keyboard.cc" />
     <ClCompile Include="src\mouse.cc" />
     <ClCompile Include="src\platform\allegro\allegro_font.cc" />
@@ -27,7 +26,6 @@
     <ClCompile Include="src\platform\windows\win_clipboard.cc" />
     <ClCompile Include="src\platform\windows\win_unicode.cc" />
     <ClCompile Include="src\point.cc" />
-    <ClCompile Include="src\render_task.cc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\color.h" />
@@ -53,7 +51,6 @@
     <ClInclude Include="include\platform\opengl\opengl_fui_cleanup_renderer.h" />
     <ClInclude Include="include\platform\opengl\opengl_fui_prepare_renderer.h" />
     <ClInclude Include="include\renderer_interface.h" />
-    <ClInclude Include="include\render_task.h" />
     <ClInclude Include="include\text_metrics.h" />
     <ClInclude Include="include\keyboard.h" />
     <ClInclude Include="include\layout_manager_interface.h" />
@@ -69,6 +66,14 @@
     <ClInclude Include="include\platform\windows\win_clipboard.h" />
     <ClInclude Include="include\platform\windows\win_unicode.h" />
     <ClInclude Include="include\point.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="include\color.inl" />
+    <None Include="include\component\f_ui.inl" />
+    <None Include="include\dimension.inl" />
+    <None Include="include\event\event.inl" />
+    <None Include="include\point.inl" />
+    <None Include="include\render_task.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{65212034-0337-41BC-AB67-EBE25F3EF3DE}</ProjectGuid>

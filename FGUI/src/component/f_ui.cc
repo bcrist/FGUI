@@ -23,14 +23,18 @@
 
 #include "component/f_ui.h"
 
-#include <sstream>
-#include <algorithm>
 #include <iterator>
 
 FGUI_BEGIN
 
 typedef std::vector<FComponent*> cvec_t;
 typedef std::vector<FComponent*>::iterator cvec_iter_t;
+
+// static members
+FGUI_DEFAULT_FUI_PREPARE_RENDERER FUI::default_prepare_renderer_;
+FGUI_DEFAULT_FUI_CLEANUP_RENDERER FUI::default_cleanup_renderer_;
+FGUI_DEFAULT_CLIPBOARD FUI::default_clipboard_;
+FGUI_DEFAULT_FONT_PROVIDER FUI::default_font_provider_;
 
 // Modal Components
 
@@ -156,55 +160,9 @@ bool FUI::focusPrev()
 
 // Mouse/Keyboard/Window Events
 
-void FUI::_swapComponentsUnderMousePointers()
-{
-   cvec_t *temp(components_under_mouse_);
-   components_under_mouse_ = components_under_mouse_old_;
-   components_under_mouse_old_ = temp;
-}
-
-void FUI::_removeHoveredComponent(FComponent *component)
-{
-   // remove component from hovered components vector
-   cvec_iter_t it = std::find(hovered_components_.begin(), hovered_components_.end(), component);
-   if (it != hovered_components_.end())
-      hovered_components_.erase(it);
-}
-
-void FUI::_removeComponentUnderMouse(FComponent *component)
-{
-   // remove component from hovered components vector
-
-   cvec_iter_t begin(components_under_mouse_->begin()),
-               end(components_under_mouse_->end()),
-               it(std::find(begin, end, component));
-   if (it != end)
-      components_under_mouse_->erase(it);
-}
-
-void FUI::_removeOldComponentUnderMouse(FComponent *component)
-{
-   // remove component from hovered components vector
-
-   cvec_iter_t begin(components_under_mouse_old_->begin()),
-               end(components_under_mouse_old_->end()),
-               it(std::find(begin, end, component));
-   if (it != end)
-      components_under_mouse_old_->erase(it);
-}
-
-void FUI::_removeLastClickComponent(FComponent *component)
-{
-   if (last_click_component_ == component)
-   {
-      last_click_component_ = NULL;
-      last_click_ticks_ = -1;
-   }
-}
-
 void FUI::componentRemoved(FComponent *component)
 {
-   if (!component)
+   if (!component || component == this)
       return;
 
    unregisterModal(component);
@@ -615,7 +573,7 @@ void FUI::uiResetSimulation(int ticks_per_sec, int min_simulate_event_interval)
 FUI::FUI()
       : modal_component_(NULL),
         focused_component_(NULL),
-        active_ui_(false),
+        active_ui_(true),
         under_mouse_key_events_enabled_(true),
         components_under_mouse_(&components_under_mouse_1_),
         components_under_mouse_old_(&components_under_mouse_2_),
@@ -645,7 +603,7 @@ FUI::FUI(const FUI_cfg &cfg)
       : FComponent(cfg),
         modal_component_(NULL),
         focused_component_(NULL),
-        active_ui_(false),
+        active_ui_(true),
         under_mouse_key_events_enabled_(cfg.getUnderMouseKeyEventsEnabled()),
         components_under_mouse_(&components_under_mouse_1_),
         components_under_mouse_old_(&components_under_mouse_2_),

@@ -3,6 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual C++ Express 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FGUI", "FGUI\FGUI.vcxproj", "{65212034-0337-41BC-AB67-EBE25F3EF3DE}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FGUIDemo", "FGUI-Demo\FGUIDemo.vcxproj", "{8BF19805-B331-40BC-A6CC-322B5D245113}"
+	ProjectSection(ProjectDependencies) = postProject
+		{65212034-0337-41BC-AB67-EBE25F3EF3DE} = {65212034-0337-41BC-AB67-EBE25F3EF3DE}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -13,6 +18,10 @@ Global
 		{65212034-0337-41BC-AB67-EBE25F3EF3DE}.Debug|Win32.Build.0 = Debug|Win32
 		{65212034-0337-41BC-AB67-EBE25F3EF3DE}.Release|Win32.ActiveCfg = Release|Win32
 		{65212034-0337-41BC-AB67-EBE25F3EF3DE}.Release|Win32.Build.0 = Release|Win32
+		{8BF19805-B331-40BC-A6CC-322B5D245113}.Debug|Win32.ActiveCfg = Debug|Win32
+		{8BF19805-B331-40BC-A6CC-322B5D245113}.Debug|Win32.Build.0 = Debug|Win32
+		{8BF19805-B331-40BC-A6CC-322B5D245113}.Release|Win32.ActiveCfg = Release|Win32
+		{8BF19805-B331-40BC-A6CC-322B5D245113}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

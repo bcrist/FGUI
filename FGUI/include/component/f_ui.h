@@ -30,6 +30,7 @@
 #include <stdint.h>
 #include <vector>
 #include <list>
+#include <algorithm>
 
 #include "component/f_ui_cfg.h"
 #include "mouse.h"
@@ -92,11 +93,11 @@ private:
    int64_t hover_start_ticks_;
    int64_t last_click_ticks_;
 
-   inline void _swapComponentsUnderMousePointers();
-   inline void _removeHoveredComponent(FComponent *component);
-   inline void _removeComponentUnderMouse(FComponent *component);
-   inline void _removeOldComponentUnderMouse(FComponent *component);
-   inline void _removeLastClickComponent(FComponent *component);
+   void _swapComponentsUnderMousePointers();
+   void _removeHoveredComponent(FComponent *component);
+   void _removeComponentUnderMouse(FComponent *component);
+   void _removeOldComponentUnderMouse(FComponent *component);
+   void _removeLastClickComponent(FComponent *component);
    void componentRemoved(FComponent *component);
 
 public:
@@ -124,8 +125,8 @@ public:
 
    // Rendering
 private:
-   FGUI_DEFAULT_FUI_PREPARE_RENDERER default_prepare_renderer_;
-   FGUI_DEFAULT_FUI_CLEANUP_RENDERER default_cleanup_renderer_;
+   static FGUI_DEFAULT_FUI_PREPARE_RENDERER default_prepare_renderer_;
+   static FGUI_DEFAULT_FUI_CLEANUP_RENDERER default_cleanup_renderer_;
 
    RendererInterface *prepare_renderer_;
    RendererInterface *cleanup_renderer_;
@@ -137,7 +138,7 @@ private:
    Point dirty_bottom_right_;
    bool dirty_;
 
-   inline void populateRenderTasks();
+   void populateRenderTasks();
 
 public:
    virtual bool uiDrawRequested() const { return dirty_; }
@@ -196,5 +197,7 @@ private:
 };
 
 FGUI_END
+
+#include "component/f_ui.inl"
 
 #endif

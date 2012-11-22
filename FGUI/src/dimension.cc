@@ -22,71 +22,8 @@
 // File: dimension.cc
 
 #include "dimension.h"
-
-#define FGUI_DIMENSION_INITLIST width(dim[0]), height(dim[1]), v(&dim[0])
-
+ 
 FGUI_BEGIN
-
-Dimension::Dimension() : FGUI_DIMENSION_INITLIST
-{
-   dim[0] = 0.0;
-   dim[1] = 0.0;
-}
-
-Dimension::Dimension(const Dimension &other) : FGUI_DIMENSION_INITLIST
-{
-   dim[0] = other.width;
-   dim[1] = other.height;
-}
-
-Dimension::Dimension(component_t width, component_t height) : FGUI_DIMENSION_INITLIST
-{
-   dim[0] = width < 0.0f ? 0.0f : width;
-   dim[1] = height < 0.0f ? 0.0f : height;
-}
-
-Dimension::Dimension(const component_t *v) : FGUI_DIMENSION_INITLIST
-{
-   dim[0] = v[0] < 0.0f ? 0.0f : v[0];
-   dim[1] = v[1] < 0.0f ? 0.0f : v[1];
-}
-
-Dimension &Dimension::operator=(const Dimension &rhs)
-{
-   dim[0] = rhs.width;
-   dim[1] = rhs.height;
-   return *this;
-}
-
-bool Dimension::operator==(const Dimension &rhs) const
-{
-   return width == rhs.width && height == rhs.height;
-}
-
-bool Dimension::operator!=(const Dimension &rhs) const
-{
-   return !(*this == rhs);
-}
-
-Dimension &Dimension::setWidth(component_t width)
-{
-   dim[0] = width < 0.0f ? 0.0f : width;
-   return *this;
-}
-
-Dimension &Dimension::setHeight(component_t height)
-{
-   dim[1] = height < 0.0f ? 0.0f : height;
-   return *this;
-}
-
-Dimension &Dimension::set(component_t width, component_t height)
-{
-   dim[0] = width < 0.0f ? 0.0f : width;
-   dim[1] = height < 0.0f ? 0.0f : height;
-   return *this;
-}
-
 
 std::ostream &operator<<(std::ostream &os, const Dimension &dim)
 {

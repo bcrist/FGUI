@@ -33,21 +33,21 @@ struct Point
 {
    typedef float_t component_t;
 
-   inline Point();
-   inline Point(const Point &other);
-   inline Point(component_t x, component_t y);
-   explicit inline Point(const component_t *v);
+   Point();
+   Point(const Point &other);
+   Point(component_t x, component_t y);
+   explicit Point(const component_t *v);
 
    // comparison operators
-   inline bool operator==(const Point &rhs) const;
-   inline bool operator!=(const Point &rhs) const;
+   bool operator==(const Point &rhs) const;
+   bool operator!=(const Point &rhs) const;
 
    // assignment operators
-   inline Point &operator=(const Point &rhs);
+   Point &operator=(const Point &rhs);
 
-   inline Point &setX(component_t x);
-   inline Point &setY(component_t y);
-   inline Point &set(component_t x, component_t y);
+   Point &setX(component_t x);
+   Point &setY(component_t y);
+   Point &set(component_t x, component_t y);
 
    const component_t &x;
    const component_t &y;
@@ -60,5 +60,7 @@ private:
 std::ostream &operator<<(std::ostream &os, const Point &point);
 
 FGUI_END
+
+#include "point.inl"
 
 #endif

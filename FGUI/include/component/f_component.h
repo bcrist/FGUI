@@ -45,12 +45,28 @@
 #include "focus_manager_interface.h"
 
 #include "renderer_interface.h"
-#include "render_task.h"
 
 
 FGUI_BEGIN
 
 class FUI;
+
+class FComponent;
+
+struct RenderTask
+{
+   RenderTask(FComponent *component, RendererInterface *renderer);
+   RenderTask(const RenderTask &other);
+   RenderTask &operator=(const RenderTask &rhs);   
+   bool operator<(const RenderTask &rhs) const;
+   
+   FComponent* const &component;
+   RendererInterface* const &renderer;
+
+private:
+   FComponent* component_;
+   RendererInterface* renderer_;
+};
 
 class FComponent
 {   
@@ -235,5 +251,7 @@ std::ostream &operator<<(std::ostream &os, const FComponent &component);
 
 
 FGUI_END
+
+#include "render_task.inl"
 
 #endif

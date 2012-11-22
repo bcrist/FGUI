@@ -37,6 +37,7 @@ FGUI_BEGIN
 class WindowsClipboard : public ClipboardInterface
 {
 public:
+   WindowsClipboard() {}
    virtual ~WindowsClipboard() {}
 
    virtual std::string getText();

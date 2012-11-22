@@ -50,33 +50,33 @@ struct Color
    static const component_t kMUL_16;
 
    // constructors
-   inline Color();
-   inline Color(const Color &other);
+   Color();
+   Color(const Color &other);
    Color(const Color &other, component_t rgba_mul);
    Color(const Color &other, component_t rgb_mul, component_t a_mul);
-   explicit inline Color(component_t lum);
-   inline Color(component_t lum, component_t alpha);
-   inline Color(component_t red, component_t green, component_t blue);
-   inline Color(component_t red, component_t green, component_t blue, component_t alpha);
-   explicit inline Color(const component_t *components);
+   explicit Color(component_t lum);
+   Color(component_t lum, component_t alpha);
+   Color(component_t red, component_t green, component_t blue);
+   Color(component_t red, component_t green, component_t blue, component_t alpha);
+   explicit Color(const component_t *components);
    Color(const component_t *components, size_t component_count);
    Color(const Color &first, const Color &second, float f);
    Color(const Color &first, const Color &second, double f);
    
    // assignment operators
-   inline Color &operator=(const Color &rhs);
-   inline Color &operator+=(const Color &rhs);
-   inline Color &operator-=(const Color &rhs);
-   inline Color &operator*=(const Color &rhs);
-   inline Color &operator/=(const Color &rhs);
+   Color &operator=(const Color &rhs);
+   Color &operator+=(const Color &rhs);
+   Color &operator-=(const Color &rhs);
+   Color &operator*=(const Color &rhs);
+   Color &operator/=(const Color &rhs);
    
    // arithmetic operators
-   inline const Color operator+(const Color &rhs) const;
-   inline const Color operator-(const Color &rhs) const;
-   inline const Color operator*(const Color &rhs) const;
-   inline const Color operator/(const Color &rhs) const;
+   const Color operator+(const Color &rhs) const;
+   const Color operator-(const Color &rhs) const;
+   const Color operator*(const Color &rhs) const;
+   const Color operator/(const Color &rhs) const;
 
-   inline Color &invert();
+   Color &invert();
    Color &clamp();
    Color &clamp(const Color &max);
    Color &clamp(const Color &min, const Color &max);
@@ -92,4 +92,7 @@ struct Color
 std::ostream &operator<<(std::ostream &os, const Color &v);
 
 FGUI_END
+
+#include "color.inl"
+
 #endif

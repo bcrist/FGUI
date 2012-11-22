@@ -37,7 +37,7 @@ void Mouse::down(int button, FComponent *component)
 {
    if (button > 0 && button <= FGUI_MOUSE_BUTTON_COUNT)
    {
-      ButtonState &btn = buttons_[button];
+      ButtonState &btn = buttons_[button - 1];
       btn.component = component;
       btn.down = true;
       btn.pos = position_;
@@ -48,7 +48,7 @@ void Mouse::up(int button)
 {
    if (button > 0 && button <= FGUI_MOUSE_BUTTON_COUNT)
    {
-      ButtonState &btn = buttons_[button];
+      ButtonState &btn = buttons_[button - 1];
       btn.down = false;
       btn.pos = kINVALID;
       btn.component = NULL;
@@ -58,21 +58,21 @@ void Mouse::up(int button)
 bool Mouse::isDown(int button) const
 {
    if (button > 0 && button <= FGUI_MOUSE_BUTTON_COUNT)
-      return buttons_[button].down;
+      return buttons_[button - 1].down;
    return false;
 }
 
 const Point &Mouse::downPosition(int button) const
 {
    if (button > 0 && button <= FGUI_MOUSE_BUTTON_COUNT)
-      return buttons_[button].pos;
+      return buttons_[button - 1].pos;
    return kINVALID;
 }
 
 FComponent *Mouse::downComponent(int button) const
 {
    if (button > 0 && button <= FGUI_MOUSE_BUTTON_COUNT)
-      return buttons_[button].component;
+      return buttons_[button - 1].component;
    return NULL;
 }
 

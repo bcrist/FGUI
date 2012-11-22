@@ -36,8 +36,8 @@ class FComponent;
 
 struct Event
 {
-   inline Event(int type, FComponent *target);
-   inline Event(int type, FComponent *target, bool propagates);
+   Event(int type, FComponent *target);
+   Event(int type, FComponent *target, bool propagates);
    virtual ~Event() {}
 
    bool isCancelled() const;
@@ -63,5 +63,7 @@ private:
 };
 
 FGUI_END
+
+#include "event/event.inl"
 
 #endif

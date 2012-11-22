@@ -23,8 +23,6 @@
 
 #include "color.h"
 
-#define FGUI_COLOR_INITLIST r(v[0]), g(v[1]), b(v[2]), a(v[3])
-
 FGUI_BEGIN
 
 const Color::component_t Color::kMUL_2 =  1.0f / 3.0f;
@@ -43,66 +41,9 @@ const Color::component_t Color::kMUL_14 = 1.0f / 16383.0f;
 const Color::component_t Color::kMUL_15 = 1.0f / 32767.0f;
 const Color::component_t Color::kMUL_16 = 1.0f / 65535.0f;
 
-Color::Color() : FGUI_COLOR_INITLIST
-{
-   r = g = b = a = 0.0f;
-}
 
-Color::Color(const Color &other) : FGUI_COLOR_INITLIST
-{
-   memcpy(v, other.v, 4 * sizeof(component_t));
-}
 
-Color::Color(const Color &other, component_t rgba_mul) : FGUI_COLOR_INITLIST
-{
-   r = other.r / rgba_mul;
-   g = other.g / rgba_mul;
-   b = other.b / rgba_mul;
-   a = other.a / rgba_mul;
-}
-
-Color::Color(const Color &other, component_t rgb_mul, component_t a_mul) : FGUI_COLOR_INITLIST
-{
-   r = other.r / rgb_mul;
-   g = other.g / rgb_mul;
-   b = other.b / rgb_mul;
-   a = other.a / a_mul;
-}
-
-Color::Color(component_t lum) : FGUI_COLOR_INITLIST
-{
-   r = g = b = lum;
-   a = 1.0f;
-}
-
-Color::Color(component_t lum, component_t alpha) : FGUI_COLOR_INITLIST
-{
-   r = g = b = lum;
-   a = alpha;
-}
-
-Color::Color(component_t r, component_t g, component_t b) : FGUI_COLOR_INITLIST
-{
-   v[0] = r;
-   v[1] = g;
-   v[2] = b;
-   a = 1.0f;
-}
-
-Color::Color(component_t r, component_t g, component_t b, component_t a) : FGUI_COLOR_INITLIST
-{
-   v[0] = r;
-   v[1] = g;
-   v[2] = b;
-   v[3] = a;
-}
-
-Color::Color(const component_t *components) : FGUI_COLOR_INITLIST
-{
-   memcpy(v, components, 4 * sizeof(component_t));
-}
-
-Color::Color(const component_t *components, size_t component_count) : FGUI_COLOR_INITLIST
+Color::Color(const component_t *components, size_t component_count) : r(v[0]), g(v[1]), b(v[2]), a(v[3])
 {
    if (component_count > 0 && component_count <= 4)
       memcpy(v, components, component_count * sizeof(component_t));
@@ -113,7 +54,7 @@ Color::Color(const component_t *components, size_t component_count) : FGUI_COLOR
       v[component_count++] = 1.0f;
 }
 
-Color::Color(const Color &first, const Color &second, float f) : FGUI_COLOR_INITLIST
+Color::Color(const Color &first, const Color &second, float f) : r(v[0]), g(v[1]), b(v[2]), a(v[3])
 {
    f = f < 0.0f ? 0.0f : (f > 1.0f ? 1.0f : f);
    float fi = 1.0f - f;
@@ -124,7 +65,7 @@ Color::Color(const Color &first, const Color &second, float f) : FGUI_COLOR_INIT
    a = (component_t)(second.a * f + first.a * fi);
 }
 
-Color::Color(const Color &first, const Color &second, double f) : FGUI_COLOR_INITLIST
+Color::Color(const Color &first, const Color &second, double f) : r(v[0]), g(v[1]), b(v[2]), a(v[3])
 {
    f = f < 0.0 ? 0.0 : (f > 1.0 ? 1.0 : f);
    double fi = 1.0 - f;
@@ -133,78 +74,6 @@ Color::Color(const Color &first, const Color &second, double f) : FGUI_COLOR_INI
    g = (component_t)(second.g * f + first.g * fi);
    b = (component_t)(second.b * f + first.b * fi);
    a = (component_t)(second.a * f + first.a * fi);
-}
-
-
-Color &Color::operator=(const Color &rhs)
-{
-   memcpy(v, rhs.v, 4 * sizeof(component_t));
-   return *this;
-}
-
-Color &Color::operator+=(const Color &rhs)
-{
-   r += rhs.r;
-   g += rhs.g;
-   b += rhs.b;
-   a += rhs.a;
-   return *this;
-}
-
-Color &Color::operator-=(const Color &rhs)
-{
-   r -= rhs.r;
-   g -= rhs.g;
-   b -= rhs.b;
-   a -= rhs.a;
-   return *this;
-}
-
-Color &Color::operator*=(const Color &rhs)
-{
-   r *= rhs.r;
-   g *= rhs.g;
-   b *= rhs.b;
-   a *= rhs.a;
-   return *this;
-}
-
-Color &Color::operator/=(const Color &rhs)
-{
-   r /= rhs.r;
-   g /= rhs.g;
-   b /= rhs.b;
-   a /= rhs.a;
-   return *this;
-}
-
-
-const Color Color::operator+(const Color &rhs) const
-{
-   return Color(*this) += rhs;
-}
-
-const Color Color::operator-(const Color &rhs) const
-{
-   return Color(*this) -= rhs;
-}
-
-const Color Color::operator*(const Color &rhs) const
-{
-   return Color(*this) *= rhs;
-}
-
-const Color Color::operator/(const Color &rhs) const
-{
-   return Color(*this) /= rhs;
-}
-
-
-Color &Color::invert()
-{
-   r = 1.0f - r;
-   g = 1.0f - g;
-   b = 1.0f - b;
 }
 
 Color &Color::clamp()

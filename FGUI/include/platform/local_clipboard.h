@@ -38,6 +38,7 @@ FGUI_BEGIN
 class LocalClipboard : public ClipboardInterface
 {
 public:
+   LocalClipboard() {}
    virtual ~LocalClipboard() {}
 
    virtual std::string getText() { return clipboard_; }

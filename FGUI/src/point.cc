@@ -23,69 +23,7 @@
 
 #include "point.h"
 
-#define FGUI_POINT_INITLIST x(val[0]), y(val[1]), v(&val[0])
-
 FGUI_BEGIN
-
-Point::Point() : FGUI_POINT_INITLIST
-{
-   val[0] = 0.0;
-   val[1] = 0.0;
-}
-
-Point::Point(const Point &other) : FGUI_POINT_INITLIST
-{
-   val[0] = other.x;
-   val[1] = other.y;
-}
-
-Point::Point(component_t x, component_t y) : FGUI_POINT_INITLIST
-{
-   val[0] = x;
-   val[1] = y;
-}
-
-Point::Point(const component_t *v) : FGUI_POINT_INITLIST
-{
-   val[0] = v[0];
-   val[1] = v[1];
-}
-
-bool Point::operator==(const Point &rhs) const
-{
-   return x == rhs.x && y == rhs.y;
-}
-
-bool Point::operator!=(const Point &rhs) const
-{
-   return !(*this == rhs);
-}
-
-Point &Point::operator=(const Point &rhs)
-{
-   val[0] = rhs.x;
-   val[1] = rhs.y;
-   return *this;
-}
-
-Point &Point::setX(component_t x)
-{
-   val[0] = x;
-   return *this;
-}
-
-Point &Point::setY(component_t y)
-{
-   val[1] = x;
-   return *this;
-}
-
-Point &Point::set(component_t x, component_t y)
-{
-   val[0] = x;
-   val[1] = y;
-   return *this;
-}
 
 std::ostream &operator<<(std::ostream &os, const Point &point)
 {

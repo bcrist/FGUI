@@ -42,6 +42,7 @@ FGUI_BEGIN
 class AllegroFontProvider : public FontProviderInterface
 {
 public:
+   AllegroFontProvider() {}
    virtual ~AllegroFontProvider() {}
 
    virtual FontInterface *getFont(const std::string &typeface, const std::string &style, float_t size);

@@ -35,6 +35,7 @@ FGUI_BEGIN
 class NullFontProvider : public FontProviderInterface
 {
 public:
+   NullFontProvider() {}
    virtual ~NullFontProvider() {}
 
    virtual FontInterface *getFont(const std::string &typeface, const std::string &style, float_t size) { return NULL; }

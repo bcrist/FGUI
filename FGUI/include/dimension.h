@@ -33,21 +33,21 @@ struct Dimension
 {
    typedef float_t component_t;
 
-   inline Dimension();
-   inline Dimension(const Dimension &other);
-   inline Dimension(component_t width, component_t height);
-   explicit inline Dimension(const component_t *v);
+   Dimension();
+   Dimension(const Dimension &other);
+   Dimension(component_t width, component_t height);
+   explicit Dimension(const component_t *v);
 
    // comparison operators
-   inline bool operator==(const Dimension &rhs) const;
-   inline bool operator!=(const Dimension &rhs) const;
+   bool operator==(const Dimension &rhs) const;
+   bool operator!=(const Dimension &rhs) const;
 
    // assignment operators
-   inline Dimension &operator=(const Dimension &rhs);
+   Dimension &operator=(const Dimension &rhs);
 
-   inline Dimension &setWidth(component_t width);
-   inline Dimension &setHeight(component_t height);
-   inline Dimension &set(component_t width, component_t height);
+   Dimension &setWidth(component_t width);
+   Dimension &setHeight(component_t height);
+   Dimension &set(component_t width, component_t height);
 
    const component_t &width;
    const component_t &height;
@@ -60,5 +60,7 @@ private:
 std::ostream &operator<<(std::ostream &os, const Dimension &dim);
 
 FGUI_END
+
+#include "dimension.inl"
 
 #endif

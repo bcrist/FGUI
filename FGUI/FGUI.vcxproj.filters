@@ -93,12 +93,6 @@
     <ClCompile Include="src\component\f_ui.cc">
       <Filter>Source Files\component</Filter>
     </ClCompile>
-    <ClCompile Include="src\event\event.cc">
-      <Filter>Source Files\event</Filter>
-    </ClCompile>
-    <ClCompile Include="src\render_task.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\platform\opengl\opengl_fui_cleanup_renderer.cc">
       <Filter>Source Files\platform\opengl</Filter>
     </ClCompile>
@@ -212,9 +206,6 @@
     <ClInclude Include="include\renderer_interface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\render_task.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\platform\opengl\opengl.h">
       <Filter>Header Files\platform\opengl</Filter>
     </ClInclude>
@@ -224,5 +215,25 @@
     <ClInclude Include="include\platform\opengl\opengl_fui_cleanup_renderer.h">
       <Filter>Header Files\platform\opengl</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="include\point.inl">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="include\color.inl">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="include\dimension.inl">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="include\event\event.inl">
+      <Filter>Header Files\event</Filter>
+    </None>
+    <None Include="include\render_task.inl">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="include\component\f_ui.inl">
+      <Filter>Header Files\component</Filter>
+    </None>
   </ItemGroup>
 </Project>
