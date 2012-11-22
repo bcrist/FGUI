@@ -630,6 +630,8 @@ FUI::FUI(const FUI_cfg &cfg)
    setFocusManager(fm ? fm : &default_focus_manager_);
 }
 
-FUI::~FUI() {}
+FUI::~FUI()
+{
+}
 
 FGUI_END

@@ -726,9 +726,6 @@ FComponent::~FComponent()
    if (destroy_children_)
       for (cvec_iter_t it(children_.begin()); it != children_.end(); ++it)
          delete *it;
-
-   if (parent_)
-      parent_->removeComponent(this, false);
 }
 
 std::ostream &operator<<(std::ostream &os, const FComponent &component)
