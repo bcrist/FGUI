@@ -15,7 +15,11 @@ using fgui::Color;
 
 BMC_BEGIN
 
-App::App() : init_successful_(true)
+App::App()
+      : init_successful_(true),
+        display_(NULL),
+        queue_(NULL),
+        ui_(NULL)
 {
 	al_set_org_name("Magic / More Magic");
 	al_set_app_name("FGUI Demo");
