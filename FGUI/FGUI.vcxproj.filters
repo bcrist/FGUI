@@ -105,6 +105,9 @@
     <ClCompile Include="src\mouse.cc">
       <Filter>Source Files\misc</Filter>
     </ClCompile>
+    <ClCompile Include="src\platform\opengl\colored_rectangle_renderer.cc">
+      <Filter>Source Files\platform\opengl</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\platform\windows\win_clipboard.h">
@@ -220,6 +223,9 @@
     </ClInclude>
     <ClInclude Include="include\renderer_interface.h">
       <Filter>Header Files\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="include\platform\opengl\colored_rectangle_renderer.h">
+      <Filter>Header Files\platform\opengl</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

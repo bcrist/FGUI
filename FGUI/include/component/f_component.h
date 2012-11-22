@@ -194,7 +194,8 @@ public:
    virtual Point absoluteToClient(const Point &absolute_coord) const;
    virtual void getComponentsAt(std::vector<FComponent*> &components, const Point &absolute_coord);
    virtual bool checkPointOverComponent(const Point &absolute_coord) const;
-   
+   bool checkPointInBounds(const Point &absolute_coord) const;
+
 
    // Focus Management
 private:

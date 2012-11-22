@@ -25,11 +25,28 @@
 #define FGUI_COMPONENT_F_COLORED_RECTANGLE_H_
 #include "fgui_std.h"
 
+#ifndef FGUI_COLORED_RECTANGLE_RENDERER
+#define FGUI_COLORED_RECTANGLE_RENDERER stdgl::ColoredRectangleRenderer
+#include "platform/opengl/opengl.h"
+
+
+#endif
+
 #include "component/f_component.h"
 
 #include "color.h"
 
 FGUI_BEGIN
+
+class ColoredRectangleRenderer : public RendererInterface
+{
+public:
+   ColoredRectangleRenderer() {}
+   virtual ~ColoredRectangleRenderer() {}
+
+   virtual bool checkPointOverComponent(const FComponent *component, const Point &absolute_coord) const;
+   virtual void draw(FComponent *component);
+};
 
 class FColoredRectangle : public FComponent
 {
@@ -45,11 +62,16 @@ public:
 
    virtual const char *getComponentType() const { return "FColoredRectangle"; }
 
+   const Color &getNormalColor() const { return normal_color_; }
+   const Color &getFocusedColor() const { return focused_color_; }
+   const Color &getHoverColor() const { return hover_color_; }
+   const Color &getActiveColor() const { return active_color_; }
+
 protected:
-   Color normalColor;
-   Color focusedColor;
-   Color hoverColor;
-   Color activeColor;
+   Color normal_color_;
+   Color focused_color_;
+   Color hover_color_;
+   Color active_color_;
 };
 
 FGUI_END

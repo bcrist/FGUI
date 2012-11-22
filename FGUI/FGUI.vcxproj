@@ -21,6 +21,7 @@
     <ClCompile Include="src\mouse.cc" />
     <ClCompile Include="src\platform\allegro\allegro_font.cc" />
     <ClCompile Include="src\platform\allegro\allegro_font_provider.cc" />
+    <ClCompile Include="src\platform\opengl\colored_rectangle_renderer.cc" />
     <ClCompile Include="src\platform\opengl\opengl_fui_cleanup_renderer.cc" />
     <ClCompile Include="src\platform\opengl\opengl_fui_prepare_renderer.cc" />
     <ClCompile Include="src\platform\windows\win_clipboard.cc" />
@@ -47,6 +48,7 @@
     <ClInclude Include="include\fgui_font.h" />
     <ClInclude Include="include\fgui_std.h" />
     <ClInclude Include="include\focus_manager_interface.h" />
+    <ClInclude Include="include\platform\opengl\colored_rectangle_renderer.h" />
     <ClInclude Include="include\platform\opengl\opengl.h" />
     <ClInclude Include="include\platform\opengl\opengl_fui_cleanup_renderer.h" />
     <ClInclude Include="include\platform\opengl\opengl_fui_prepare_renderer.h" />

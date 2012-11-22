@@ -550,10 +550,15 @@ bool FComponent::checkPointOverComponent(const Point &absolute_coord) const
    if (renderer_)
       return renderer_->checkPointOverComponent(this, absolute_coord);
 
+   return checkPointInBounds(absolute_coord);
+}
+
+bool FComponent::checkPointInBounds(const Point &absolute_coord) const
+{
    return (absolute_coord.x >= absolute_position_.x &&
-         absolute_coord.x < size_.width && 
-         absolute_coord.y >= absolute_position_.y &&
-         absolute_coord.y < size_.height);
+           absolute_coord.x < size_.width && 
+           absolute_coord.y >= absolute_position_.y &&
+           absolute_coord.y < size_.height);
 }
 
 

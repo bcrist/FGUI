@@ -19,45 +19,43 @@
 // IN THE SOFTWARE.
 //
 // Author: Benjamin Crist
-// File: component/f_colored_rectangle.cc
+// File: platform/opengl/colored_rectangle_renderer.cc
 
-#include "component/f_colored_rectangle.h"
+#include "platform/opengl/colored_rectangle_renderer.h"
+
+#ifdef FGUI_PLATFORM_OPENGL_COLORED_RECTANGLE_RENDERER_H_
+
+#include "component/f_component.h"
 
 FGUI_BEGIN
+namespace stdgl {
 
-
-FColoredRectangle::FColoredRectangle():
-   normal_color_(Color(1, 0, 0)),
-   focused_color_(Color(1, 0, 0)),
-   hover_color_(Color(1, 0, 0)),
-   active_color_(Color(1, 0, 0))
+bool ColoredRectangleRenderer::checkPointOverComponent(const FComponent *component, const Point &absolute_coord) const
 {
-   setFocusable(true);
+   if (component)
+      return component->checkPointInBounds(absolute_coord);
 }
 
-FColoredRectangle::FColoredRectangle(const Color &color):
-   normal_color_(color),
-   focused_color_(color),
-   hover_color_(color),
-   active_color_(color)
+void ColoredRectangleRenderer::draw(FComponent *component)
 {
-   setFocusable(true);
+   FColoredRectangle *cr = static_cast<FColoredRectangle*>(component);
+
+   if (cr->isFocused())
+      glColor4fv(cr->getFocusedColor().v);
+   else
+      glColor4fv(cr->getNormalColor().v);
+   glBegin(GL_QUADS);
+      const Point &pos = cr->getAbsolutePosition();
+      const Dimension &size = cr->getSize();
+
+      glVertex2fv(pos.v);
+      glVertex2f(pos.x + size.width, pos.y);
+      glVertex2f(pos.x + size.width, pos.y + size.height);
+      glVertex2f(pos.x, pos.y + size.height);
+   glEnd();
 }
 
-FColoredRectangle::FColoredRectangle(const Color &normalColor,
-   const Color &focusedColor,
-   const Color &hoverColor,
-   const Color &activeColor):
-      normal_color_(normalColor),
-      focused_color_(focusedColor),
-      hover_color_(hoverColor),
-      active_color_(activeColor)
-{
-   setFocusable(true);
 }
-
-FColoredRectangle::~FColoredRectangle()
-{
-}
-
 FGUI_END
+
+#endif

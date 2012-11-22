@@ -19,45 +19,37 @@
 // IN THE SOFTWARE.
 //
 // Author: Benjamin Crist
-// File: component/f_colored_rectangle.cc
+// File: platform/opengl/opengl_fui_cleanup_renderer.h
+
+#ifndef FGUI_PLATFORM_OPENGL_COLORED_RECTANGLE_RENDERER_H_
+#ifndef FGUI_COLORED_RECTANGLE_RENDERER
+#define FGUI_PLATFORM_OPENGL_COLORED_RECTANGLE_RENDERER_H_
+#define FGUI_COLORED_RECTANGLE_RENDERER stdgl::ColoredRectangleRenderer
+#include "fgui_std.h"
+#include "platform/opengl/opengl.h"
+
+#include "renderer_interface.h"
 
 #include "component/f_colored_rectangle.h"
 
 FGUI_BEGIN
+namespace stdgl {
 
-
-FColoredRectangle::FColoredRectangle():
-   normal_color_(Color(1, 0, 0)),
-   focused_color_(Color(1, 0, 0)),
-   hover_color_(Color(1, 0, 0)),
-   active_color_(Color(1, 0, 0))
+class ColoredRectangleRenderer : public RendererInterface
 {
-   setFocusable(true);
-}
+public:
+   ColoredRectangleRenderer(FColoredRectangle &component_) {}
+   virtual ~ColoredRectangleRenderer() {}
 
-FColoredRectangle::FColoredRectangle(const Color &color):
-   normal_color_(color),
-   focused_color_(color),
-   hover_color_(color),
-   active_color_(color)
-{
-   setFocusable(true);
-}
+   virtual bool checkPointOverComponent(const FComponent *component, const Point &absolute_coord) const;
+   virtual void draw(FComponent *component);
 
-FColoredRectangle::FColoredRectangle(const Color &normalColor,
-   const Color &focusedColor,
-   const Color &hoverColor,
-   const Color &activeColor):
-      normal_color_(normalColor),
-      focused_color_(focusedColor),
-      hover_color_(hoverColor),
-      active_color_(activeColor)
-{
-   setFocusable(true);
-}
+private:
+   DISALLOW_COPY_AND_ASSIGN(ColoredRectangleRenderer);
+};
 
-FColoredRectangle::~FColoredRectangle()
-{
 }
-
 FGUI_END
+
+#endif
+#endif
