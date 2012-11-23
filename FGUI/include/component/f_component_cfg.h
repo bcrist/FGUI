@@ -25,8 +25,6 @@
 #define FGUI_COMPONENT_F_COMPONENT_CFG_H_
 #include "fgui_std.h"
 
-#include "platform/logger_interface.h"
-
 #include "dimension.h"
 #include "point.h"
 
@@ -40,7 +38,6 @@ class FocusManagerInterface;
 struct FComponent_cfg
 {
    FComponent_cfg():
-      log(NULL),
       contents_locked(false),
       destroy_children(false),
       layout_mgr(NULL),
@@ -56,8 +53,6 @@ struct FComponent_cfg
       modal(false),
       focus_mgr(NULL) {}
    virtual ~FComponent_cfg() {}
-
-   LoggerInterface *log;
 
    bool contents_locked;
    bool destroy_children;
@@ -78,8 +73,6 @@ struct FComponent_cfg
    bool focusable;
    bool modal;
    FocusManagerInterface *focus_mgr;
-
-   virtual LoggerInterface *getLogger() const { return log; }
 
    virtual bool getContentsLocked() const { return contents_locked; }
    virtual bool getDestroyChildren() const { return destroy_children; }

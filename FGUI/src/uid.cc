@@ -19,27 +19,12 @@
 // IN THE SOFTWARE.
 //
 // Author: Benjamin Crist
-// File: platform/opengl/opengl_fui_cleanup_renderer.cc
+// File: uid.cc
 
-#include "platform/opengl/opengl_fui_cleanup_renderer.h"
-
-#ifdef FGUI_PLATFORM_OPENGL_OPENGL_FUI_CLEANUP_RENDERER_H_
-
-#include "component/f_component.h"
+#include "uid.h"
 
 FGUI_BEGIN
-namespace stdgl {
 
-void FUICleanupRenderer::draw(FComponent *component)
-{
-   glMatrixMode(GL_MODELVIEW);
-   glPopMatrix();
+uint64_t UID::next_uid_(0);
 
-   glMatrixMode(GL_PROJECTION);
-   glPopMatrix();
-}
-
-}
 FGUI_END
-
-#endif

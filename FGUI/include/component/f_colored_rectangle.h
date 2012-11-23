@@ -45,6 +45,8 @@ public:
 
    virtual ~FColoredRectangle();
 
+   static const UID renderer_uid_;
+
    virtual const char *getComponentType() const { return "FColoredRectangle"; }
 
    const Color &getNormalColor() const { return normal_color_; }

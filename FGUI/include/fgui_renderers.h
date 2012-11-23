@@ -19,46 +19,14 @@
 // IN THE SOFTWARE.
 //
 // Author: Benjamin Crist
-// File: component/f_colored_rectangle.cc
+// File: fgui_renderers.h
 
-#include "component/f_colored_rectangle.h"
+#ifndef FGUI_FGUI_RENDERERS_H_
+#define FGUI_FGUI_RENDERERS_H_
 
-FGUI_BEGIN
+#include "platform/opengl/ui_prepare_renderer.h"
+#include "platform/opengl/ui_cleanup_renderer.h"
 
-const UID FColoredRectangle::renderer_uid_;
+#include "platform/opengl/colored_rectangle_renderer.h"
 
-FColoredRectangle::FColoredRectangle():
-   normal_color_(Color(1, 0, 0)),
-   focused_color_(Color(1, 0, 0)),
-   hover_color_(Color(1, 0, 0)),
-   active_color_(Color(1, 0, 0))
-{
-   setFocusable(true);
-}
-
-FColoredRectangle::FColoredRectangle(const Color &color):
-   normal_color_(color),
-   focused_color_(color),
-   hover_color_(color),
-   active_color_(color)
-{
-   setFocusable(true);
-}
-
-FColoredRectangle::FColoredRectangle(const Color &normalColor,
-   const Color &focusedColor,
-   const Color &hoverColor,
-   const Color &activeColor):
-      normal_color_(normalColor),
-      focused_color_(focusedColor),
-      hover_color_(hoverColor),
-      active_color_(activeColor)
-{
-   setFocusable(true);
-}
-
-FColoredRectangle::~FColoredRectangle()
-{
-}
-
-FGUI_END
+#endif

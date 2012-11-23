@@ -34,18 +34,14 @@
 
 #include "component/f_component_cfg.h"
 
-#include "platform/logger_interface.h"
-
+#include "uid.h"
 #include "dimension.h"
 #include "point.h"
-
 #include "event/component_listener.h"
-
+#include "platform/logger_interface.h"
 #include "layout_manager_interface.h"
 #include "focus_manager_interface.h"
-
 #include "renderer_interface.h"
-
 
 FGUI_BEGIN
 
@@ -230,7 +226,6 @@ public:
 private:
    LoggerInterface *logger_;
 public:
-   void setLogger(LoggerInterface *new_logger) { logger_ = new_logger; }
    bool isLoggerAvailable() const { return logger_ != NULL; }
    void log(const char *txt);
    virtual const char *getComponentType() const { return "FComponent"; }

@@ -81,12 +81,6 @@
     <ClCompile Include="src\component\f_ui.cc">
       <Filter>Source Files\component</Filter>
     </ClCompile>
-    <ClCompile Include="src\platform\opengl\opengl_fui_cleanup_renderer.cc">
-      <Filter>Source Files\platform\opengl</Filter>
-    </ClCompile>
-    <ClCompile Include="src\platform\opengl\opengl_fui_prepare_renderer.cc">
-      <Filter>Source Files\platform\opengl</Filter>
-    </ClCompile>
     <ClCompile Include="src\color.cc">
       <Filter>Source Files\misc</Filter>
     </ClCompile>
@@ -107,6 +101,21 @@
     </ClCompile>
     <ClCompile Include="src\platform\opengl\colored_rectangle_renderer.cc">
       <Filter>Source Files\platform\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\platform\default_platform.cc">
+      <Filter>Source Files\platform</Filter>
+    </ClCompile>
+    <ClCompile Include="src\platform\opengl\ui_cleanup_renderer.cc">
+      <Filter>Source Files\platform\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\platform\opengl\ui_prepare_renderer.cc">
+      <Filter>Source Files\platform\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uid.cc">
+      <Filter>Source Files\misc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\platform\platform.cc">
+      <Filter>Source Files\platform</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -188,12 +197,6 @@
     <ClInclude Include="include\platform\opengl\opengl.h">
       <Filter>Header Files\platform\opengl</Filter>
     </ClInclude>
-    <ClInclude Include="include\platform\opengl\opengl_fui_prepare_renderer.h">
-      <Filter>Header Files\platform\opengl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\platform\opengl\opengl_fui_cleanup_renderer.h">
-      <Filter>Header Files\platform\opengl</Filter>
-    </ClInclude>
     <ClInclude Include="include\color.h">
       <Filter>Header Files\misc</Filter>
     </ClInclude>
@@ -229,6 +232,24 @@
     </ClInclude>
     <ClInclude Include="include\platform\platform_interface.h">
       <Filter>Header Files\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="include\platform\platform.h">
+      <Filter>Header Files\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="include\platform\default_platform.h">
+      <Filter>Header Files\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="include\uid.h">
+      <Filter>Header Files\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="include\fgui_renderers.h">
+      <Filter>Header Files\_</Filter>
+    </ClInclude>
+    <ClInclude Include="include\platform\opengl\ui_cleanup_renderer.h">
+      <Filter>Header Files\platform\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="include\platform\opengl\ui_prepare_renderer.h">
+      <Filter>Header Files\platform\opengl</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

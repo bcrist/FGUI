@@ -87,7 +87,6 @@ bool App::initOpenGL()
 void App::initUI()
 {
 	ui_ = new FUI();
-	ui_->setLogger(&log_);
 
 	ui_->setMinimumSize(Dimension(100, 100));
 	ui_->setMaximumSize(Dimension(800, 600));

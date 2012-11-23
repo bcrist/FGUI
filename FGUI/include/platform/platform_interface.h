@@ -27,6 +27,12 @@
 
 FGUI_BEGIN
 
+class UID;
+class ClipboardInterface;
+class FontProviderInterface;
+class RendererInterface;
+class LoggerInterface;
+
 class PlatformInterface
 {
 public:
@@ -38,10 +44,11 @@ public:
    virtual FontProviderInterface *checkoutFontProvider() = 0;
    virtual void returnFontProvider(FontProviderInterface *font_provider) = 0;
 
-   virtual RendererInterface *checkoutRenderer(const std::string &type) = 0;
-   virtual void returnRenderer(RendererInterface *renderer) = 0;
+   virtual RendererInterface *checkoutRenderer(const UID &uid) = 0;
+   virtual void returnRenderer(const UID &uid, RendererInterface *renderer) = 0;
 
-   virtual 
+   virtual LoggerInterface *checkoutLogger() = 0;
+   virtual void returnLogger(LoggerInterface *logger) = 0;
 };
 
 FGUI_END

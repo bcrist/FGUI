@@ -25,6 +25,12 @@
 // for each component class and their supporting classes.  This is the only
 // file you need to include to use FGUI.
 
+// Compilation Switches:
+//   FGUI_NO_OPENGL    Compile without OpenGL renderers (provide your own with
+//                        a custom PlatformInterface or nothing will show up)
+//   FGUI_NO_ALLEGRO   Compile without Allegro font support
+//   WIN32             Compile with Windows clipboard support
+
 #ifndef FGUI_FGUI_H_
 #define FGUI_FGUI_H_
 #include "fgui_std.h"
@@ -39,6 +45,9 @@
 
 // Fonts
 #include "fgui_font.h"
+
+// Renderers
+#include "fgui_renderers.h"
 
 ///////////////////////////////////////////////////////
 // Components

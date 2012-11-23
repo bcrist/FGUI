@@ -19,46 +19,27 @@
 // IN THE SOFTWARE.
 //
 // Author: Benjamin Crist
-// File: component/f_ui_cfg.h
+// File: platform/opengl/ui_cleanup_renderer.cc
 
-#ifndef FGUI_COMPONENT_F_UI_CFG_H_
-#define FGUI_COMPONENT_F_UI_CFG_H_
-#include "fgui_std.h"
+#include "platform/opengl/ui_cleanup_renderer.h"
 
-#include "component/f_component_cfg.h"
+#ifdef FGUI_PLATFORM_OPENGL_UI_CLEANUP_RENDERER_H_
+
+#include "component/f_component.h"
 
 FGUI_BEGIN
+namespace stdgl {
 
-class ClipboardInterface;
-class FontProviderInterface;
-
-struct FUI_cfg : public FComponent_cfg
+void UICleanupRenderer::draw(FComponent *component)
 {
-   FUI_cfg()
-         : under_mouse_key_events_enabled(true),
-           ticks_per_second(1000),
-           min_hover_delay(600),
-           max_double_click_interval(350),
-           min_simulate_event_interval(10)
-   {
-      destroy_children = true;
-   }
-   virtual ~FUI_cfg() {}
+   glMatrixMode(GL_MODELVIEW);
+   glPopMatrix();
 
-   bool under_mouse_key_events_enabled;
-   int ticks_per_second;
-   int min_hover_delay;
-   int max_double_click_interval;
-   int min_simulate_event_interval;
+   glMatrixMode(GL_PROJECTION);
+   glPopMatrix();
+}
 
-   virtual bool getUnderMouseKeyEventsEnabled() const { return under_mouse_key_events_enabled; }
-   virtual int getTicksPerSecond() const { return ticks_per_second; }
-
-   virtual int getMinimumHoverDelay() const { return min_hover_delay; }
-   virtual int getMaximumDoubleClickInterval() const { return max_double_click_interval; }
-   virtual int getMinimumSimulateEventInterval() const { return min_simulate_event_interval; }
-};
-
+}
 FGUI_END
 
 #endif

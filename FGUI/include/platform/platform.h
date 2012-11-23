@@ -19,34 +19,32 @@
 // IN THE SOFTWARE.
 //
 // Author: Benjamin Crist
-// File: platform/opengl/opengl_fui_prepare_renderer.cc
+// File: platform/platform.h
 
-#include "platform/opengl/opengl_fui_prepare_renderer.h"
+#ifndef FGUI_PLATFORM_H_
+#define FGUI_PLATFORM_H_
+#include "fgui_std.h"
 
-#ifdef FGUI_PLATFORM_OPENGL_OPENGL_FUI_PREPARE_RENDERER_H_
-
-#include "component/f_component.h"
-
-#include "dimension.h"
+#include "platform/default_platform.h"
 
 FGUI_BEGIN
-namespace stdgl {
 
-void FUIPrepareRenderer::draw(FComponent *component)
+class Platform
 {
-   Dimension size = component->getSize();
+public:
+   static void useDefault() { platform_ = &default_; }
+   static void use(PlatformInterface &platform) { platform_ = &platform; }
 
-   glMatrixMode(GL_PROJECTION);
-   glPushMatrix();
-   glLoadIdentity();
-   glOrtho(0, size.width, size.height, 0, -1, 1);
+   static PlatformInterface &get() { return *platform_; }
 
-   glMatrixMode(GL_MODELVIEW);
-   glPushMatrix();
-   glLoadIdentity();
-}
+private:
+   static PlatformInterface *platform_;
+   static DefaultPlatform default_;
 
-}
+   Platform();
+   DISALLOW_COPY_AND_ASSIGN(Platform);
+};
+
 FGUI_END
 
 #endif

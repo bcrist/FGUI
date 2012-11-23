@@ -19,29 +19,24 @@
 // IN THE SOFTWARE.
 //
 // Author: Benjamin Crist
-// File: platform/opengl/opengl_fui_prepare_renderer.h
+// File: platform/opengl/ui_prepare_renderer.h
 
-#ifndef FGUI_PLATFORM_OPENGL_OPENGL_FUI_PREPARE_RENDERER_H_
+#ifndef FGUI_PLATFORM_OPENGL_UI_PREPARE_RENDERER_H_
 #ifndef FGUI_NO_OPENGL
-#define FGUI_PLATFORM_OPENGL_OPENGL_FUI_PREPARE_RENDERER_H_
+#define FGUI_PLATFORM_OPENGL_UI_PREPARE_RENDERER_H_
 #include "fgui_std.h"
 #include "platform/opengl/opengl.h"
 
 #include "renderer_interface.h"
 
-#ifndef FGUI_DEFAULT_FUI_PREPARE_RENDERER
-#define FGUI_DEFAULT_FUI_PREPARE_RENDERER stdgl::FUIPrepareRenderer
-#endif
-
 FGUI_BEGIN
-
 namespace stdgl {
 
-class FUIPrepareRenderer : public RendererInterface
+class UIPrepareRenderer : public RendererInterface
 {
 public:
-   FUIPrepareRenderer() {}
-   virtual ~FUIPrepareRenderer() {}
+   UIPrepareRenderer() {}
+   virtual ~UIPrepareRenderer() {}
 
    virtual bool checkPointOverComponent(const FComponent *component, const Point &absolute_coord) const
    {
@@ -50,7 +45,7 @@ public:
    virtual void draw(FComponent *component);
 
 private:
-   DISALLOW_COPY_AND_ASSIGN(FUIPrepareRenderer);
+   DISALLOW_COPY_AND_ASSIGN(UIPrepareRenderer);
 };
 
 }

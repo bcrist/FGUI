@@ -22,9 +22,8 @@
 // File: platform/opengl/opengl_fui_cleanup_renderer.h
 
 #ifndef FGUI_PLATFORM_OPENGL_COLORED_RECTANGLE_RENDERER_H_
-#ifndef FGUI_COLORED_RECTANGLE_RENDERER
+#ifndef FGUI_NO_OPENGL
 #define FGUI_PLATFORM_OPENGL_COLORED_RECTANGLE_RENDERER_H_
-#define FGUI_COLORED_RECTANGLE_RENDERER stdgl::ColoredRectangleRenderer
 #include "fgui_std.h"
 #include "platform/opengl/opengl.h"
 

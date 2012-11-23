@@ -23,6 +23,8 @@
 
 #include "component/f_ui.h"
 
+#include "platform/platform.h"
+
 #include <iterator>
 
 FGUI_BEGIN
@@ -31,10 +33,8 @@ typedef std::vector<FComponent*> cvec_t;
 typedef std::vector<FComponent*>::iterator cvec_iter_t;
 
 // static members
-FGUI_DEFAULT_FUI_PREPARE_RENDERER FUI::default_prepare_renderer_;
-FGUI_DEFAULT_FUI_CLEANUP_RENDERER FUI::default_cleanup_renderer_;
-FGUI_DEFAULT_CLIPBOARD FUI::default_clipboard_;
-FGUI_DEFAULT_FONT_PROVIDER FUI::default_font_provider_;
+const UID FUI::prepare_renderer_uid_;
+const UID FUI::cleanup_renderer_uid_;
 
 // Modal Components
 
@@ -582,16 +582,16 @@ FUI::FUI()
         max_double_click_interval_(350),
         hover_start_ticks_(-1),
         last_click_ticks_(-1),
-        prepare_renderer_(&default_prepare_renderer_),
-        cleanup_renderer_(&default_cleanup_renderer_),
+        prepare_renderer_(Platform::get().checkoutRenderer(prepare_renderer_uid_)),
+        cleanup_renderer_(Platform::get().checkoutRenderer(cleanup_renderer_uid_)),
         render_tasks_valid_(false),
         dirty_(true),
         ticks_per_second_(1000),
         min_simulate_event_interval_(10),
         ticks_(0),
         last_simulate_ticks_(0),
-        clipboard_(default_clipboard_),
-        font_provider_(default_font_provider_)
+        clipboard_(Platform::get().checkoutClipboard()),
+        font_provider_(Platform::get().checkoutFontProvider())
 {
    default_focus_manager_.setFocusRoot(this);
    ui_ = this;
@@ -612,16 +612,16 @@ FUI::FUI(const FUI_cfg &cfg)
         max_double_click_interval_(cfg.getMaximumDoubleClickInterval()),
         hover_start_ticks_(-1),
         last_click_ticks_(-1),
-        prepare_renderer_(cfg.getUseDefaultPrepareRenderer() ? &default_prepare_renderer_ : cfg.getPrepareRenderer()),
-        cleanup_renderer_(cfg.getUseDefaultCleanupRenderer() ? &default_cleanup_renderer_ : cfg.getCleanupRenderer()),
+        prepare_renderer_(Platform::get().checkoutRenderer(prepare_renderer_uid_)),
+        cleanup_renderer_(Platform::get().checkoutRenderer(cleanup_renderer_uid_)),
         render_tasks_valid_(false),
         dirty_(true),
         ticks_per_second_(cfg.getTicksPerSecond()),
         min_simulate_event_interval_(cfg.getMinimumSimulateEventInterval()),
         ticks_(0),
         last_simulate_ticks_(0),
-        clipboard_(cfg.getClipboard() == NULL ? default_clipboard_ : *(cfg.getClipboard())),
-        font_provider_(cfg.getFontProvider() == NULL ? default_font_provider_ : *(cfg.getFontProvider()))
+        clipboard_(Platform::get().checkoutClipboard()),
+        font_provider_(Platform::get().checkoutFontProvider())
 {
    default_focus_manager_.setFocusRoot(this);
    ui_ = this;
@@ -632,6 +632,13 @@ FUI::FUI(const FUI_cfg &cfg)
 
 FUI::~FUI()
 {
+   PlatformInterface &platform = Platform::get();
+
+   platform.returnRenderer(prepare_renderer_uid_, prepare_renderer_);
+   platform.returnRenderer(cleanup_renderer_uid_, cleanup_renderer_);
+
+   platform.returnClipboard(clipboard_);
+   platform.returnFontProvider(font_provider_);
 }
 
 FGUI_END

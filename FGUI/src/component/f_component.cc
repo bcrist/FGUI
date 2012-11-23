@@ -28,6 +28,8 @@
 
 #include "component/f_ui.h"
 
+#include "platform/platform.h"
+
 FGUI_BEGIN
 
 typedef std::vector<FComponent*>::iterator cvec_iter_t;
@@ -693,7 +695,7 @@ FComponent::FComponent()
         focusable_(false),
         focus_mgr_(NULL),
 
-        logger_(NULL)
+        logger_(Platform::get().checkoutLogger())
 {}
 
 FComponent::FComponent(const FComponent_cfg &cfg)
@@ -723,11 +725,13 @@ FComponent::FComponent(const FComponent_cfg &cfg)
         focusable_(cfg.getFocusable()),
         focus_mgr_(cfg.getFocusMgr()),
 
-        logger_(cfg.getLogger())
+        logger_(Platform::get().checkoutLogger())
 {}
 
 FComponent::~FComponent()
 {
+   Platform::get().returnLogger(logger_);
+
    if (destroy_children_)
       for (cvec_iter_t it(children_.begin()); it != children_.end(); ++it)
          delete *it;

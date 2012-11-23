@@ -22,7 +22,7 @@
 // File: platform/allegro/allegro_font_provider.h
 
 #ifndef FGUI_PLATFORM_ALLEGRO_ALLEGRO_FONT_PROVIDER_H_
-#ifdef FGUI_USE_ALLEGRO_FONTS
+#ifndef FGUI_NO_ALLEGRO
 #define FGUI_PLATFORM_ALLEGRO_ALLEGRO_FONT_PROVIDER_H_
 #include "fgui_std.h"
 

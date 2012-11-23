@@ -19,44 +19,37 @@
 // IN THE SOFTWARE.
 //
 // Author: Benjamin Crist
-// File: component/f_ui_cfg.h
+// File: uid.h
 
-#ifndef FGUI_COMPONENT_F_UI_CFG_H_
-#define FGUI_COMPONENT_F_UI_CFG_H_
+#ifndef FGUI_UID_H_
+#define FGUI_UID_H_
 #include "fgui_std.h"
 
-#include "component/f_component_cfg.h"
+#include <stdint.h>
 
 FGUI_BEGIN
 
-class ClipboardInterface;
-class FontProviderInterface;
-
-struct FUI_cfg : public FComponent_cfg
+class UID
 {
-   FUI_cfg()
-         : under_mouse_key_events_enabled(true),
-           ticks_per_second(1000),
-           min_hover_delay(600),
-           max_double_click_interval(350),
-           min_simulate_event_interval(10)
-   {
-      destroy_children = true;
-   }
-   virtual ~FUI_cfg() {}
+public:
+   UID() : uid_(next_uid_++) {}
+   UID(const UID &other) : uid_(other.uid_) {}
 
-   bool under_mouse_key_events_enabled;
-   int ticks_per_second;
-   int min_hover_delay;
-   int max_double_click_interval;
-   int min_simulate_event_interval;
+   UID &operator=(const UID &rhs) { uid_ = rhs.uid_; }
 
-   virtual bool getUnderMouseKeyEventsEnabled() const { return under_mouse_key_events_enabled; }
-   virtual int getTicksPerSecond() const { return ticks_per_second; }
+   bool operator<(const UID &rhs) const { return uid_ < rhs.uid_; }
+   bool operator<=(const UID &rhs) const { return uid_ <= rhs.uid_; }
 
-   virtual int getMinimumHoverDelay() const { return min_hover_delay; }
-   virtual int getMaximumDoubleClickInterval() const { return max_double_click_interval; }
-   virtual int getMinimumSimulateEventInterval() const { return min_simulate_event_interval; }
+   bool operator==(const UID &rhs) const { return uid_ == rhs.uid_; }
+   bool operator!=(const UID &rhs) const { return uid_ != rhs.uid_; }
+
+   bool operator>=(const UID &rhs) const { return uid_ >= rhs.uid_; }
+   bool operator>(const UID &rhs) const { return uid_ > rhs.uid_; }
+
+private:
+   uint64_t uid_;
+
+   static uint64_t next_uid_;
 };
 
 FGUI_END

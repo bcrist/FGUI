@@ -36,10 +36,6 @@
 #include "mouse.h"
 #include "keyboard.h"
 #include "default_focus_manager.h"
-#include "fgui_clipboard.h"
-#include "fgui_font.h"
-#include "platform/opengl/opengl_fui_prepare_renderer.h"
-#include "platform/opengl/opengl_fui_cleanup_renderer.h"
 
 FGUI_BEGIN
 
@@ -125,9 +121,6 @@ public:
 
    // Rendering
 private:
-   static FGUI_DEFAULT_FUI_PREPARE_RENDERER default_prepare_renderer_;
-   static FGUI_DEFAULT_FUI_CLEANUP_RENDERER default_cleanup_renderer_;
-
    RendererInterface *prepare_renderer_;
    RendererInterface *cleanup_renderer_;
 
@@ -141,6 +134,9 @@ private:
    void populateRenderTasks();
 
 public:
+   static const UID prepare_renderer_uid_;
+   static const UID cleanup_renderer_uid_;
+
    virtual bool uiDrawRequested() const { return dirty_; }
    virtual void uiDraw();
    virtual void makeDirty(const Point &absolute_position, const Dimension &size);
@@ -165,18 +161,16 @@ public:
 
    // Clipboard
 private:
-   static FGUI_DEFAULT_CLIPBOARD default_clipboard_;
-   ClipboardInterface &clipboard_;
+   ClipboardInterface *clipboard_;
 public:
-   ClipboardInterface &getClipboard() { return clipboard_; }
+   ClipboardInterface &getClipboard() { return *clipboard_; }
 
 
    // Fonts
 private:
-   static FGUI_DEFAULT_FONT_PROVIDER default_font_provider_;
-   FontProviderInterface &font_provider_;
+   FontProviderInterface *font_provider_;
 public:
-   FontProviderInterface &getFontProvider() { return font_provider_; }
+   FontProviderInterface &getFontProvider() { return *font_provider_; }
 
 
    // FComponent overrides

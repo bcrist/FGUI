@@ -19,42 +19,13 @@
 // IN THE SOFTWARE.
 //
 // Author: Benjamin Crist
-// File: platform/opengl/opengl_fui_cleanup_renderer.h
+// File: platform/platform.cc
 
-#ifndef FGUI_PLATFORM_OPENGL_OPENGL_FUI_CLEANUP_RENDERER_H_
-#ifndef FGUI_NO_OPENGL
-#define FGUI_PLATFORM_OPENGL_OPENGL_FUI_CLEANUP_RENDERER_H_
-#include "fgui_std.h"
-#include "platform/opengl/opengl.h"
-
-#include "renderer_interface.h"
-
-#ifndef FGUI_DEFAULT_FUI_CLEANUP_RENDERER
-#define FGUI_DEFAULT_FUI_CLEANUP_RENDERER stdgl::FUICleanupRenderer
-#endif
+#include "platform/platform.h"
 
 FGUI_BEGIN
 
-namespace stdgl {
+DefaultPlatform Platform::default_;
+PlatformInterface *Platform::platform_(&Platform::default_);
 
-class FUICleanupRenderer : public RendererInterface
-{
-public:
-   FUICleanupRenderer() {}
-   virtual ~FUICleanupRenderer() {}
-
-   virtual bool checkPointOverComponent(const FComponent *component, const Point &absolute_coord) const
-   {
-      return false;
-   }
-   virtual void draw(FComponent *component);
-
-private:
-   DISALLOW_COPY_AND_ASSIGN(FUICleanupRenderer);
-};
-
-}
 FGUI_END
-
-#endif
-#endif

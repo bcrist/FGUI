@@ -19,46 +19,33 @@
 // IN THE SOFTWARE.
 //
 // Author: Benjamin Crist
-// File: component/f_ui_cfg.h
+// File: platform/default_platform.cc
 
-#ifndef FGUI_COMPONENT_F_UI_CFG_H_
-#define FGUI_COMPONENT_F_UI_CFG_H_
-#include "fgui_std.h"
+#include "platform/default_platform.h"
 
-#include "component/f_component_cfg.h"
+#include "component/f_ui.h"
+#include "component/f_colored_rectangle.h"
+
+#include "fgui_renderers.h"
 
 FGUI_BEGIN
 
-class ClipboardInterface;
-class FontProviderInterface;
-
-struct FUI_cfg : public FComponent_cfg
+DefaultPlatform::DefaultPlatform() : default_logger_(NULL)
 {
-   FUI_cfg()
-         : under_mouse_key_events_enabled(true),
-           ticks_per_second(1000),
-           min_hover_delay(600),
-           max_double_click_interval(350),
-           min_simulate_event_interval(10)
-   {
-      destroy_children = true;
-   }
-   virtual ~FUI_cfg() {}
+   #ifndef FGUI_NO_OPENGL
 
-   bool under_mouse_key_events_enabled;
-   int ticks_per_second;
-   int min_hover_delay;
-   int max_double_click_interval;
-   int min_simulate_event_interval;
+   renderers_.insert(std::pair<UID, RendererInterface*>(FUI::prepare_renderer_uid_, &default_ui_prepare_r_));
+   renderers_.insert(std::pair<UID, RendererInterface*>(FUI::cleanup_renderer_uid_, &default_ui_cleanup_r_));
 
-   virtual bool getUnderMouseKeyEventsEnabled() const { return under_mouse_key_events_enabled; }
-   virtual int getTicksPerSecond() const { return ticks_per_second; }
+   renderers_.insert(std::pair<UID, RendererInterface*>(FColoredRectangle::renderer_uid_, &default_colored_rectangle_r_));
 
-   virtual int getMinimumHoverDelay() const { return min_hover_delay; }
-   virtual int getMaximumDoubleClickInterval() const { return max_double_click_interval; }
-   virtual int getMinimumSimulateEventInterval() const { return min_simulate_event_interval; }
-};
+   #endif
+}
+
+RendererInterface *DefaultPlatform::checkoutRenderer(const UID &uid)
+{
+   std::map<UID, RendererInterface*>::iterator it(renderers_.find(uid));
+   return it == renderers_.end() ? NULL : it->second;
+}
 
 FGUI_END
-
-#endif
