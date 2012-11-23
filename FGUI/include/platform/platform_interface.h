@@ -19,44 +19,29 @@
 // IN THE SOFTWARE.
 //
 // Author: Benjamin Crist
-// File: component/f_colored_rectangle.h
+// File: platform/platform_interface.h
 
-#ifndef FGUI_COMPONENT_F_COLORED_RECTANGLE_H_
-#define FGUI_COMPONENT_F_COLORED_RECTANGLE_H_
+#ifndef FGUI_PLATFORM_PLATFORM_INTERFACE_H_
+#define FGUI_PLATFORM_PLATFORM_INTERFACE_H_
 #include "fgui_std.h"
-
-#include "platform/opengl/colored_rectangle_renderer.h"
-
-#include "component/f_component.h"
-
-#include "color.h"
 
 FGUI_BEGIN
 
-class FColoredRectangle : public FComponent
+class PlatformInterface
 {
 public:
-   FColoredRectangle();
-   FColoredRectangle(const Color &color);
-   FColoredRectangle(const Color &normalColor,
-      const Color &focusedColor,
-      const Color &hoverColor,
-      const Color &activeColor);
+   virtual ~PlatformInterface() {}
 
-   virtual ~FColoredRectangle();
+   virtual ClipboardInterface *checkoutClipboard() = 0;
+   virtual void returnClipboard(ClipboardInterface *clipboard) = 0;
 
-   virtual const char *getComponentType() const { return "FColoredRectangle"; }
+   virtual FontProviderInterface *checkoutFontProvider() = 0;
+   virtual void returnFontProvider(FontProviderInterface *font_provider) = 0;
 
-   const Color &getNormalColor() const { return normal_color_; }
-   const Color &getFocusedColor() const { return focused_color_; }
-   const Color &getHoverColor() const { return hover_color_; }
-   const Color &getActiveColor() const { return active_color_; }
+   virtual RendererInterface *checkoutRenderer(const std::string &type) = 0;
+   virtual void returnRenderer(RendererInterface *renderer) = 0;
 
-protected:
-   Color normal_color_;
-   Color focused_color_;
-   Color hover_color_;
-   Color active_color_;
+   virtual 
 };
 
 FGUI_END

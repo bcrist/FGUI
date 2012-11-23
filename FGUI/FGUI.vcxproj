@@ -52,6 +52,7 @@
     <ClInclude Include="include\platform\opengl\opengl.h" />
     <ClInclude Include="include\platform\opengl\opengl_fui_cleanup_renderer.h" />
     <ClInclude Include="include\platform\opengl\opengl_fui_prepare_renderer.h" />
+    <ClInclude Include="include\platform\platform_interface.h" />
     <ClInclude Include="include\renderer_interface.h" />
     <ClInclude Include="include\text_metrics.h" />
     <ClInclude Include="include\keyboard.h" />

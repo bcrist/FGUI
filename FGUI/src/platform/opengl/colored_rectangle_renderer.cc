@@ -26,6 +26,7 @@
 #ifdef FGUI_PLATFORM_OPENGL_COLORED_RECTANGLE_RENDERER_H_
 
 #include "component/f_component.h"
+#include "component/f_colored_rectangle.h"
 
 FGUI_BEGIN
 namespace stdgl {
@@ -34,6 +35,8 @@ bool ColoredRectangleRenderer::checkPointOverComponent(const FComponent *compone
 {
    if (component)
       return component->checkPointInBounds(absolute_coord);
+
+   return false;
 }
 
 void ColoredRectangleRenderer::draw(FComponent *component)
@@ -44,6 +47,7 @@ void ColoredRectangleRenderer::draw(FComponent *component)
       glColor4fv(cr->getFocusedColor().v);
    else
       glColor4fv(cr->getNormalColor().v);
+
    glBegin(GL_QUADS);
       const Point &pos = cr->getAbsolutePosition();
       const Dimension &size = cr->getSize();

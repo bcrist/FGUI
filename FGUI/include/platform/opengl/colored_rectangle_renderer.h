@@ -30,15 +30,13 @@
 
 #include "renderer_interface.h"
 
-#include "component/f_colored_rectangle.h"
-
 FGUI_BEGIN
 namespace stdgl {
 
 class ColoredRectangleRenderer : public RendererInterface
 {
 public:
-   ColoredRectangleRenderer(FColoredRectangle &component_) {}
+   ColoredRectangleRenderer() {}
    virtual ~ColoredRectangleRenderer() {}
 
    virtual bool checkPointOverComponent(const FComponent *component, const Point &absolute_coord) const;

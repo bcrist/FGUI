@@ -227,6 +227,9 @@
     <ClInclude Include="include\platform\opengl\colored_rectangle_renderer.h">
       <Filter>Header Files\platform\opengl</Filter>
     </ClInclude>
+    <ClInclude Include="include\platform\platform_interface.h">
+      <Filter>Header Files\platform</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="include\event\event.inl">
