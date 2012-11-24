@@ -41,6 +41,9 @@
 //#include "dimension.h"
 //#include "point.h"
 
+// Platform code
+#include "platform/platform.h"
+
 // Events
 #include "fgui_event.h"
 

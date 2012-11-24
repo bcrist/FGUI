@@ -28,6 +28,7 @@
 #include "component/f_component.h"
 
 #include "dimension.h"
+#include "point.h"
 
 FGUI_BEGIN
 namespace stdgl {
@@ -44,6 +45,11 @@ void UIPrepareRenderer::draw(FComponent *component)
    glMatrixMode(GL_MODELVIEW);
    glPushMatrix();
    glLoadIdentity();
+
+   Rect clip = component->getClip();
+
+   glEnable(GL_SCISSOR_TEST);
+   glScissor(clip.x, clip.y, clip.width, clip.height);
 }
 
 }

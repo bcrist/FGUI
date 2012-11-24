@@ -37,6 +37,8 @@ void UICleanupRenderer::draw(FComponent *component)
 
    glMatrixMode(GL_PROJECTION);
    glPopMatrix();
+
+   glDisable(GL_SCISSOR_TEST);
 }
 
 }

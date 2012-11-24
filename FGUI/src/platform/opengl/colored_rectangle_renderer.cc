@@ -43,19 +43,27 @@ void ColoredRectangleRenderer::draw(FComponent *component)
 {
    FColoredRectangle *cr = static_cast<FColoredRectangle*>(component);
 
+   const Rect &r = cr->getAbsoluteRect();
+   const Rect &clip = cr->getClip();
+   
+   glScissor(clip.x, clip.y, clip.width, clip.height);
+
    if (cr->isFocused())
       glColor4fv(cr->getFocusedColor().v);
    else
       glColor4fv(cr->getNormalColor().v);
 
-   glBegin(GL_QUADS);
-      const Point &pos = cr->getAbsolutePosition();
-      const Dimension &size = cr->getSize();
+   
+   const Point &p1 = r.position;
+   Point p2(r.getRight(), p1.y),
+         p3(r.getRight(), r.getBottom()),
+         p4(p1.x, r.getBottom());
 
-      glVertex2fv(pos.v);
-      glVertex2f(pos.x + size.width, pos.y);
-      glVertex2f(pos.x + size.width, pos.y + size.height);
-      glVertex2f(pos.x, pos.y + size.height);
+   glBegin(GL_QUADS);
+      glVertex2fv(p1.v);
+      glVertex2fv(p2.v);
+      glVertex2fv(p3.v);
+      glVertex2fv(p4.v);
    glEnd();
 }
 

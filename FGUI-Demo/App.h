@@ -28,9 +28,11 @@ private:
 
 	ALLEGRO_DISPLAY *display_;
 	ALLEGRO_EVENT_QUEUE *queue_;
-
+    ALLEGRO_TIMER *timer_;
 	
 	fgui::FUI *ui_;
+
+    int64_t last_timer_val;
 
 	bool initOpenGL();
 	void initUI();

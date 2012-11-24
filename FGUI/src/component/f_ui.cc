@@ -296,6 +296,7 @@ bool FUI::uiMouseButton(int button, bool is_down)
    {
       std::vector<FComponent*>::reverse_iterator rit(components_under_mouse_->rbegin());
       consuming_component = *rit;
+      ++rit;
 
       while (consuming_component && !(checkModalDescendant(consuming_component) &&
              consuming_component->fireMouseEvent(MouseEvent(
@@ -303,7 +304,15 @@ bool FUI::uiMouseButton(int button, bool is_down)
              consuming_component, mouse_state_.getPosition(), button, 0, 0,
              is_down ? Point(-1, -1) : mouse_state_.downPosition(button),
              is_down ? NULL : mouse_state_.downComponent(button)))))
-         consuming_component = (rit == components_under_mouse_->rend() ? NULL : *(--rit));
+      {
+         if (rit == components_under_mouse_->rend())
+            consuming_component = NULL;
+         else
+         {
+            consuming_component = *rit;
+            ++rit;
+         }
+      }
 
       if (consuming_component)
       {
@@ -365,12 +374,21 @@ bool FUI::uiMouseWheel(int delta_z, int delta_w)
    {
       std::vector<FComponent*>::reverse_iterator rit(components_under_mouse_->rbegin());
       consuming_component = *rit;
+      ++rit;
 
       while (consuming_component && !(checkModalDescendant(consuming_component) &&
              consuming_component->fireMouseEvent(MouseEvent(
              MouseEvent::kMOUSE_WHEEL, consuming_component,
              mouse_state_.getPosition(),0, delta_z, delta_w))))
-         consuming_component = (rit == components_under_mouse_->rend() ? NULL : *(--rit));
+      {
+         if (rit == components_under_mouse_->rend())
+            consuming_component = NULL;
+         else
+         {
+            consuming_component = *rit;
+            ++rit;
+         }
+      }
    }
 
    return consuming_component != NULL;
@@ -399,12 +417,21 @@ bool FUI::uiKeyState(int key, bool is_down)
    {
       std::vector<FComponent*>::reverse_iterator rit(components_under_mouse_->rbegin());
       consuming_component = *rit;
+      ++rit;
 
       while (consuming_component && !(checkModalDescendant(consuming_component) &&
              consuming_component->fireKeyboardEvent(KeyboardEvent(
              is_down ? KeyboardEvent::kKEY_DOWN : KeyboardEvent::kKEY_UP,
              consuming_component, key, -1))))
-         consuming_component = (rit == components_under_mouse_->rend() ? NULL : *(--rit));
+      {
+         if (rit == components_under_mouse_->rend())
+            consuming_component = NULL;
+         else
+         {
+            consuming_component = *rit;
+            ++rit;
+         }
+      }
    }
 
    return consuming_component != NULL;
@@ -427,11 +454,20 @@ bool FUI::uiCharacterEntry(int codepoint)
    {
       std::vector<FComponent*>::reverse_iterator rit(components_under_mouse_->rbegin());
       consuming_component = *rit;
+      ++rit;
 
       while (consuming_component && !(checkModalDescendant(consuming_component) &&
              consuming_component->fireKeyboardEvent(KeyboardEvent(
              KeyboardEvent::kCHARACTER_INPUT, consuming_component, -1, codepoint))))
-         consuming_component = (rit == components_under_mouse_->rend() ? NULL : *(--rit));
+      {
+         if (rit == components_under_mouse_->rend())
+            consuming_component = NULL;
+         else
+         {
+            consuming_component = *rit;
+            ++rit;
+         }
+      }
    }
 
    return consuming_component != NULL;
@@ -479,6 +515,7 @@ void FUI::uiDraw()
 void FUI::makeDirty(const Rect &absolute_rect)
 {
    dirty_.expand(absolute_rect);
+   dirty_set_ = true;
 }
 
 

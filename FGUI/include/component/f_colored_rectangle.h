@@ -33,7 +33,12 @@
 
 FGUI_BEGIN
 
-class FColoredRectangle : public FComponent
+class FColoredRectangle
+      : public FComponent,
+        public FocusListenerInterface,
+        public KeyboardListenerInterface,
+        public MouseListenerInterface,
+        public SimulationListenerInterface
 {
 public:
    FColoredRectangle();
@@ -53,6 +58,29 @@ public:
    const Color &getFocusedColor() const { return focused_color_; }
    const Color &getHoverColor() const { return hover_color_; }
    const Color &getActiveColor() const { return active_color_; }
+   
+   virtual void onFocusIn(FocusEvent &evt);
+   virtual void onFocusOut(FocusEvent &evt);
+
+   virtual void onKeyDown(KeyboardEvent &evt);
+   virtual void onKeyUp(KeyboardEvent &evt);
+   virtual void onCharacterInput(KeyboardEvent &evt);
+
+   virtual void onMouseMove(MouseEvent &evt);
+   virtual void onMouseEnter(MouseEvent &evt);
+   virtual void onMouseLeave(MouseEvent &evt);
+   virtual void onMouseEnterDirect(MouseEvent &evt);
+   virtual void onMouseLeaveDirect(MouseEvent &evt);
+   virtual void onMouseHover(MouseEvent &evt);
+   virtual void onMouseHoverDirect(MouseEvent &evt);
+   virtual void onMouseWheel(MouseEvent &evt);
+   virtual void onMouseDown(MouseEvent &evt);
+   virtual void onMouseUp(MouseEvent &evt);
+   virtual void onMouseClick(MouseEvent &evt);
+   virtual void onMouseDoubleClick(MouseEvent &evt);
+
+   virtual void onSimulate(SimulateEvent &evt);
+   virtual void onResetSimulation(SimulateEvent &evt);
 
 protected:
    Color normal_color_;

@@ -23,6 +23,8 @@
 
 #include "component/f_colored_rectangle.h"
 
+#include "platform/platform.h"
+
 FGUI_BEGIN
 
 const UID FColoredRectangle::renderer_uid_;
@@ -33,6 +35,11 @@ FColoredRectangle::FColoredRectangle():
    hover_color_(Color(1, 0, 0)),
    active_color_(Color(1, 0, 0))
 {
+   setRenderer(Platform::get().checkoutRenderer(renderer_uid_));
+   addFocusListener(this);
+   addKeyboardListener(this);
+   addMouseListener(this);
+   addSimulationListener(this);
    setFocusable(true);
 }
 
@@ -42,6 +49,11 @@ FColoredRectangle::FColoredRectangle(const Color &color):
    hover_color_(color),
    active_color_(color)
 {
+   setRenderer(Platform::get().checkoutRenderer(renderer_uid_));
+   addFocusListener(this);
+   addKeyboardListener(this);
+   addMouseListener(this);
+   addSimulationListener(this);
    setFocusable(true);
 }
 
@@ -54,11 +66,100 @@ FColoredRectangle::FColoredRectangle(const Color &normalColor,
       hover_color_(hoverColor),
       active_color_(activeColor)
 {
+   setRenderer(Platform::get().checkoutRenderer(renderer_uid_));
+   addFocusListener(this);
+   addKeyboardListener(this);
+   addMouseListener(this);
+   addSimulationListener(this);
    setFocusable(true);
 }
 
 FColoredRectangle::~FColoredRectangle()
 {
+   Platform::get().returnRenderer(renderer_uid_, getRenderer());
 }
+
+
+void FColoredRectangle::onFocusIn(FocusEvent &evt)
+{
+   log("FocusIn");
+}
+void FColoredRectangle::onFocusOut(FocusEvent &evt)
+{
+   log("FocusOut");
+}
+
+void FColoredRectangle::onKeyDown(KeyboardEvent &evt)
+{
+   log("KeyDown");
+}
+void FColoredRectangle::onKeyUp(KeyboardEvent &evt)
+{
+   log("KeyUp");
+}
+void FColoredRectangle::onCharacterInput(KeyboardEvent &evt)
+{
+   log("CharacterInput");
+}
+
+void FColoredRectangle::onMouseMove(MouseEvent &evt)
+{
+   log("MouseMove");
+}
+void FColoredRectangle::onMouseEnter(MouseEvent &evt)
+{
+   log("MouseEnter");
+}
+void FColoredRectangle::onMouseLeave(MouseEvent &evt)
+{
+   log("MouseLeave");
+}
+void FColoredRectangle::onMouseEnterDirect(MouseEvent &evt)
+{
+   log("MouseEnterDirect");
+}
+void FColoredRectangle::onMouseLeaveDirect(MouseEvent &evt)
+{
+   log("MouseLeaveDirect");
+}
+void FColoredRectangle::onMouseHover(MouseEvent &evt)
+{
+   log("MouseHover");
+}
+void FColoredRectangle::onMouseHoverDirect(MouseEvent &evt)
+{
+   log("MouseHoverDirect");
+}
+void FColoredRectangle::onMouseWheel(MouseEvent &evt)
+{
+   log("MouseWheel");
+}
+void FColoredRectangle::onMouseDown(MouseEvent &evt)
+{
+   log("MouseDown");
+}
+void FColoredRectangle::onMouseUp(MouseEvent &evt)
+{
+   log("MouseUp");
+}
+void FColoredRectangle::onMouseClick(MouseEvent &evt)
+{
+   log("MouseClick");
+}
+void FColoredRectangle::onMouseDoubleClick(MouseEvent &evt)
+{
+   log("MouseDoubleClick");
+}
+
+void FColoredRectangle::onSimulate(SimulateEvent &evt)
+{
+   //log("Simulate");
+}
+void FColoredRectangle::onResetSimulation(SimulateEvent &evt)
+{
+   log("ResetSimulation");
+}
+
+
 
 FGUI_END
