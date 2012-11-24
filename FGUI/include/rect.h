@@ -55,6 +55,12 @@ struct Rect
    Rect &expand(const Point &point);
    Rect &expand(const Rect &other);
 
+   Point::component_t getLeft() const { return position.x; }
+   Point::component_t getRight() const { return position.x + size.width; }
+
+   Point::component_t getTop() const { return position.y; }
+   Point::component_t getBottom() const { return position.y + size.height; }
+
    Point position;
    const Point::component_t &x;
    const Point::component_t &y;
