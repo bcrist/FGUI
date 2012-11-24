@@ -508,6 +508,10 @@ void FUI::uiSimulate(int delta)
       {
          for (cvec_iter_t it(temp.begin()); it != temp.end(); ++it)
          {
+            if (*it == comps.back())
+               (*it)->fireMouseEvent(MouseEvent(
+                     MouseEvent::kMOUSE_HOVER_DIRECT, *it, mouse_state_.getPosition()));
+
             (*it)->fireMouseEvent(MouseEvent(
                   MouseEvent::kMOUSE_HOVER, *it, mouse_state_.getPosition()));
 

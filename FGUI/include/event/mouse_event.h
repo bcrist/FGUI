@@ -38,18 +38,17 @@ struct MouseEvent : Event
    enum Type
    {
       kMOUSE_MOVE = FGUI_EVENT_TYPE_MOUSE,
-      kMOUSE_WHEEL,
-      kMOUSE_DOWN,
-      kMOUSE_UP,
-      kMOUSE_CLICK,
-      kMOUSE_DOUBLE_CLICK,
-
       kMOUSE_ENTER,
       kMOUSE_ENTER_DIRECT,
       kMOUSE_LEAVE,
       kMOUSE_LEAVE_DIRECT,
-
-      kMOUSE_HOVER
+      kMOUSE_HOVER,
+      kMOUSE_HOVER_DIRECT,
+      kMOUSE_WHEEL,
+      kMOUSE_DOWN,
+      kMOUSE_UP,
+      kMOUSE_CLICK,
+      kMOUSE_DOUBLE_CLICK
    };
 
    MouseEvent(int type, FComponent *target, const Point &loc)

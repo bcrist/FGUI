@@ -37,8 +37,9 @@
 
 // Data Types
 #include "color.h"
-#include "dimension.h"
-#include "point.h"
+#include "rect.h"
+//#include "dimension.h"
+//#include "point.h"
 
 // Clipboard
 #include "fgui_clipboard.h"
