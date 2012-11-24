@@ -123,8 +123,7 @@ private:
    bool valid_layout_;
 
    Point position_;
-   Point absolute_position_;
-   Dimension size_;
+   Rect absolute_;
 
    Dimension min_size_;
    Dimension pref_size_;
@@ -135,9 +134,10 @@ protected:
 
 public:
    const Point &getPosition() const { return position_; }
-   const Point &getAbsolutePosition() const { return absolute_position_; }
+   const Rect &getAbsoluteRect() const { return absolute_; }
+   const Point &getAbsolutePosition() const { return absolute_.position; }
    void setPosition(const Point &position);
-   const Dimension &getSize() const { return size_; }
+   const Dimension &getSize() const { return absolute_.size; }
    void setSize(const Dimension &size);
 
    virtual const Dimension &getMinimumSize() const { return min_size_; }

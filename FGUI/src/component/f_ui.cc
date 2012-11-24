@@ -451,7 +451,7 @@ void FUI::populateRenderTasks()
    std::stable_sort(render_tasks_.begin(), render_tasks_.end());
 
    render_tasks_valid_ = true;
-   makeDirty(Rect(getPosition(), getSize()));
+   makeDirty(absolute_);
 }
 
 void FUI::uiDraw()

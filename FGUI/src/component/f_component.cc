@@ -280,7 +280,7 @@ bool FComponent::addComponent(FComponent *c)
    // add component to this component
    children_.push_back(c);
    c->parent_ = this;
-   c->absolute_position_ = clientToAbsolute(c->position_);
+   c->absolute_.position = clientToAbsolute(c->position_);
    c->ui_ = ui_;
    if (c->logger_ == NULL)
       c->logger_ = logger_;
@@ -337,15 +337,15 @@ void FComponent::setPosition(const Point &newPosition)
    {
       makeDirty(); // the old position is dirty
       position_ = newPosition;
-      absolute_position_ = parent_ == NULL ? position_ : parent_->clientToAbsolute(position_);
+      absolute_.position = parent_ == NULL ? position_ : parent_->clientToAbsolute(position_);
       invalidateLayout(); // the new position is made dirty when laid out
    }
 }
 void FComponent::setSize(const Dimension &size)
 {
-   if (size_ != size)
+   if (absolute_.size != size)
    {
-      size_ = size;
+      absolute_.size = size;
       invalidateLayout();
    }
 }
@@ -495,7 +495,7 @@ void FComponent::setRenderer(RendererInterface *renderer)
 void FComponent::makeDirty()
 {
    if (ui_)
-      ui_->makeDirty(Rect(absolute_position_, size_));
+      ui_->makeDirty(absolute_);
 }
 
 void FComponent::getRenderTasks(std::vector<RenderTask> &tasks)
@@ -523,12 +523,12 @@ void FComponent::setClip(const Rect &clip)
 
 Point FComponent::clientToAbsolute(const Point &client_coord) const
 {
-   return Point(absolute_position_.x + client_coord.x, absolute_position_.y + client_coord.y);
+   return Point(absolute_.position.x + client_coord.x, absolute_.position.y + client_coord.y);
 }
 
 Point FComponent::absoluteToClient(const Point &absolute_coord) const
 {
-   return Point(absolute_coord.x - absolute_position_.x, absolute_coord.y - absolute_position_.y);
+   return Point(absolute_coord.x - absolute_.position.x, absolute_coord.y - absolute_.position.y);
 }
 
 void FComponent::getComponentsAt(std::vector<FComponent*> &components, const Point &absolute_coord)
@@ -556,10 +556,10 @@ bool FComponent::checkPointOverComponent(const Point &absolute_coord) const
 
 bool FComponent::checkPointInBounds(const Point &absolute_coord) const
 {
-   return (absolute_coord.x >= absolute_position_.x &&
-           absolute_coord.x < size_.width && 
-           absolute_coord.y >= absolute_position_.y &&
-           absolute_coord.y < size_.height);
+   return (absolute_coord.x >= absolute_.position.x &&
+           absolute_coord.x < absolute_.size.width && 
+           absolute_coord.y >= absolute_.position.y &&
+           absolute_coord.y < absolute_.size.height);
 }
 
 
@@ -677,13 +677,6 @@ FComponent::FComponent()
         layout_mgr_(NULL),
         valid_layout_(false),
 
-        min_size_(Dimension(0, 0)),
-        pref_size_(Dimension(0, 0)),
-        max_size_(Dimension(0, 0)),
-
-        position_(Point(0, 0)),
-        size_(Dimension(0, 0)),
-
         visible_(true),
         z_index_(0),
         renderer_(NULL),
@@ -712,7 +705,6 @@ FComponent::FComponent(const FComponent_cfg &cfg)
         max_size_(cfg.getMaximumSize()),
 
         position_(cfg.getPosition()),
-        size_(cfg.getSize()),
 
         visible_(cfg.getVisible()),
         z_index_(cfg.getZIndex()),
@@ -725,7 +717,10 @@ FComponent::FComponent(const FComponent_cfg &cfg)
         focus_mgr_(cfg.getFocusMgr()),
 
         logger_(Platform::get().checkoutLogger())
-{}
+{
+   absolute_.position = parent_ == NULL ? position_ : parent_->clientToAbsolute(position_);
+   absolute_.size = cfg.getSize();
+}
 
 FComponent::~FComponent()
 {
