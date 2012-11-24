@@ -36,24 +36,39 @@ class FComponent;
 
 struct Event
 {
-   Event(int type, FComponent *target);
-   Event(int type, FComponent *target, bool propagates);
-   virtual ~Event() {}
+   Event(int type, FComponent *target)
+         : cancelled(cancelled_),
+           propagation_stopped(propagation_stopped_),
+           type(type),
+           target(target),
+           cancelled_(false),
+           propagation_stopped_(false) {}
 
-   bool isCancelled() const;
+   Event(int type, FComponent *target, bool propagates)
+         : cancelled(cancelled_),
+           propagation_stopped(propagation_stopped_),
+           type(type),
+           target(target),
+           cancelled_(false),
+           propagation_stopped_(!propagates) {}
+
+   virtual ~Event() {}
+   
    // don't notify any remaining listeners on the current component
    // and don't process the event on the parent object
-   void cancel();
+   void cancel() { cancelled = true; propagation_stopped = true; }
+   bool isCancelled() const { return cancelled; }
 
-   bool isPropagationStopped() const;
    // don't process the event on the parent object
-   void stopPropagation();
-
+   void stopPropagation() { propagation_stopped = true; }
+   bool isPropagationStopped() const { return propagation_stopped; }
 
    const int type;
    FComponent * const target;
 
 private:
+   Event &operator=(const Event &other);  // disallow assignment
+
    // allows copying of event objects where copies are linked to the original's state
    bool &cancelled;
    bool &propagation_stopped;
@@ -63,7 +78,5 @@ private:
 };
 
 FGUI_END
-
-#include "event/event.inl"
 
 #endif

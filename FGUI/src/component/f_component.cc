@@ -36,10 +36,86 @@ typedef std::vector<FComponent*>::iterator cvec_iter_t;
 
 
 // Events
+
+// returns false if the focus operation was cancelled
+bool FComponent::fireFocusEvent(FocusEvent &evt)
+{
+   std::list<FocusListenerInterface*>::iterator it = focus_listeners_.begin();
+   std::list<FocusListenerInterface*>::iterator end = focus_listeners_.end();
+
+   switch(evt.type)
+   {
+      case FocusEvent::kFOCUS_IN: 
+         while (!evt.isCancelled() && it != end) 
+         { 
+            (*it)->onFocusIn(evt); 
+            ++it; 
+         } 
+         break;
+      case FocusEvent::kFOCUS_OUT: 
+         while (!evt.isCancelled() && it != end) 
+         { 
+            (*it)->onFocusOut(evt); 
+            ++it;
+         } 
+         break;
+      default:  
+         return false;
+   }
+
+   if (parent_ != NULL && !evt.isPropagationStopped())
+      return parent_->fireFocusEvent(evt);
+
+   return !evt.isCancelled();
+}
+
+// returns true if the component consumed the event
+bool FComponent::fireKeyboardEvent(KeyboardEvent &evt)
+{
+   std::list<KeyboardListenerInterface*>::iterator it = keyboard_listeners_.begin();
+   std::list<KeyboardListenerInterface*>::iterator end = keyboard_listeners_.end();
+
+   switch(evt.type)
+   {
+      case KeyboardEvent::kKEY_DOWN:  
+         while (!evt.isCancelled() && it != end) 
+         {
+            (*it)->onKeyDown(evt);
+            ++it;
+         }
+         break;
+
+      case KeyboardEvent::kKEY_UP:     
+         while (!evt.isCancelled() && it != end)
+         { 
+            (*it)->onKeyUp(evt);
+            ++it;
+         }
+         break;
+
+      case KeyboardEvent::kCHARACTER_INPUT:
+         while (!evt.isCancelled() && it != end)
+         { 
+            (*it)->onCharacterInput(evt); 
+            ++it;
+         }
+         break;
+
+      default:  
+         return false;
+   }
+
+   if (parent_ != NULL && !evt.isPropagationStopped())
+      return parent_->fireKeyboardEvent(evt);
+
+   return evt.isConsumed();
+}
+
+// returns true if the component consumed the event
 bool FComponent::fireMouseEvent(MouseEvent &evt)
 {
-   std::list<ComponentListener*>::iterator it = listeners_.begin();
-   std::list<ComponentListener*>::iterator end = listeners_.end();
+   std::list<MouseListenerInterface*>::iterator it = mouse_listeners_.begin();
+   std::list<MouseListenerInterface*>::iterator end = mouse_listeners_.end();
 
    switch(evt.type)
    {
@@ -47,6 +123,54 @@ bool FComponent::fireMouseEvent(MouseEvent &evt)
          while (!evt.isCancelled() && it != end)
          {
             (*it)->onMouseMove(evt);
+            ++it;
+         }
+         break;
+
+      case MouseEvent::kMOUSE_ENTER:
+         while (!evt.isCancelled() && it != end)
+         {
+            (*it)->onMouseEnter(evt);
+            ++it;
+         }
+         break;
+
+      case MouseEvent::kMOUSE_ENTER_DIRECT:
+         while (!evt.isCancelled() && it != end)
+         {
+            (*it)->onMouseEnterDirect(evt);
+            ++it;
+         }
+         break;
+
+      case MouseEvent::kMOUSE_LEAVE:
+         while (!evt.isCancelled() && it != end)
+         {
+            (*it)->onMouseLeave(evt);
+            ++it;
+         }
+         break;
+
+      case MouseEvent::kMOUSE_LEAVE_DIRECT:
+         while (!evt.isCancelled() && it != end)
+         {
+            (*it)->onMouseLeaveDirect(evt);
+            ++it;
+         }
+         break;
+
+      case MouseEvent::kMOUSE_HOVER:
+         while (!evt.isCancelled() && it != end)
+         {
+            (*it)->onMouseHover(evt);
+            ++it;
+         }
+         break;
+
+      case MouseEvent::kMOUSE_HOVER_DIRECT:
+         while (!evt.isCancelled() && it != end)
+         {
+            (*it)->onMouseHoverDirect(evt);
             ++it;
          }
          break;
@@ -98,81 +222,15 @@ bool FComponent::fireMouseEvent(MouseEvent &evt)
    if (parent_ != NULL && !evt.isPropagationStopped())
       return parent_->fireMouseEvent(evt);
 
-   return !evt.isPropagationStopped();
+   return evt.isConsumed();
 }
-bool FComponent::fireKeyboardEvent(KeyboardEvent &evt)
-{
-   std::list<ComponentListener*>::iterator it = listeners_.begin();
-   std::list<ComponentListener*>::iterator end = listeners_.end();
 
-   switch(evt.type)
-   {
-      case KeyboardEvent::kKEY_DOWN:  
-         while (!evt.isCancelled() && it != end) 
-         {
-            (*it)->onKeyDown(evt);
-            ++it;
-         }
-         break;
-
-      case KeyboardEvent::kKEY_UP:     
-         while (!evt.isCancelled() && it != end)
-         { 
-            (*it)->onKeyUp(evt);
-            ++it;
-         }
-         break;
-
-      case KeyboardEvent::kCHARACTER_INPUT:
-         while (!evt.isCancelled() && it != end)
-         { 
-            (*it)->onCharacterInput(evt); 
-            ++it;
-         }
-         break;
-
-      default:  
-         return false;
-   }
-
-   if (parent_ != NULL && !evt.isPropagationStopped())
-      return parent_->fireKeyboardEvent(evt);
-
-   return !evt.isPropagationStopped();
-}
-bool FComponent::fireFocusEvent(FocusEvent &evt)
-{
-   std::list<ComponentListener*>::iterator it = listeners_.begin();
-   std::list<ComponentListener*>::iterator end = listeners_.end();
-
-   switch(evt.type)
-   {
-      case FocusEvent::kFOCUS_IN: 
-         while (!evt.isCancelled() && it != end) 
-         { 
-            (*it)->onFocusIn(evt); 
-            ++it; 
-         } 
-         break;
-      case FocusEvent::kFOCUS_OUT: 
-         while (!evt.isCancelled() && it != end) 
-         { 
-            (*it)->onFocusOut(evt); 
-            ++it;
-         } 
-         break;
-      default:  
-         return false;
-   }
-
-   return !evt.isCancelled();
-}
 // returns false if propagation was stopped at this element
 // (may return true if a child component cancels)
 bool FComponent::fireSimulateEvent(SimulateEvent &evt)
 {
-   std::list<ComponentListener*>::iterator it = listeners_.begin();
-   std::list<ComponentListener*>::iterator end = listeners_.end();
+   std::list<SimulationListenerInterface*>::iterator it = simulation_listeners_.begin();
+   std::list<SimulationListenerInterface*>::iterator end = simulation_listeners_.end();
 
    switch(evt.type)
    {
@@ -197,8 +255,8 @@ bool FComponent::fireSimulateEvent(SimulateEvent &evt)
    // unlike most events, simulation events propagate down, not up
    if (!evt.isPropagationStopped())
    {
-      std::vector<FComponent*>::iterator child_it = children_.begin();
-      std::vector<FComponent*>::iterator child_end = children_.end();
+      cvec_iter_t child_it = children_.begin(),
+                  child_end = children_.end();
       while (child_it != child_end)
       {
          (*child_it)->fireSimulateEvent(SimulateEvent(

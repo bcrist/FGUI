@@ -36,7 +36,7 @@
 
 #include "uid.h"
 #include "rect.h"
-#include "event/component_listener.h"
+#include "fgui_event.h"
 #include "platform/logger_interface.h"
 #include "layout_manager_interface.h"
 #include "focus_manager_interface.h"
@@ -67,16 +67,27 @@ class FComponent
 {   
    // Events
 private:
-   std::list<ComponentListener*> listeners_;
+   std::list<FocusListenerInterface*> focus_listeners_;
+   std::list<KeyboardListenerInterface*> keyboard_listeners_;
+   std::list<MouseListenerInterface*> mouse_listeners_;
+   std::list<SimulationListenerInterface*> simulation_listeners_;
 public:
-   void addComponentListener(ComponentListener *listener) { listeners_.push_back(listener); }
-   void removeComponentListener(ComponentListener *listener) { listeners_.remove(listener); }
-
-   bool fireMouseEvent(MouseEvent &evt);
-   bool fireKeyboardEvent(KeyboardEvent &evt);
+   void addFocusListener(FocusListenerInterface *listener) { focus_listeners_.push_back(listener); }
+   void removeFocusListener(FocusListenerInterface *listener) { focus_listeners_.remove(listener); }
    bool fireFocusEvent(FocusEvent &evt);
-   bool fireSimulateEvent(SimulateEvent &evt);
 
+   void addKeyboardListener(KeyboardListenerInterface *listener) { keyboard_listeners_.push_back(listener); }
+   void removeKeyboardListener(KeyboardListenerInterface *listener) { keyboard_listeners_.remove(listener); }
+   bool fireKeyboardEvent(KeyboardEvent &evt);
+
+   void addMouseListener(MouseListenerInterface *listener) { mouse_listeners_.push_back(listener); }
+   void removeMouseListener(MouseListenerInterface *listener) { mouse_listeners_.remove(listener); }
+   bool fireMouseEvent(MouseEvent &evt);
+
+   void addSimulationListener(SimulationListenerInterface *listener) { simulation_listeners_.push_back(listener); }
+   void removeSimulationListener(SimulationListenerInterface *listener) { simulation_listeners_.remove(listener); }
+   bool fireSimulateEvent(SimulateEvent &evt);
+   
 
    // Contents
 private:

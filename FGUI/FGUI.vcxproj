@@ -39,12 +39,16 @@
     <ClInclude Include="include\component\f_component_cfg.h" />
     <ClInclude Include="include\component\f_ui.h" />
     <ClInclude Include="include\component\f_ui_cfg.h" />
+    <ClInclude Include="include\event\focus_listener_interface.h" />
+    <ClInclude Include="include\event\keyboard_listener_interface.h" />
+    <ClInclude Include="include\event\simulation_listener_interface.h" />
+    <ClInclude Include="include\fgui_event.h" />
     <ClInclude Include="include\fgui_renderers.h" />
     <ClInclude Include="include\rect.h" />
     <ClInclude Include="include\uid.h" />
     <ClInclude Include="include\default_focus_manager.h" />
     <ClInclude Include="include\dimension.h" />
-    <ClInclude Include="include\event\component_listener.h" />
+    <ClInclude Include="include\event\mouse_listener_interface.h" />
     <ClInclude Include="include\event\event.h" />
     <ClInclude Include="include\event\focus_event.h" />
     <ClInclude Include="include\event\keyboard_event.h" />
@@ -83,7 +87,6 @@
     <None Include="include\color.inl" />
     <None Include="include\component\f_ui.inl" />
     <None Include="include\dimension.inl" />
-    <None Include="include\event\event.inl" />
     <None Include="include\point.inl" />
     <None Include="include\rect.inl" />
     <None Include="include\render_task.inl" />

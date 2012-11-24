@@ -52,40 +52,53 @@ struct MouseEvent : Event
    };
 
    MouseEvent(int type, FComponent *target, const Point &loc)
-         : Event(type, target),
+         : Event(type, target, false),
            location(loc),
            button(0),
            deltaZ(0),
            deltaW(0),
            down_location(Point(-1,-1)),
-           down_component(NULL) {}
+           down_component(NULL),
+           consumed_(false),
+           consumed(consumed_) {}
 
    MouseEvent(int type, FComponent *target, const Point &loc, int button)
-         : Event(type, target),
+         : Event(type, target, false),
            location(loc),
            button(button),
            deltaZ(0),
            deltaW(0),
            down_location(Point(-1,-1)),
-           down_component(NULL) {}
+           down_component(NULL),
+           consumed_(false),
+           consumed(consumed_) {}
    
    MouseEvent(int type, FComponent *target, const Point &loc, int button, int deltaZ, int deltaW)
-         : Event(type, target),
+         : Event(type, target, false),
            location(loc),
            button(button),
            deltaZ(deltaZ),
            deltaW(deltaW),
            down_location(Point(-1,-1)),
-           down_component(NULL) {}
+           down_component(NULL),
+           consumed_(false),
+           consumed(consumed_) {}
 
    MouseEvent(int type, FComponent *target, const Point &loc, int button, int deltaZ, int deltaW, const Point &dloc, FComponent *dcomp)
-         : Event(type, target),
+         : Event(type, target, false),
            location(loc),
            button(button),
            deltaZ(deltaZ),
            deltaW(deltaW),
            down_location(dloc),
-           down_component(dcomp) {}
+           down_component(dcomp),
+           consumed_(false),
+           consumed(consumed_) {}
+
+   // if something is using a mouse event, usually it doesn't want anything else
+   // to also use it.
+   void consume() { consumed = true; stopPropagation(); }
+   bool isConsumed() const { return consumed; }
 
    const Point location;
    const int button;
@@ -93,6 +106,12 @@ struct MouseEvent : Event
    const int deltaW;
    const Point down_location;
    FComponent* const down_component;
+
+   
+private:
+   // allows copying of event objects where copies are linked to the original's state
+   bool &consumed;
+   bool consumed_;
 };
 
 FGUI_END

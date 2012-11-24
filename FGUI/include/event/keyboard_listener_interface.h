@@ -19,53 +19,26 @@
 // IN THE SOFTWARE.
 //
 // Author: Benjamin Crist
-// File: fgui.h
-// 
-// This is the main header file for FGUI.  It simply includes the header files
-// for each component class and their supporting classes.  This is the only
-// file you need to include to use FGUI.
+// File: event/keyboard_listener_interface.h
 
-// Compilation Switches:
-//   FGUI_NO_OPENGL    Compile without OpenGL renderers (provide your own with
-//                        a custom PlatformInterface or nothing will show up)
-//   FGUI_NO_ALLEGRO   Compile without Allegro font support
-//   WIN32             Compile with Windows clipboard support
-
-#ifndef FGUI_FGUI_H_
-#define FGUI_FGUI_H_
+#ifndef FGUI_EVENT_KEYBOARD_LISTENER_INTERFACE_H_
+#define FGUI_EVENT_KEYBOARD_LISTENER_INTERFACE_H_
 #include "fgui_std.h"
 
-// Data Types
-#include "color.h"
-#include "rect.h"
-//#include "dimension.h"
-//#include "point.h"
+FGUI_BEGIN
 
-// Events
-#include "fgui_event.h"
+struct KeyboardEvent;
 
-// Clipboard
-#include "fgui_clipboard.h"
+class KeyboardListenerInterface
+{
+public:
+   virtual ~KeyboardListenerInterface() {}
 
-// Fonts
-#include "fgui_font.h"
+   virtual void onKeyDown(KeyboardEvent &) = 0;
+   virtual void onKeyUp(KeyboardEvent &) = 0;
+   virtual void onCharacterInput(KeyboardEvent &) = 0;
+};
 
-// Renderers
-#include "fgui_renderers.h"
-
-///////////////////////////////////////////////////////
-// Components
-#include "component/f_component.h"
-
-// UI Root
-#include "component/f_ui.h"
-
-// Top Level Containers
-
-
-// Lightweight Components
-#include "component/f_colored_rectangle.h"
-
-
+FGUI_END
 
 #endif

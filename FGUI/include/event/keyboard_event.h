@@ -39,12 +39,24 @@ struct KeyboardEvent : Event
    };
 
    KeyboardEvent(int type, FComponent *target, int keycode, int codepoint)
-         : Event(type, target),
+         : Event(type, target, false),
            keycode(keycode),
-           codepoint(codepoint) {}
+           codepoint(codepoint),
+           consumed_(false),
+           consumed(consumed_) {}
+
+   // if something is using a key event, usually it doesn't want anything else
+   // to also use it.
+   void consume() { consumed = true; stopPropagation(); }
+   bool isConsumed() const { return consumed; }
 
    const int keycode;
    const int codepoint;
+
+private:
+   // allows copying of event objects where copies are linked to the original's state
+   bool &consumed;
+   bool consumed_;
 };
 
 FGUI_END

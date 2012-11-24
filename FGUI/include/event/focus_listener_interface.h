@@ -19,49 +19,24 @@
 // IN THE SOFTWARE.
 //
 // Author: Benjamin Crist
-// File: event/event.inl
+// File: event/focus_listener_interface.h
 
-#ifdef FGUI_EVENT_EVENT_H_
+#ifndef FGUI_EVENT_FOCUS_LISTENER_INTERFACE_H_
+#define FGUI_EVENT_FOCUS_LISTENER_INTERFACE_H_
+#include "fgui_std.h"
 
 FGUI_BEGIN
 
-inline Event::Event(int type, FComponent *target)
-      : cancelled(cancelled_),
-        propagation_stopped(propagation_stopped_),
-        type(type),
-        target(target),
-        cancelled_(false),
-        propagation_stopped_(false) {}
+struct FocusEvent;
 
-inline Event::Event(int type, FComponent *target, bool propagates)
-      : cancelled(cancelled_),
-        propagation_stopped(propagation_stopped_),
-        type(type),
-        target(target),
-        cancelled_(false),
-        propagation_stopped_(!propagates) {}
-
-
-inline void Event::cancel()
+class FocusListenerInterface
 {
-   cancelled = true;
-   propagation_stopped = true;
-}
+public:
+   virtual ~FocusListenerInterface() {}
 
-inline void Event::stopPropagation()
-{
-   propagation_stopped = true;
-}
-
-inline bool Event::isCancelled() const
-{
-   return cancelled;
-}
-
-inline bool Event::isPropagationStopped() const
-{
-   return propagation_stopped;
-}
+   virtual void onFocusIn(FocusEvent &) = 0;
+   virtual void onFocusOut(FocusEvent &) = 0;
+};
 
 FGUI_END
 

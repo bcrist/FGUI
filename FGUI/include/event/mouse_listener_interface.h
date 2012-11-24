@@ -19,53 +19,35 @@
 // IN THE SOFTWARE.
 //
 // Author: Benjamin Crist
-// File: fgui.h
-// 
-// This is the main header file for FGUI.  It simply includes the header files
-// for each component class and their supporting classes.  This is the only
-// file you need to include to use FGUI.
+// File: event/mouse_listener_interface.h
 
-// Compilation Switches:
-//   FGUI_NO_OPENGL    Compile without OpenGL renderers (provide your own with
-//                        a custom PlatformInterface or nothing will show up)
-//   FGUI_NO_ALLEGRO   Compile without Allegro font support
-//   WIN32             Compile with Windows clipboard support
-
-#ifndef FGUI_FGUI_H_
-#define FGUI_FGUI_H_
+#ifndef FGUI_EVENT_MOUSE_LISTENER_INTERFACE_H_
+#define FGUI_EVENT_MOUSE_LISTENER_INTERFACE_H_
 #include "fgui_std.h"
 
-// Data Types
-#include "color.h"
-#include "rect.h"
-//#include "dimension.h"
-//#include "point.h"
+FGUI_BEGIN
 
-// Events
-#include "fgui_event.h"
+struct MouseEvent;
 
-// Clipboard
-#include "fgui_clipboard.h"
+class MouseListenerInterface
+{
+public:
+   virtual ~MouseListenerInterface() {}
 
-// Fonts
-#include "fgui_font.h"
+   virtual void onMouseMove(MouseEvent &) = 0;
+   virtual void onMouseWheel(MouseEvent &) = 0;
+   virtual void onMouseDown(MouseEvent &) = 0;
+   virtual void onMouseUp(MouseEvent &) = 0;
+   virtual void onMouseClick(MouseEvent &) = 0;
+   virtual void onMouseDoubleClick(MouseEvent &) = 0;
+   virtual void onMouseEnter(MouseEvent &) = 0;
+   virtual void onMouseLeave(MouseEvent &) = 0;
+   virtual void onMouseEnterDirect(MouseEvent &) = 0;
+   virtual void onMouseLeaveDirect(MouseEvent &) = 0;
+   virtual void onMouseHover(MouseEvent &) = 0;
+   virtual void onMouseHoverDirect(MouseEvent &) = 0;
+};
 
-// Renderers
-#include "fgui_renderers.h"
-
-///////////////////////////////////////////////////////
-// Components
-#include "component/f_component.h"
-
-// UI Root
-#include "component/f_ui.h"
-
-// Top Level Containers
-
-
-// Lightweight Components
-#include "component/f_colored_rectangle.h"
-
-
+FGUI_END
 
 #endif

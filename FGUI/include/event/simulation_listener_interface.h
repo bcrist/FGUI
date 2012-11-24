@@ -19,40 +19,23 @@
 // IN THE SOFTWARE.
 //
 // Author: Benjamin Crist
-// File: event/component_listener.h
+// File: event/simulation_listener_interface.h
 
-#ifndef FGUI_EVENT_COMPONENT_LISTENER_H_
-#define FGUI_EVENT_COMPONENT_LISTENER_H_
+#ifndef FGUI_EVENT_SIMULATION_LISTENER_INTERFACE_H_
+#define FGUI_EVENT_SIMULATION_LISTENER_INTERFACE_H_
 #include "fgui_std.h"
-
-#include "event/focus_event.h"
-#include "event/keyboard_event.h"
-#include "event/mouse_event.h"
-#include "event/simulate_event.h"
 
 FGUI_BEGIN
 
-class ComponentListener
+struct SimulateEvent;
+
+class SimulationListenerInterface
 {
 public:
-   virtual ~ComponentListener() {}
+   virtual ~SimulationListenerInterface() {}
 
-   virtual void onMouseMove(MouseEvent &) {}
-   virtual void onMouseWheel(MouseEvent &) {}
-   virtual void onMouseDown(MouseEvent &) {}
-   virtual void onMouseUp(MouseEvent &) {}
-   virtual void onMouseClick(MouseEvent &) {}
-   virtual void onMouseDoubleClick(MouseEvent &) {}
-
-   virtual void onKeyDown(KeyboardEvent &) {}
-   virtual void onKeyUp(KeyboardEvent &) {}
-   virtual void onCharacterInput(KeyboardEvent &) {}
-
-   virtual void onFocusIn(FocusEvent &) {}
-   virtual void onFocusOut(FocusEvent &) {}
-
-   virtual void onSimulate(SimulateEvent &) {}
-   virtual void onResetSimulation(SimulateEvent &) {}
+   virtual void onSimulate(SimulateEvent &) = 0;
+   virtual void onResetSimulation(SimulateEvent &) = 0;
 };
 
 FGUI_END

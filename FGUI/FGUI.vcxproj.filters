@@ -194,9 +194,6 @@
     <ClInclude Include="include\event\simulate_event.h">
       <Filter>Header Files\event</Filter>
     </ClInclude>
-    <ClInclude Include="include\event\component_listener.h">
-      <Filter>Header Files\event</Filter>
-    </ClInclude>
     <ClInclude Include="include\platform\opengl\opengl.h">
       <Filter>Header Files\platform\opengl</Filter>
     </ClInclude>
@@ -257,11 +254,23 @@
     <ClInclude Include="include\rect.h">
       <Filter>Header Files\misc</Filter>
     </ClInclude>
+    <ClInclude Include="include\event\simulation_listener_interface.h">
+      <Filter>Header Files\event</Filter>
+    </ClInclude>
+    <ClInclude Include="include\event\mouse_listener_interface.h">
+      <Filter>Header Files\event</Filter>
+    </ClInclude>
+    <ClInclude Include="include\event\keyboard_listener_interface.h">
+      <Filter>Header Files\event</Filter>
+    </ClInclude>
+    <ClInclude Include="include\event\focus_listener_interface.h">
+      <Filter>Header Files\event</Filter>
+    </ClInclude>
+    <ClInclude Include="include\fgui_event.h">
+      <Filter>Header Files\_</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="include\event\event.inl">
-      <Filter>Header Files\event</Filter>
-    </None>
     <None Include="include\component\f_ui.inl">
       <Filter>Header Files\component</Filter>
     </None>

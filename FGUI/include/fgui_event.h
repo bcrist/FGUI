@@ -19,53 +19,19 @@
 // IN THE SOFTWARE.
 //
 // Author: Benjamin Crist
-// File: fgui.h
-// 
-// This is the main header file for FGUI.  It simply includes the header files
-// for each component class and their supporting classes.  This is the only
-// file you need to include to use FGUI.
+// File: fgui_event.h
 
-// Compilation Switches:
-//   FGUI_NO_OPENGL    Compile without OpenGL renderers (provide your own with
-//                        a custom PlatformInterface or nothing will show up)
-//   FGUI_NO_ALLEGRO   Compile without Allegro font support
-//   WIN32             Compile with Windows clipboard support
+#ifndef FGUI_FGUI_EVENT_H_
+#define FGUI_FGUI_EVENT_H_
 
-#ifndef FGUI_FGUI_H_
-#define FGUI_FGUI_H_
-#include "fgui_std.h"
+#include "event/focus_listener_interface.h"
+#include "event/keyboard_listener_interface.h"
+#include "event/mouse_listener_interface.h"
+#include "event/simulation_listener_interface.h"
 
-// Data Types
-#include "color.h"
-#include "rect.h"
-//#include "dimension.h"
-//#include "point.h"
-
-// Events
-#include "fgui_event.h"
-
-// Clipboard
-#include "fgui_clipboard.h"
-
-// Fonts
-#include "fgui_font.h"
-
-// Renderers
-#include "fgui_renderers.h"
-
-///////////////////////////////////////////////////////
-// Components
-#include "component/f_component.h"
-
-// UI Root
-#include "component/f_ui.h"
-
-// Top Level Containers
-
-
-// Lightweight Components
-#include "component/f_colored_rectangle.h"
-
-
+#include "event/focus_event.h"
+#include "event/keyboard_event.h"
+#include "event/mouse_event.h"
+#include "event/simulate_event.h"
 
 #endif
