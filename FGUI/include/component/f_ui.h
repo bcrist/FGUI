@@ -127,9 +127,8 @@ private:
    std::vector<RenderTask> render_tasks_;
    bool render_tasks_valid_;
 
-   Point dirty_top_left_;
-   Point dirty_bottom_right_;
-   bool dirty_;
+   Rect dirty_;
+   bool dirty_set_;
 
    void populateRenderTasks();
 
@@ -137,9 +136,9 @@ public:
    static const UID prepare_renderer_uid_;
    static const UID cleanup_renderer_uid_;
 
-   virtual bool uiDrawRequested() const { return dirty_; }
+   virtual bool uiDrawRequested() const { return dirty_set_; }
    virtual void uiDraw();
-   virtual void makeDirty(const Point &absolute_position, const Dimension &size);
+   virtual void makeDirty(const Rect &absolute_rect);
    virtual void invalidateRenderTasks() { render_tasks_valid_ = false; }
 
 

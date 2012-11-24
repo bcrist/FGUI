@@ -29,6 +29,7 @@
     <ClCompile Include="src\platform\windows\win_clipboard.cc" />
     <ClCompile Include="src\platform\windows\win_unicode.cc" />
     <ClCompile Include="src\point.cc" />
+    <ClCompile Include="src\rect.cc" />
     <ClCompile Include="src\uid.cc" />
   </ItemGroup>
   <ItemGroup>
@@ -39,6 +40,7 @@
     <ClInclude Include="include\component\f_ui.h" />
     <ClInclude Include="include\component\f_ui_cfg.h" />
     <ClInclude Include="include\fgui_renderers.h" />
+    <ClInclude Include="include\rect.h" />
     <ClInclude Include="include\uid.h" />
     <ClInclude Include="include\default_focus_manager.h" />
     <ClInclude Include="include\dimension.h" />
@@ -83,6 +85,7 @@
     <None Include="include\dimension.inl" />
     <None Include="include\event\event.inl" />
     <None Include="include\point.inl" />
+    <None Include="include\rect.inl" />
     <None Include="include\render_task.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

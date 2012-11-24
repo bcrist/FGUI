@@ -459,13 +459,12 @@ void FUI::uiDraw()
    layoutComponent();   // do layout if necessary
    populateRenderTasks();
 
-   clip_top_left_ = dirty_top_left_;
-   clip_bottom_right_ = dirty_bottom_right_;
+   clip_ = dirty_;
 
    if (prepare_renderer_)
       prepare_renderer_->draw(this);
 
-   setClip(clip_top_left_, clip_bottom_right_);
+   setClip(clip_);
 
    for (std::vector<RenderTask>::iterator it(render_tasks_.begin()); it != render_tasks_.end(); ++it)
       it->renderer->draw(it->component);
@@ -473,31 +472,13 @@ void FUI::uiDraw()
    if (cleanup_renderer_)
       cleanup_renderer_->draw(this);
 
-   dirty_top_left_.set(0.0f, 0.0f);
-   dirty_bottom_right_.set(0.0f, 0.0f);
-   dirty_ = false;
+   dirty_.set(0.0f, 0.0f, 0.0f, 0.0f);
+   dirty_set_ = false;
 }
 
-void FUI::makeDirty(const Point &absolute_position, const Dimension &size)
+void FUI::makeDirty(const Rect &absolute_rect)
 {
-   if (size.width > 0 && size.height > 0)
-   {
-      const Point &p0 = absolute_position;
-      Point p1(absolute_position.x + size.width, absolute_position.y + size.height);
-      if (dirty_)
-      {
-         dirty_top_left_.setX(min(p0.x, dirty_top_left_.x));
-         dirty_top_left_.setY(min(p0.y, dirty_top_left_.y));
-
-         dirty_bottom_right_.setX(max(p1.x, dirty_bottom_right_.x));
-         dirty_bottom_right_.setY(max(p1.y, dirty_bottom_right_.y));
-      }
-      else 
-      {
-         dirty_top_left_ = p0;
-         dirty_bottom_right_ = p1;
-      }
-   }
+   dirty_.expand(absolute_rect);
 }
 
 

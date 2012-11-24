@@ -495,7 +495,7 @@ void FComponent::setRenderer(RendererInterface *renderer)
 void FComponent::makeDirty()
 {
    if (ui_)
-      ui_->makeDirty(absolute_position_, size_);
+      ui_->makeDirty(Rect(absolute_position_, size_));
 }
 
 void FComponent::getRenderTasks(std::vector<RenderTask> &tasks)
@@ -510,13 +510,12 @@ void FComponent::getRenderTasks(std::vector<RenderTask> &tasks)
    }
 }
 
-void FComponent::setClip(const Point &top_left, const Point &bottom_right)
+void FComponent::setClip(const Rect &clip)
 {
-   clip_top_left_ = top_left;
-   clip_bottom_right_ = bottom_right;
+   clip_ = clip;
 
    for(cvec_iter_t it(children_.begin()); it != children_.end(); ++it)
-      (*it)->setClip(top_left, bottom_right);
+      (*it)->setClip(clip);
 }
 
 

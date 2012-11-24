@@ -35,8 +35,7 @@
 #include "component/f_component_cfg.h"
 
 #include "uid.h"
-#include "dimension.h"
-#include "point.h"
+#include "rect.h"
 #include "event/component_listener.h"
 #include "platform/logger_interface.h"
 #include "layout_manager_interface.h"
@@ -165,8 +164,7 @@ private:
    bool visible_;
    int z_index_;
    RendererInterface *renderer_;
-   Point clip_top_left_;
-   Point clip_bottom_right_;
+   Rect clip_;
 
 protected:
    void setVisible(bool visible);
@@ -177,12 +175,11 @@ public:
    bool isVisible() const { return visible_; }
    int getZIndex() const { return z_index_; }
    RendererInterface *getRenderer() { return renderer_; }
-   const Point &getClipTopLeft() const { return clip_top_left_; }
-   const Point &getClipBottomRight() const { return clip_bottom_right_; }
+   const Rect &getClip() const { return clip_; }
 
    virtual void makeDirty();
    virtual void getRenderTasks(std::vector<RenderTask> &tasks);
-   virtual void setClip(const Point &top_left, const Point &bottom_right);
+   virtual void setClip(const Rect &clip);
 
 
    // Coordinate Processing
