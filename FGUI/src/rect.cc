@@ -58,6 +58,8 @@ Rect &Rect::expand(const Point &point)
    }
    else
       position.setY(point.y);
+
+   return *this;
 }
 
 Rect &Rect::expand(const Rect &other)
@@ -107,6 +109,8 @@ Rect &Rect::expand(const Rect &other)
       position.setY(other.y);
       size.setHeight(other.height);
    }
+
+   return *this;
 }
 
 std::ostream &operator<<(std::ostream &os, const Rect &rect)

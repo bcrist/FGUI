@@ -451,7 +451,7 @@ void FUI::populateRenderTasks()
    std::stable_sort(render_tasks_.begin(), render_tasks_.end());
 
    render_tasks_valid_ = true;
-   makeDirty(getPosition(), getSize());
+   makeDirty(Rect(getPosition(), getSize()));
 }
 
 void FUI::uiDraw()
@@ -566,7 +566,7 @@ FUI::FUI()
         prepare_renderer_(Platform::get().checkoutRenderer(prepare_renderer_uid_)),
         cleanup_renderer_(Platform::get().checkoutRenderer(cleanup_renderer_uid_)),
         render_tasks_valid_(false),
-        dirty_(true),
+        dirty_set_(true),
         ticks_per_second_(1000),
         min_simulate_event_interval_(10),
         ticks_(0),
@@ -596,7 +596,7 @@ FUI::FUI(const FUI_cfg &cfg)
         prepare_renderer_(Platform::get().checkoutRenderer(prepare_renderer_uid_)),
         cleanup_renderer_(Platform::get().checkoutRenderer(cleanup_renderer_uid_)),
         render_tasks_valid_(false),
-        dirty_(true),
+        dirty_set_(true),
         ticks_per_second_(cfg.getTicksPerSecond()),
         min_simulate_event_interval_(cfg.getMinimumSimulateEventInterval()),
         ticks_(0),
