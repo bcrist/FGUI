@@ -329,6 +329,9 @@ bool FComponent::addComponent(FComponent *c)
    if (contents_locked_)
       return false;   // if changes aren't allowed right now
 
+   if (&platform_ != &c->platform_)
+      return false;  // if the component was created using a different PlatformInterface
+
    if (c->parent_)
       if (!c->parent_->removeComponent(c, false))
          return false;   // if the component can't be removed from its previous parent
