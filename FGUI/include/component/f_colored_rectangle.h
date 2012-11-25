@@ -56,9 +56,12 @@ public:
 
    const Color &getNormalColor() const { return normal_color_; }
    const Color &getFocusedColor() const { return focused_color_; }
-   const Color &getHoverColor() const { return hover_color_; }
+   const Color &getMouseOverColor() const { return hover_color_; }
    const Color &getActiveColor() const { return active_color_; }
    
+   bool isActive() const { return active_ && mouse_over_; }
+   bool isMouseOver() const { return mouse_over_; }
+
    virtual void onFocusIn(FocusEvent &evt);
    virtual void onFocusOut(FocusEvent &evt);
 
@@ -83,6 +86,13 @@ public:
    virtual void onResetSimulation(SimulateEvent &evt);
 
 protected:
+   void setActive(bool active);
+   void setMouseOver(bool mouse_over);
+
+private:
+   bool active_;
+   bool mouse_over_;
+
    Color normal_color_;
    Color focused_color_;
    Color hover_color_;

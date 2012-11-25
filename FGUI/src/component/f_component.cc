@@ -675,7 +675,10 @@ void FComponent::blur()
             ui_->setFocus(NULL);
       }
       else
+      {
          focused_ = false;
+         makeDirty();
+      }
    }
 }
    
@@ -686,6 +689,8 @@ void FComponent::setFocused(bool focused)
       focused_ = focused;
       if (parent_)
          parent_->setChildFocused(focused);
+
+      makeDirty();
    }
 }
 

@@ -25,6 +25,8 @@
 
 #ifdef FGUI_PLATFORM_OPENGL_COLORED_RECTANGLE_RENDERER_H_
 
+#include <sstream>
+
 #include "component/f_component.h"
 #include "component/f_colored_rectangle.h"
 
@@ -45,10 +47,19 @@ void ColoredRectangleRenderer::draw(FComponent *component)
 
    const Rect &r = cr->getAbsoluteRect();
    const Rect &clip = cr->getClip();
+
+   std::ostringstream oss;
+   oss << "Draw: " << clip;
+
+   cr->log(oss.str().c_str());
    
    glScissor(clip.x, clip.y, clip.width, clip.height);
 
-   if (cr->isFocused())
+   if (cr->isActive())
+      glColor4fv(cr->getActiveColor().v);
+   else if (cr->isMouseOver())
+      glColor4fv(cr->getMouseOverColor().v);
+   else if (cr->isFocused())
       glColor4fv(cr->getFocusedColor().v);
    else
       glColor4fv(cr->getNormalColor().v);

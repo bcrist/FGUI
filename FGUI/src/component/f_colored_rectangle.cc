@@ -33,7 +33,9 @@ FColoredRectangle::FColoredRectangle():
    normal_color_(Color(1, 0, 0)),
    focused_color_(Color(1, 0, 0)),
    hover_color_(Color(1, 0, 0)),
-   active_color_(Color(1, 0, 0))
+   active_color_(Color(1, 0, 0)),
+   active_(false),
+   mouse_over_(false)
 {
    setRenderer(Platform::get().checkoutRenderer(renderer_uid_));
    addFocusListener(this);
@@ -47,7 +49,9 @@ FColoredRectangle::FColoredRectangle(const Color &color):
    normal_color_(color),
    focused_color_(color),
    hover_color_(color),
-   active_color_(color)
+   active_color_(color),
+   active_(false),
+   mouse_over_(false)
 {
    setRenderer(Platform::get().checkoutRenderer(renderer_uid_));
    addFocusListener(this);
@@ -64,7 +68,9 @@ FColoredRectangle::FColoredRectangle(const Color &normalColor,
       normal_color_(normalColor),
       focused_color_(focusedColor),
       hover_color_(hoverColor),
-      active_color_(activeColor)
+      active_color_(activeColor),
+      active_(false),
+      mouse_over_(false)
 {
    setRenderer(Platform::get().checkoutRenderer(renderer_uid_));
    addFocusListener(this);
@@ -92,14 +98,17 @@ void FColoredRectangle::onFocusOut(FocusEvent &evt)
 void FColoredRectangle::onKeyDown(KeyboardEvent &evt)
 {
    log("KeyDown");
+   evt.consume();
 }
 void FColoredRectangle::onKeyUp(KeyboardEvent &evt)
 {
    log("KeyUp");
+   evt.consume();
 }
 void FColoredRectangle::onCharacterInput(KeyboardEvent &evt)
 {
    log("CharacterInput");
+   evt.consume();
 }
 
 void FColoredRectangle::onMouseMove(MouseEvent &evt)
@@ -117,10 +126,12 @@ void FColoredRectangle::onMouseLeave(MouseEvent &evt)
 void FColoredRectangle::onMouseEnterDirect(MouseEvent &evt)
 {
    log("MouseEnterDirect");
+   setMouseOver(true);
 }
 void FColoredRectangle::onMouseLeaveDirect(MouseEvent &evt)
 {
    log("MouseLeaveDirect");
+   setMouseOver(false);
 }
 void FColoredRectangle::onMouseHover(MouseEvent &evt)
 {
@@ -133,14 +144,20 @@ void FColoredRectangle::onMouseHoverDirect(MouseEvent &evt)
 void FColoredRectangle::onMouseWheel(MouseEvent &evt)
 {
    log("MouseWheel");
+   evt.consume();
 }
 void FColoredRectangle::onMouseDown(MouseEvent &evt)
 {
    log("MouseDown");
+   if (mouse_over_ && evt.button == 1)
+      setActive(true);
+   evt.consume();
 }
 void FColoredRectangle::onMouseUp(MouseEvent &evt)
 {
    log("MouseUp");
+   setActive(false);
+   evt.consume();
 }
 void FColoredRectangle::onMouseClick(MouseEvent &evt)
 {
@@ -149,6 +166,7 @@ void FColoredRectangle::onMouseClick(MouseEvent &evt)
 void FColoredRectangle::onMouseDoubleClick(MouseEvent &evt)
 {
    log("MouseDoubleClick");
+   logDebug();
 }
 
 void FColoredRectangle::onSimulate(SimulateEvent &evt)
@@ -160,6 +178,22 @@ void FColoredRectangle::onResetSimulation(SimulateEvent &evt)
    log("ResetSimulation");
 }
 
+void FColoredRectangle::setActive(bool active)
+{
+   if (active_ != active)
+   {
+      active_ = active;
+      makeDirty();
+   }
+}
 
+void FColoredRectangle::setMouseOver(bool mouse_over)
+{
+   if (mouse_over_ != mouse_over)
+   {
+      mouse_over_ = mouse_over;
+      makeDirty();
+   }
+}
 
 FGUI_END
