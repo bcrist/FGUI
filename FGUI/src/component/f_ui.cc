@@ -600,20 +600,50 @@ FUI::FUI()
         components_under_mouse_(&components_under_mouse_1_),
         components_under_mouse_old_(&components_under_mouse_2_),
         last_click_component_(NULL),
-        min_hover_delay_(600),
+        min_hover_delay_(700),
         max_double_click_interval_(350),
         hover_start_ticks_(-1),
         last_click_ticks_(-1),
-        prepare_renderer_(Platform::get().checkoutRenderer(prepare_renderer_uid_)),
-        cleanup_renderer_(Platform::get().checkoutRenderer(cleanup_renderer_uid_)),
+        prepare_renderer_(platform_.checkoutRenderer(prepare_renderer_uid_)),
+        cleanup_renderer_(platform_.checkoutRenderer(cleanup_renderer_uid_)),
         render_tasks_valid_(false),
         dirty_set_(true),
         ticks_per_second_(1000),
         min_simulate_event_interval_(10),
         ticks_(0),
         last_simulate_ticks_(0),
-        clipboard_(Platform::get().checkoutClipboard()),
-        font_provider_(Platform::get().checkoutFontProvider())
+        clipboard_(platform_.checkoutClipboard()),
+        font_provider_(platform_.checkoutFontProvider())
+{
+   default_focus_manager_.setFocusRoot(this);
+   ui_ = this;
+   destroyChildrenOnDeath();
+   setFocusManager(&default_focus_manager_);
+}
+
+FUI::FUI(PlatformInterface &platform)
+      : FComponent(platform),
+        modal_component_(NULL),
+        focused_component_(NULL),
+        active_ui_(true),
+        under_mouse_key_events_enabled_(true),
+        components_under_mouse_(&components_under_mouse_1_),
+        components_under_mouse_old_(&components_under_mouse_2_),
+        last_click_component_(NULL),
+        min_hover_delay_(700),
+        max_double_click_interval_(350),
+        hover_start_ticks_(-1),
+        last_click_ticks_(-1),
+        prepare_renderer_(platform_.checkoutRenderer(prepare_renderer_uid_)),
+        cleanup_renderer_(platform_.checkoutRenderer(cleanup_renderer_uid_)),
+        render_tasks_valid_(false),
+        dirty_set_(true),
+        ticks_per_second_(1000),
+        min_simulate_event_interval_(10),
+        ticks_(0),
+        last_simulate_ticks_(0),
+        clipboard_(platform_.checkoutClipboard()),
+        font_provider_(platform_.checkoutFontProvider())
 {
    default_focus_manager_.setFocusRoot(this);
    ui_ = this;
@@ -634,16 +664,47 @@ FUI::FUI(const FUI_cfg &cfg)
         max_double_click_interval_(cfg.getMaximumDoubleClickInterval()),
         hover_start_ticks_(-1),
         last_click_ticks_(-1),
-        prepare_renderer_(Platform::get().checkoutRenderer(prepare_renderer_uid_)),
-        cleanup_renderer_(Platform::get().checkoutRenderer(cleanup_renderer_uid_)),
+        prepare_renderer_(platform_.checkoutRenderer(prepare_renderer_uid_)),
+        cleanup_renderer_(platform_.checkoutRenderer(cleanup_renderer_uid_)),
         render_tasks_valid_(false),
         dirty_set_(true),
         ticks_per_second_(cfg.getTicksPerSecond()),
         min_simulate_event_interval_(cfg.getMinimumSimulateEventInterval()),
         ticks_(0),
         last_simulate_ticks_(0),
-        clipboard_(Platform::get().checkoutClipboard()),
-        font_provider_(Platform::get().checkoutFontProvider())
+        clipboard_(platform_.checkoutClipboard()),
+        font_provider_(platform_.checkoutFontProvider())
+{
+   default_focus_manager_.setFocusRoot(this);
+   ui_ = this;
+   destroyChildrenOnDeath();
+   FocusManagerInterface *fm = cfg.getFocusMgr();
+   setFocusManager(fm ? fm : &default_focus_manager_);
+}
+
+FUI::FUI(PlatformInterface &platform, const FUI_cfg &cfg)
+      : FComponent(platform, cfg),
+        modal_component_(NULL),
+        focused_component_(NULL),
+        active_ui_(true),
+        under_mouse_key_events_enabled_(cfg.getUnderMouseKeyEventsEnabled()),
+        components_under_mouse_(&components_under_mouse_1_),
+        components_under_mouse_old_(&components_under_mouse_2_),
+        last_click_component_(NULL),
+        min_hover_delay_(cfg.getMinimumHoverDelay()),
+        max_double_click_interval_(cfg.getMaximumDoubleClickInterval()),
+        hover_start_ticks_(-1),
+        last_click_ticks_(-1),
+        prepare_renderer_(platform_.checkoutRenderer(prepare_renderer_uid_)),
+        cleanup_renderer_(platform_.checkoutRenderer(cleanup_renderer_uid_)),
+        render_tasks_valid_(false),
+        dirty_set_(true),
+        ticks_per_second_(cfg.getTicksPerSecond()),
+        min_simulate_event_interval_(cfg.getMinimumSimulateEventInterval()),
+        ticks_(0),
+        last_simulate_ticks_(0),
+        clipboard_(platform_.checkoutClipboard()),
+        font_provider_(platform_.checkoutFontProvider())
 {
    default_focus_manager_.setFocusRoot(this);
    ui_ = this;
@@ -654,13 +715,11 @@ FUI::FUI(const FUI_cfg &cfg)
 
 FUI::~FUI()
 {
-   PlatformInterface &platform = Platform::get();
+   platform_.returnRenderer(prepare_renderer_uid_, prepare_renderer_);
+   platform_.returnRenderer(cleanup_renderer_uid_, cleanup_renderer_);
 
-   platform.returnRenderer(prepare_renderer_uid_, prepare_renderer_);
-   platform.returnRenderer(cleanup_renderer_uid_, cleanup_renderer_);
-
-   platform.returnClipboard(clipboard_);
-   platform.returnFontProvider(font_provider_);
+   platform_.returnClipboard(clipboard_);
+   platform_.returnFontProvider(font_provider_);
 }
 
 FGUI_END

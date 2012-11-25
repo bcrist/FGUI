@@ -28,8 +28,6 @@
 
 #include "component/f_ui.h"
 
-#include "platform/platform.h"
-
 FGUI_BEGIN
 
 typedef std::vector<FComponent*>::iterator cvec_iter_t;
@@ -726,7 +724,9 @@ void FComponent::log(const char *txt)
 
 // (De|Con)structors
 FComponent::FComponent()
-      : ui_(NULL),
+      : platform_(Platform::get()),
+
+        ui_(NULL),
         parent_(NULL),
 
         contents_locked_(false),
@@ -745,11 +745,38 @@ FComponent::FComponent()
         focusable_(false),
         focus_mgr_(NULL),
 
-        logger_(Platform::get().checkoutLogger())
+        logger_(platform_.checkoutLogger())
+{}
+
+FComponent::FComponent(PlatformInterface &platform)
+      : platform_(platform),
+
+        ui_(NULL),
+        parent_(NULL),
+
+        contents_locked_(false),
+        destroy_children_(false),
+
+        layout_mgr_(NULL),
+        valid_layout_(false),
+
+        visible_(true),
+        z_index_(0),
+        renderer_(NULL),
+      
+        focused_(false),
+        child_focused_(false),
+        modal_(false),
+        focusable_(false),
+        focus_mgr_(NULL),
+
+        logger_(platform_.checkoutLogger())
 {}
 
 FComponent::FComponent(const FComponent_cfg &cfg)
-      : ui_(NULL),
+      : platform_(Platform::get()),
+      
+        ui_(NULL),
         parent_(NULL),
         
         contents_locked_(cfg.getContentsLocked()),
@@ -774,7 +801,41 @@ FComponent::FComponent(const FComponent_cfg &cfg)
         focusable_(cfg.getFocusable()),
         focus_mgr_(cfg.getFocusMgr()),
 
-        logger_(Platform::get().checkoutLogger())
+        logger_(platform_.checkoutLogger())
+{
+   absolute_.position = parent_ == NULL ? position_ : parent_->clientToAbsolute(position_);
+   absolute_.size = cfg.getSize();
+}
+
+FComponent::FComponent(PlatformInterface &platform, const FComponent_cfg &cfg)
+      : platform_(platform),
+      
+        ui_(NULL),
+        parent_(NULL),
+        
+        contents_locked_(cfg.getContentsLocked()),
+        destroy_children_(cfg.getDestroyChildren()),
+
+        layout_mgr_(cfg.getLayoutMgr()),
+        valid_layout_(false),
+
+        min_size_(cfg.getMinimumSize()),
+        pref_size_(cfg.getPreferredSize()),
+        max_size_(cfg.getMaximumSize()),
+
+        position_(cfg.getPosition()),
+
+        visible_(cfg.getVisible()),
+        z_index_(cfg.getZIndex()),
+        renderer_(cfg.getRenderer()),
+        
+        focused_(false),
+        child_focused_(false),
+        modal_(cfg.getModal()),
+        focusable_(cfg.getFocusable()),
+        focus_mgr_(cfg.getFocusMgr()),
+
+        logger_(platform_.checkoutLogger())
 {
    absolute_.position = parent_ == NULL ? position_ : parent_->clientToAbsolute(position_);
    absolute_.size = cfg.getSize();
@@ -782,7 +843,7 @@ FComponent::FComponent(const FComponent_cfg &cfg)
 
 FComponent::~FComponent()
 {
-   Platform::get().returnLogger(logger_);
+   platform_.returnLogger(logger_);
 
    if (destroy_children_)
       for (cvec_iter_t it(children_.begin()); it != children_.end(); ++it)

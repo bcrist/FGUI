@@ -34,6 +34,7 @@
 
 #include "component/f_component_cfg.h"
 
+#include "platform/platform.h"
 #include "uid.h"
 #include "rect.h"
 #include "fgui_event.h"
@@ -240,14 +241,21 @@ public:
    virtual void printComponentIdentifier(std::ostream &os) const { os << getComponentType() << '@' << this; }
 
 
-   // (De|Con)structors
+
 public:
    FComponent();
+   FComponent(PlatformInterface &platform);
    FComponent(const FComponent_cfg &cfg);
+   FComponent(PlatformInterface &platform, const FComponent_cfg &cfg);
    virtual ~FComponent();
 
+   PlatformInterface &getPlatform() { return platform_; }
+
 private:
+   PlatformInterface &platform_;
+
    friend class FUI;
+
    DISALLOW_COPY_AND_ASSIGN(FComponent);
 };
 

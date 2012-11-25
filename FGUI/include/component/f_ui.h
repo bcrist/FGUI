@@ -181,7 +181,9 @@ public:
    // (De|Con)structors
 public:
    FUI();
+   FUI(PlatformInterface &platform);
    FUI(const FUI_cfg &cfg);
+   FUI(PlatformInterface &platform, const FUI_cfg &cfg);
    virtual ~FUI();
 
 private:
