@@ -6,6 +6,19 @@ About:
    (level editors, etc.) for which common frameworks like Qt and wxWidgets may
    be ill-suited or overly complex.
 
+Features:
+   * Cross-platform (all platform and library-specific code separated and
+     easily replaced with custom implemtations)
+   * Support for dirty-rectangle rendering, and complete rerendering
+   * Support for cached rendering (framebuffer/texture rendering)
+   * Extensive built-int component library
+   * Customizable appearance via custom renderers
+   * Powerful keyboard-focus subsystem with events and FocusManagers
+   * Keyboard, mouse, and timer (simulation) events
+   * Mouse enter/leave/hover events for all components under the cursor, plus
+     variations for just the topmost one
+   * Support for automatic layout of components via LayoutManagers
+
 License:
    Copyright (c) 2012 Benjamin M. Crist
 
