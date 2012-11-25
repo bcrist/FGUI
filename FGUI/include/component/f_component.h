@@ -231,7 +231,7 @@ public:
    // called by root - don't use this to request focus!
    void setFocused(bool focused);
 
-   FocusManagerInterface *getFocusManager();
+   FocusManagerInterface *getFocusManager() const;
 
 
    // Logging & debugging

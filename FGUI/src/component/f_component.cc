@@ -700,7 +700,7 @@ void FComponent::setChildFocused(bool focused)
    }
 }
 
-FocusManagerInterface *FComponent::getFocusManager()
+FocusManagerInterface *FComponent::getFocusManager() const
 {
    if (focus_mgr_)
       return focus_mgr_;
@@ -746,7 +746,7 @@ void FComponent::printDebug(std::ostream &os) const
    if (focusable_)
       os << "\n| focusable: " << focused_ ? "focused" : "not focused";
    if (child_focused_)
-      os << "\n| descendant focused"
+      os << "\n| descendant focused";
    os << "\n| focusmgr: " << focus_mgr_ << " (" << getFocusManager() << ")";
 
    os << "\n|\n| focus listeners:      " << focus_listeners_.size();
