@@ -154,6 +154,8 @@ int App::run()
 
    log_.log(oss.str().c_str());
 
+   ui_->logDebugRecursive();
+
    al_start_timer(timer_);
 
    while (true) {
@@ -200,27 +202,20 @@ int App::run()
                break;
 
             case ALLEGRO_EVENT_MOUSE_LEAVE_DISPLAY:
-               log_.log("Mouse Left\n");
                ui_->uiMouseMove(Point(-9999, -9999));
                break;
 
             case ALLEGRO_EVENT_MOUSE_ENTER_DISPLAY:
-               log_.log("Mouse Entered\n");
             case ALLEGRO_EVENT_MOUSE_AXES:
             case ALLEGRO_EVENT_MOUSE_WARPED:
-               ui_->uiMouseMove(Point(ae.mouse.x, ae.mouse.y));
+               ui_->uiMouseMove(Point(ae.mouse.x + 0.5f, ae.mouse.y + 0.5f));
                if (ae.mouse.dz != 0 || ae.mouse.dw != 0)
-               {
-                  log_.log("Mouse Wheel\n");
                   ui_->uiMouseWheel(ae.mouse.dz, ae.mouse.dw);
-               }
                break;
             case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
-               log_.log("Button Down\n");
                ui_->uiMouseButton(ae.mouse.button, true);
                break;
             case ALLEGRO_EVENT_MOUSE_BUTTON_UP:
-               log_.log("Button Up\n");
                ui_->uiMouseButton(ae.mouse.button, false);
                break;
          }
@@ -237,7 +232,6 @@ int App::run()
 
       if (ui_->uiDrawRequested())
       {
-         log_.log("uiDraw()\n");
          glClear(GL_COLOR_BUFFER_BIT);
          ui_->makeDirty(ui_->getAbsoluteRect());
          ui_->uiDraw();

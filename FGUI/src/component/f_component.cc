@@ -615,12 +615,11 @@ bool FComponent::checkPointOverComponent(const Point &absolute_coord) const
 
 bool FComponent::checkPointInBounds(const Point &absolute_coord) const
 {
-   return (absolute_coord.x >= absolute_.position.x &&
-           absolute_coord.x < absolute_.size.width && 
-           absolute_coord.y >= absolute_.position.y &&
-           absolute_coord.y < absolute_.size.height);
+   return (absolute_coord.x >= absolute_.getLeft() &&
+           absolute_coord.x < absolute_.getRight() && 
+           absolute_coord.y >= absolute_.getTop() &&
+           absolute_coord.y < absolute_.getBottom());
 }
-
 
 
 // Focus Management
@@ -737,14 +736,14 @@ void FComponent::printDebug(std::ostream &os) const
    os << "\n| max:  " << max_size_;
    os << "\n| layoutmgr: " << layout_mgr_;
 
-   os << "\n|\n| visible:  " << visible_ ? "yes" : "no";
+   os << "\n|\n| visible:  " << (visible_ ? "yes" : "no");
    os << "\n| z-index:  " << z_index_;
    os << "\n| clip:     " << clip_;
    os << "\n| renderer: " << renderer_;
 
-   os << "\n|\n| modal:     " << modal_ ? "yes" : "no";
+   os << "\n|\n| modal:     " << (modal_ ? "yes" : "no");
    if (focusable_)
-      os << "\n| focusable: " << focused_ ? "focused" : "not focused";
+      os << "\n| focusable: " << (focused_ ? "focused" : "not focused");
    if (child_focused_)
       os << "\n| descendant focused";
    os << "\n| focusmgr: " << focus_mgr_ << " (" << getFocusManager() << ")";
