@@ -6,10 +6,10 @@ About:
    (level editors, etc.) for which common frameworks like Qt and wxWidgets may
    be ill-suited or overly complex.
 
-Features:
+Planned Features:
    * Cross-platform (all platform and library-specific code separated and
      easily replaced with custom implemtations)
-   * Support for dirty-rectangle rendering, and complete rerendering
+   * Support for dirty-rectangle and full rerendering
    * Support for cached rendering (framebuffer/texture rendering)
    * Extensive built-int component library
    * Customizable appearance via custom renderers
