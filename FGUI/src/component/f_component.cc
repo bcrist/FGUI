@@ -724,6 +724,79 @@ void FComponent::log(const char *txt)
    logger_->log(oss.str().c_str());
 }
 
+void FComponent::printDebug(std::ostream &os) const
+{
+   os << "+- ";
+   printComponentIdentifier(os);
+   os << "\n| rel:  " << position_ << " abs: " << absolute_;
+   if (!valid_layout_)
+      os << " LAYOUT INVALID!";
+
+   os << "\n| min:  " << min_size_;
+   os << "\n| pref: " << pref_size_;
+   os << "\n| max:  " << max_size_;
+   os << "\n| layoutmgr: " << layout_mgr_;
+
+   os << "\n|\n| visible:  " << visible_ ? "yes" : "no";
+   os << "\n| z-index:  " << z_index_;
+   os << "\n| clip:     " << clip_;
+   os << "\n| renderer: " << renderer_;
+
+   os << "\n|\n| modal:     " << modal_ ? "yes" : "no";
+   if (focusable_)
+      os << "\n| focusable: " << focused_ ? "focused" : "not focused";
+   if (child_focused_)
+      os << "\n| descendant focused"
+   os << "\n| focusmgr: " << focus_mgr_ << " (" << getFocusManager() << ")";
+
+   os << "\n|\n| focus listeners:      " << focus_listeners_.size();
+   os << "\n| keyboard listeners:   " << keyboard_listeners_.size();
+   os << "\n| mouse listeners:      " << mouse_listeners_.size();
+   os << "\n| simulation listeners: " << simulation_listeners_.size();
+
+   os << "\n|\n| platform: " << &platform_;
+   os << "\n| ui:       " << ui_;
+   os << "\n| parent:   " << parent_;
+   if (contents_locked_)
+      os << "\n| contents locked.";
+   if (destroy_children_)
+      os << "\n| children destroyed on destruction.";
+
+   os << "\n| children: " << children_.size();
+
+   for (std::vector<FComponent*>::const_iterator it(children_.begin()); it != children_.end(); ++it)
+   {
+      os << "\n|    ";
+      (*it)->printComponentIdentifier(os);
+   }
+
+   os << "\n\n";
+
+}
+
+void FComponent::printDebugRecursive(std::ostream &os) const
+{
+   printDebug(os);
+
+   for (std::vector<FComponent*>::const_iterator it(children_.begin()); it != children_.end(); ++it)
+      (*it)->printDebugRecursive(os);
+}
+
+void FComponent::logDebug() const
+{
+   std::ostringstream oss;
+   printDebug(oss);
+   logger_->log(oss.str().c_str());
+}
+
+void FComponent::logDebugRecursive() const
+{
+   logDebug();
+
+   for (std::vector<FComponent*>::const_iterator it(children_.begin()); it != children_.end(); ++it)
+      (*it)->logDebugRecursive();
+}
+
 
 // (De|Con)structors
 FComponent::FComponent()

@@ -92,6 +92,7 @@ public:
 
    // Contents
 private:
+   PlatformInterface &platform_;
    FUI *ui_;
    FComponent *parent_;
    std::vector<FComponent*> children_;
@@ -103,6 +104,8 @@ private:
    void uncheckedRemoveComponent(FComponent *c, bool destroy, std::vector<FComponent*>::iterator &it);
 
 protected:
+   PlatformInterface &getPlatform() { return platform_; }
+
    void setContentsLocked(bool contents_locked) { contents_locked_ = contents_locked; }
    void lockContents() { contents_locked_ = true; }
    void unlockContents() { contents_locked_ = false; }
@@ -240,7 +243,10 @@ public:
    virtual const char *getComponentType() const { return "FComponent"; }
    virtual void printComponentIdentifier(std::ostream &os) const { os << getComponentType() << '@' << this; }
 
-
+   virtual void printDebug(std::ostream &os) const;
+   virtual void printDebugRecursive(std::ostream &os) const;
+   virtual void logDebug() const;
+   virtual void logDebugRecursive() const;
 
 public:
    FComponent();
@@ -249,11 +255,7 @@ public:
    FComponent(PlatformInterface &platform, const FComponent_cfg &cfg);
    virtual ~FComponent();
 
-   PlatformInterface &getPlatform() { return platform_; }
-
 private:
-   PlatformInterface &platform_;
-
    friend class FUI;
 
    DISALLOW_COPY_AND_ASSIGN(FComponent);
