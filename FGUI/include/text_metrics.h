@@ -31,6 +31,12 @@ FGUI_BEGIN
 
 struct TextMetrics
 {
+   TextMetrics()
+         : line_height_(0),
+           bounds(bounds_),
+           line(line_),
+           line_height(line_height_) {}
+
    TextMetrics(const Rect &bounds, const Rect &line, float_t line_height):
       bounds_(bounds),
       line_(line),
