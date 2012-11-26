@@ -163,20 +163,6 @@ public:
    virtual void uiResetSimulation(int ticks_per_sec, int min_simulate_event_interval);
 
 
-   // Clipboard
-private:
-   ClipboardInterface *clipboard_;
-public:
-   ClipboardInterface &getClipboard() { return *clipboard_; }
-
-
-   // Fonts
-private:
-   FontProviderInterface *font_provider_;
-public:
-   FontProviderInterface &getFontProvider() { return *font_provider_; }
-
-
    // FComponent overrides
 public:
    virtual bool checkPointOverComponent(const Point &absolute_coord) const { return false; }

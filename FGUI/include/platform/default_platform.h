@@ -42,11 +42,8 @@ public:
    DefaultPlatform();
    virtual ~DefaultPlatform() {}
 
-   virtual ClipboardInterface *checkoutClipboard() { return &default_clipboard_; }
-   virtual void returnClipboard(ClipboardInterface *clipboard) {}
-
-   virtual FontProviderInterface *checkoutFontProvider() { return &default_font_provider_; }
-   virtual void returnFontProvider(FontProviderInterface *font_provider) {}
+   virtual ClipboardInterface &getClipboard() { return default_clipboard_; }
+   virtual FontProviderInterface &getFontProvider() { return default_font_provider_; }
 
    void setLogger(LoggerInterface *logger) { default_logger_ = logger; }
    virtual LoggerInterface *checkoutLogger() { return default_logger_; }

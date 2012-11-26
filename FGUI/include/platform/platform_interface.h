@@ -38,11 +38,8 @@ class PlatformInterface
 public:
    virtual ~PlatformInterface() {}
 
-   virtual ClipboardInterface *checkoutClipboard() = 0;
-   virtual void returnClipboard(ClipboardInterface *clipboard) = 0;
-
-   virtual FontProviderInterface *checkoutFontProvider() = 0;
-   virtual void returnFontProvider(FontProviderInterface *font_provider) = 0;
+   virtual ClipboardInterface &getClipboard() = 0;
+   virtual FontProviderInterface &getFontProvider() = 0;
 
    virtual RendererInterface *checkoutRenderer(const UID &uid) = 0;
    virtual void returnRenderer(const UID &uid, RendererInterface *renderer) = 0;
