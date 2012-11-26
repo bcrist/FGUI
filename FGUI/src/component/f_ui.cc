@@ -698,9 +698,7 @@ FUI::FUI()
         ticks_per_second_(1000),
         min_simulate_event_interval_(10),
         ticks_(0),
-        last_simulate_ticks_(0),
-        clipboard_(platform_.checkoutClipboard()),
-        font_provider_(platform_.checkoutFontProvider())
+        last_simulate_ticks_(0)
 {
    default_focus_manager_.setFocusRoot(this);
    ui_ = this;
@@ -728,9 +726,7 @@ FUI::FUI(PlatformInterface &platform)
         ticks_per_second_(1000),
         min_simulate_event_interval_(10),
         ticks_(0),
-        last_simulate_ticks_(0),
-        clipboard_(platform_.checkoutClipboard()),
-        font_provider_(platform_.checkoutFontProvider())
+        last_simulate_ticks_(0)
 {
    default_focus_manager_.setFocusRoot(this);
    ui_ = this;
@@ -758,9 +754,7 @@ FUI::FUI(const FUI_cfg &cfg)
         ticks_per_second_(cfg.getTicksPerSecond()),
         min_simulate_event_interval_(cfg.getMinimumSimulateEventInterval()),
         ticks_(0),
-        last_simulate_ticks_(0),
-        clipboard_(platform_.checkoutClipboard()),
-        font_provider_(platform_.checkoutFontProvider())
+        last_simulate_ticks_(0)
 {
    default_focus_manager_.setFocusRoot(this);
    ui_ = this;
@@ -789,9 +783,7 @@ FUI::FUI(PlatformInterface &platform, const FUI_cfg &cfg)
         ticks_per_second_(cfg.getTicksPerSecond()),
         min_simulate_event_interval_(cfg.getMinimumSimulateEventInterval()),
         ticks_(0),
-        last_simulate_ticks_(0),
-        clipboard_(platform_.checkoutClipboard()),
-        font_provider_(platform_.checkoutFontProvider())
+        last_simulate_ticks_(0)
 {
    default_focus_manager_.setFocusRoot(this);
    ui_ = this;
@@ -804,9 +796,6 @@ FUI::~FUI()
 {
    platform_.returnRenderer(prepare_renderer_uid_, prepare_renderer_);
    platform_.returnRenderer(cleanup_renderer_uid_, cleanup_renderer_);
-
-   platform_.returnClipboard(clipboard_);
-   platform_.returnFontProvider(font_provider_);
 }
 
 FGUI_END
