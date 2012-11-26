@@ -31,7 +31,7 @@ TextMetrics AllegroFont::getMetrics(const std::string &str)
    al_get_text_dimensions(afont_, cstr, &bbx, &bby, &bbw, &bbh);
    int line_width = al_get_text_width(afont_, cstr);
 
-   return TextMetrics(Point(bbx, bby), Point(bbx + bbw, bby + bbh), Point(0,0), Point(line_width, line_ascent_), line_height_);
+   return TextMetrics(Rect(bbx, bby, bbw, bbh), Rect(0, 0, line_width, line_ascent_), line_height_);
 }
 
 

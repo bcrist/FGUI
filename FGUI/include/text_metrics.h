@@ -25,26 +25,43 @@
 #define FGUI_TEXT_METRICS_H_
 #include "fgui_std.h"
 
-#include "point.h"
+#include "rect.h"
 
 FGUI_BEGIN
 
 struct TextMetrics
 {
-   TextMetrics(Point bounds_top_left, Point bounds_bottom_right, Point line_top_left, Point line_bottom_right, float_t line_height):
-      bounds_top_left(bounds_top_left),
-      bounds_bottom_right(bounds_bottom_right),
-      line_top_left(line_top_left),
-      line_bottom_right(line_bottom_right),
-      line_height(line_height) {}
+   TextMetrics(const Rect &bounds, const Rect &line, float_t line_height):
+      bounds_(bounds),
+      line_(line),
+      line_height_(line_height),
+      bounds(bounds_),
+      line(line_),
+      line_height(line_height_) {}
 
-   const Point bounds_top_left;
-   const Point bounds_bottom_right;
+   TextMetrics(const TextMetrics &other):
+      bounds_(other.bounds_),
+      line_(other.line_),
+      line_height_(other.line_height_),
+      bounds(bounds_),
+      line(line_),
+      line_height(line_height_) {}
 
-   const Point line_top_left;
-   const Point line_bottom_right;
+   TextMetrics &operator=(const TextMetrics &rhs)
+   {
+      bounds_ = rhs.bounds_;
+      line_ = rhs.line_;
+      line_height_ = rhs.line_height_;
+   }
 
-   const float_t line_height;
+   const Rect &bounds;
+   const Rect &line;
+   const float_t &line_height;
+
+private:
+   Rect bounds_;
+   Rect line_;
+   float_t line_height_;
 };
 
 FGUI_END
