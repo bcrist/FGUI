@@ -37,7 +37,7 @@ FColoredRectangle::FColoredRectangle():
    active_(false),
    mouse_over_(false)
 {
-   setRenderer(Platform::get().checkoutRenderer(renderer_uid_));
+   setRenderer(getPlatform().checkoutRenderer(renderer_uid_));
    addFocusListener(this);
    addKeyboardListener(this);
    addMouseListener(this);
@@ -53,7 +53,7 @@ FColoredRectangle::FColoredRectangle(const Color &color):
    active_(false),
    mouse_over_(false)
 {
-   setRenderer(Platform::get().checkoutRenderer(renderer_uid_));
+   setRenderer(getPlatform().checkoutRenderer(renderer_uid_));
    addFocusListener(this);
    addKeyboardListener(this);
    addMouseListener(this);
@@ -72,7 +72,7 @@ FColoredRectangle::FColoredRectangle(const Color &normalColor,
       active_(false),
       mouse_over_(false)
 {
-   setRenderer(Platform::get().checkoutRenderer(renderer_uid_));
+   setRenderer(getPlatform().checkoutRenderer(renderer_uid_));
    addFocusListener(this);
    addKeyboardListener(this);
    addMouseListener(this);
@@ -82,7 +82,7 @@ FColoredRectangle::FColoredRectangle(const Color &normalColor,
 
 FColoredRectangle::~FColoredRectangle()
 {
-   Platform::get().returnRenderer(renderer_uid_, getRenderer());
+   getPlatform().returnRenderer(renderer_uid_, getRenderer());
 }
 
 
