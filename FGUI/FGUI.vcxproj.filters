@@ -271,9 +271,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="include\component\f_ui.inl">
-      <Filter>Header Files\component</Filter>
-    </None>
     <None Include="include\color.inl">
       <Filter>Header Files\misc</Filter>
     </None>

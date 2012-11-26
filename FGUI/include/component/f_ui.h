@@ -39,11 +39,19 @@
 
 FGUI_BEGIN
 
+namespace detail {
+
+void uimmFireLeave(FUI *that, FComponent *comp);
+void uimmFireEnter(FUI *that, FComponent *comp);
+void uisimHover(FUI *that, FComponent *comp);
+
+}
+
 class FUI : public FComponent
 {
    // Modal Component support
 private:
-   std::list<FComponent*> modal_components_; // changes infrequently, so no need for set or vector
+   std::vector<FComponent*> modal_components_;
    FComponent *modal_component_;
 public:
    virtual FComponent *getModalComponent() const { return modal_component_; }
@@ -74,11 +82,12 @@ private:
    Mouse mouse_state_;
    bool under_mouse_key_events_enabled_;
 
+   std::vector<FComponent*> cvec_temp_;
+
    std::vector<FComponent*> *components_under_mouse_;
    std::vector<FComponent*> *components_under_mouse_old_;
    std::vector<FComponent*> components_under_mouse_1_;
    std::vector<FComponent*> components_under_mouse_2_;
-   std::vector<FComponent*> components_under_mouse_temp_;
    
    std::vector<FComponent*> hovered_components_;
    FComponent *last_click_component_;
@@ -89,11 +98,6 @@ private:
    int64_t hover_start_ticks_;
    int64_t last_click_ticks_;
 
-   void _swapComponentsUnderMousePointers();
-   void _removeHoveredComponent(FComponent *component);
-   void _removeComponentUnderMouse(FComponent *component);
-   void _removeOldComponentUnderMouse(FComponent *component);
-   void _removeLastClickComponent(FComponent *component);
    void componentRemoved(FComponent *component);
 
 public:
@@ -137,6 +141,7 @@ public:
    static const UID cleanup_renderer_uid_;
 
    virtual bool uiDrawRequested() const { return dirty_set_; }
+   virtual const Rect &getDirtyRect() const { return dirty_; }
    virtual void uiDraw();
    virtual void makeDirty(const Rect &absolute_rect);
    virtual void invalidateRenderTasks() { render_tasks_valid_ = false; }
@@ -188,11 +193,12 @@ public:
 
 private:
    friend class FComponent;
+   friend void detail::uimmFireEnter(FUI *that, FComponent *comp);
+   friend void detail::uimmFireLeave(FUI *that, FComponent *comp);
+   friend void detail::uisimHover(FUI *that, FComponent *comp);
    DISALLOW_COPY_AND_ASSIGN(FUI);
 };
 
 FGUI_END
-
-#include "component/f_ui.inl"
 
 #endif

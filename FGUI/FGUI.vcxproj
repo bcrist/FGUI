@@ -85,7 +85,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="include\color.inl" />
-    <None Include="include\component\f_ui.inl" />
     <None Include="include\dimension.inl" />
     <None Include="include\point.inl" />
     <None Include="include\rect.inl" />

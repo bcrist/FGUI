@@ -26,35 +26,131 @@
 #include "platform/platform.h"
 
 #include <iterator>
+#include <sstream>
 
 FGUI_BEGIN
 
 typedef std::vector<FComponent*> cvec_t;
 typedef std::vector<FComponent*>::iterator cvec_iter_t;
+typedef std::vector<FComponent*>::const_iterator cvec_citer_t;
 
 // static members
 const UID FUI::prepare_renderer_uid_;
 const UID FUI::cleanup_renderer_uid_;
 
-// Modal Components
+// helper functions
+namespace detail {
 
-bool compareComponentsZIndex(FComponent *a, FComponent *b)
+inline bool zIndexLess(FComponent *a, FComponent *b)
 {
    return a->getZIndex() < b->getZIndex();
 }
 
+cvec_iter_t scvecFind(cvec_t &vec, FComponent *comp)
+{
+   cvec_iter_t end(vec.end());
+   cvec_iter_t it(vec.begin());
+   while (it != end)
+   {
+      if (*it == comp)
+         return it;
+      
+      if (zIndexLess(comp, *it))
+         break;
+
+      ++it;
+   }
+
+   return end;
+}
+
+bool scvecDiff(FUI *that, cvec_t &va, cvec_t &vb, void (*callback)(FUI *, FComponent *))
+{
+   // pass components in va which are not in vb to callback function
+
+   cvec_iter_t aend(va.end());
+   cvec_iter_t bend(vb.end());
+
+   cvec_iter_t sbit(vb.begin());
+
+   bool ret_val(false);
+
+   // for each component in va...
+   for (cvec_iter_t ait(va.begin()); ait != aend; ++ait)
+   {
+      FComponent* comp = *ait;
+
+      if (sbit != bend && *sbit == comp)
+      {
+         ++sbit;
+         continue;
+      }
+
+      bool call(true);
+      cvec_iter_t bit(sbit);
+      while (bit != bend)
+      {
+         if (*bit == comp)
+         {
+            call = false;
+            break;
+         }
+
+         if (zIndexLess(comp, *bit))
+            break;
+
+         ++bit;
+      }
+      
+      if (call)
+      {
+         callback(that, comp);
+         ret_val = true;
+      }
+   }
+
+   return ret_val;
+}
+
+void uimmFireLeave(FUI *that, FComponent *comp)
+{
+   comp->fireMouseEvent(MouseEvent(
+         MouseEvent::kMOUSE_LEAVE, comp, that->mouse_state_.getPosition()));
+
+   // remove from hovered components vector
+   cvec_iter_t it(scvecFind(that->hovered_components_, comp));
+   if (it != that->hovered_components_.end())
+      that->hovered_components_.erase(it);
+}
+
+void uimmFireEnter(FUI *that, FComponent *comp)
+{
+   comp->fireMouseEvent(MouseEvent(
+         MouseEvent::kMOUSE_ENTER, comp, that->mouse_state_.getPosition()));
+}
+
+void uisimHover(FUI *that, FComponent *comp)
+{
+   if (comp == that->components_under_mouse_->back())
+      comp->fireMouseEvent(MouseEvent(
+            MouseEvent::kMOUSE_HOVER_DIRECT, comp, that->mouse_state_.getPosition()));
+
+   comp->fireMouseEvent(MouseEvent(
+         MouseEvent::kMOUSE_HOVER, comp, that->mouse_state_.getPosition()));
+
+   that->hovered_components_.push_back(comp);
+}
+
+} // namespace detail
+
+// Modal Components
 void FUI::registerModal(FComponent *component)
 {
-   std::list<FComponent*>::iterator begin(modal_components_.begin()),
-                                    end(modal_components_.end()),
-                                    it;
-
-   it = std::find(begin, end, component);
-
-   if (it != end)
+   cvec_iter_t it(detail::scvecFind(modal_components_, component));
+   if (it != modal_components_.end())
    {
       modal_components_.push_back(component);
-      modal_components_.sort(compareComponentsZIndex);
+      std::stable_sort(modal_components_.begin(), modal_components_.end(), detail::zIndexLess);
 
       FComponent *new_modal = modal_components_.empty() ? NULL : modal_components_.back();
 
@@ -74,13 +170,8 @@ void FUI::registerModal(FComponent *component)
 
 void FUI::unregisterModal(FComponent *component)
 {
-   std::list<FComponent*>::iterator begin(modal_components_.begin()),
-                                    end(modal_components_.end()),
-                                    it;
-
-   it = std::find(begin, end, component);
-
-   if (it != end)
+   cvec_iter_t it(detail::scvecFind(modal_components_, component));
+   if (it != modal_components_.end())
    {
       modal_components_.erase(it);
 
@@ -165,18 +256,37 @@ void FUI::componentRemoved(FComponent *component)
    if (!component || component == this)
       return;
 
+   // remove from modal list
    unregisterModal(component);
-   _removeHoveredComponent(component);
-   _removeComponentUnderMouse(component);
-   _removeOldComponentUnderMouse(component);
-   _removeLastClickComponent(component);
+
+   // remove from hovered components vector
+   cvec_iter_t it(detail::scvecFind(hovered_components_, component));
+   if (it != hovered_components_.end())
+      hovered_components_.erase(it);
+
+   // remove from under mouse vectors
+   it = detail::scvecFind(*components_under_mouse_, component);
+   if (it != components_under_mouse_->end())
+      components_under_mouse_->erase(it);
+
+   it = detail::scvecFind(*components_under_mouse_old_, component);
+   if (it != components_under_mouse_old_->end())
+      components_under_mouse_old_->erase(it);
+
+   // remove from last click component
+   if (last_click_component_ == component)
+   {
+      last_click_component_ = NULL;
+      last_click_ticks_ = -1;
+   }
+
+   // remove from mouse state
    mouse_state_.removeDownComponent(component);
 
+   // remove from focused component
    if (focused_component_ == component)
       focused_component_ = NULL;
 }
-
-
 
 void FUI::uiActiveStatus(bool active)
 {
@@ -231,15 +341,17 @@ bool FUI::uiMouseMove(const Point &location)
    // reset hover timer
    hover_start_ticks_ = ticks_;
 
-   _swapComponentsUnderMousePointers();
+   cvec_t *swap_temp(components_under_mouse_);
+   components_under_mouse_ = components_under_mouse_old_;
+   components_under_mouse_old_ = swap_temp;
+
    cvec_t &comps = *components_under_mouse_,
-          &old_comps = *components_under_mouse_old_,
-          &temp = components_under_mouse_temp_;
+          &old_comps = *components_under_mouse_old_;
 
    // get components under the mouse's new position and sort by z-index
    comps.clear();
    getComponentsAt(comps, location);
-   std::stable_sort(comps.begin(), comps.end(), compareComponentsZIndex);
+   std::stable_sort(comps.begin(), comps.end(), detail::zIndexLess);
 
    // compare with components under old mouse position and
    // trigger events as needed
@@ -249,30 +361,14 @@ bool FUI::uiMouseMove(const Point &location)
          old_comps.back()->fireMouseEvent(MouseEvent(
                MouseEvent::kMOUSE_LEAVE_DIRECT, old_comps.back(), location));
 
-      temp.clear();
       // components that are no longer under the mouse 
-      std::set_difference(old_comps.begin(), old_comps.end(),
-                          comps.begin(), comps.end(),
-                          std::back_inserter(temp), compareComponentsZIndex);
-      for (cvec_iter_t it(temp.begin()); it != temp.end(); ++it)
-      {
-         (*it)->fireMouseEvent(MouseEvent(
-               MouseEvent::kMOUSE_LEAVE, *it, location));
-
-         _removeHoveredComponent(*it);
-      }
+      detail::scvecDiff(this, old_comps, comps, detail::uimmFireLeave);
    }
 
    if (!comps.empty())
    {
-      temp.clear();
-      // components that weren't, but now are under the mouse 
-      std::set_difference(comps.begin(), comps.end(),
-                          old_comps.begin(), old_comps.end(),
-                          std::back_inserter(temp), compareComponentsZIndex);
-      for (cvec_iter_t it(temp.begin()); it != temp.end(); ++it)
-         (*it)->fireMouseEvent(MouseEvent(
-               MouseEvent::kMOUSE_ENTER, *it, location));
+      // components that weren't, but now are under the mouse
+      detail::scvecDiff(this, comps, old_comps, detail::uimmFireEnter);
 
       if (old_comps.empty() || comps.back() != old_comps.back())
          comps.back()->fireMouseEvent(MouseEvent(
@@ -292,18 +388,26 @@ bool FUI::uiMouseButton(int button, bool is_down)
 {
    FComponent *consuming_component(NULL);
 
+   FComponent *down_component = is_down ? NULL : mouse_state_.downComponent(button);
+
+   if (down_component)
+      down_component->fireMouseEvent(MouseEvent(
+            MouseEvent::kMOUSE_UP, down_component, mouse_state_.getPosition(), button, 0, 0,
+            mouse_state_.downPosition(button), down_component));
+
    if (!components_under_mouse_->empty())
    {
       std::vector<FComponent*>::reverse_iterator rit(components_under_mouse_->rbegin());
       consuming_component = *rit;
       ++rit;
 
-      while (consuming_component && !(checkModalDescendant(consuming_component) &&
+      while (consuming_component && consuming_component != down_component &&
+             !(checkModalDescendant(consuming_component) &&
              consuming_component->fireMouseEvent(MouseEvent(
              is_down ? MouseEvent::kMOUSE_DOWN : MouseEvent::kMOUSE_UP,
              consuming_component, mouse_state_.getPosition(), button, 0, 0,
              is_down ? Point(-1, -1) : mouse_state_.downPosition(button),
-             is_down ? NULL : mouse_state_.downComponent(button)))))
+             down_component))))
       {
          if (rit == components_under_mouse_->rend())
             consuming_component = NULL;
@@ -319,13 +423,13 @@ bool FUI::uiMouseButton(int button, bool is_down)
          if (is_down && button == 1)
             setFocus(consuming_component, FocusEvent::kMOUSE);
 
-         if (!is_down && consuming_component == mouse_state_.downComponent(button))
+         if (consuming_component == down_component)
          {
             // click
             consuming_component->fireMouseEvent(MouseEvent(
                   MouseEvent::kMOUSE_CLICK, consuming_component,
                   mouse_state_.getPosition(), button, 0, 0,
-                  mouse_state_.downPosition(button), mouse_state_.downComponent(button)));
+                  mouse_state_.downPosition(button), down_component));
 
             if (last_click_ticks_ > 0 && ticks_ - last_click_ticks_ <= max_double_click_interval_ &&
                 last_click_component_ == consuming_component)
@@ -334,7 +438,7 @@ bool FUI::uiMouseButton(int button, bool is_down)
                consuming_component->fireMouseEvent(MouseEvent(
                      MouseEvent::kMOUSE_DOUBLE_CLICK, consuming_component,
                      mouse_state_.getPosition(), button, 0, 0,
-                     mouse_state_.downPosition(button), mouse_state_.downComponent(button)));
+                     mouse_state_.downPosition(button), down_component));
                last_click_ticks_ = -1;
                last_click_component_ = NULL;
             }
@@ -532,31 +636,14 @@ void FUI::uiSimulate(int delta)
    if (hover_start_ticks_ >= 0 && ticks_ - hover_start_ticks_ > min_hover_delay_)
    {
       cvec_t &comps = *components_under_mouse_,
-             &hovered = hovered_components_,
-             &temp = components_under_mouse_temp_;
+             &hovered = hovered_components_;
 
       // find components under the mouse which have not received
-      // a hover event since the mouse entered it.
-      temp.clear();
-      std::set_difference(comps.begin(), comps.end(),
-                          hovered.begin(), hovered.end(),
-                          std::back_inserter(temp), compareComponentsZIndex);
-      if (!temp.empty())
-      {
-         for (cvec_iter_t it(temp.begin()); it != temp.end(); ++it)
-         {
-            if (*it == comps.back())
-               (*it)->fireMouseEvent(MouseEvent(
-                     MouseEvent::kMOUSE_HOVER_DIRECT, *it, mouse_state_.getPosition()));
-
-            (*it)->fireMouseEvent(MouseEvent(
-                  MouseEvent::kMOUSE_HOVER, *it, mouse_state_.getPosition()));
-
-            hovered.push_back(*it);
-         }
-         // sort hovered components vector
-         std::stable_sort(hovered.begin(), hovered.end(), compareComponentsZIndex);
-      }
+      // a hover event since the mouse entered it and send them
+      // hover events
+      cvec_temp_.assign(hovered.begin(), hovered.end());
+      if (detail::scvecDiff(this, comps, cvec_temp_, detail::uisimHover))
+         std::stable_sort(hovered.begin(), hovered.end(), detail::zIndexLess);
 
       // disable hover timer until next mouse move
       hover_start_ticks_ = -1;

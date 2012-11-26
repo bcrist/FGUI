@@ -113,7 +113,7 @@ void FColoredRectangle::onCharacterInput(KeyboardEvent &evt)
 
 void FColoredRectangle::onMouseMove(MouseEvent &evt)
 {
-   log("MouseMove");
+   //log("MouseMove");
 }
 void FColoredRectangle::onMouseEnter(MouseEvent &evt)
 {
