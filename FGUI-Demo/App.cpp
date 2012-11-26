@@ -113,12 +113,27 @@ void App::initUI()
 
    ui_->setSize(Dimension(640, 480)); //ui_->getPreferredSize());
 
-   FColoredRectangle *cr1 = new FColoredRectangle(Color(1, 0, 0), Color(0, 1, 0), Color(0, 0, 1), Color(1, 1, 0));
+   FColoredRectangle *cr1 = new FColoredRectangle(Color(1, 0, 0, 0.5), Color(0, 1, 0, 0.5), Color(0, 0, 1, 0.5), Color(1, 1, 0, 0.5));
+   FColoredRectangle *cr2 = new FColoredRectangle(Color(1, 0, 0, 0.5), Color(0, 1, 0, 0.5), Color(0, 0, 1, 0.5), Color(1, 1, 0, 0.5));
+   FColoredRectangle *cr3 = new FColoredRectangle(Color(1, 0, 0, 0.5), Color(0, 1, 0, 0.5), Color(0, 0, 1, 0.5), Color(1, 1, 0, 0.5));
+   FColoredRectangle *cr4 = new FColoredRectangle(Color(1, 0, 0, 0.5), Color(0, 1, 0, 0.5), Color(0, 0, 1, 0.5), Color(1, 1, 0, 0.5));
 
    ui_->addComponent(cr1);
+   ui_->addComponent(cr2);
+   ui_->addComponent(cr3);
+   ui_->addComponent(cr4);
 
    cr1->setPosition(Point(5, 10));
-   cr1->setSize(Dimension(50, 25));
+   cr1->setSize(Dimension(200, 250));
+
+   cr2->setPosition(Point(100, 10));
+   cr2->setSize(Dimension(200, 250));
+
+   cr3->setPosition(Point(50, 100));
+   cr3->setSize(Dimension(200, 250));
+
+   cr4->setPosition(Point(400, 0));
+   cr4->setSize(Dimension(100, 125));
 
    ui_->uiSimulate(0);
 }
