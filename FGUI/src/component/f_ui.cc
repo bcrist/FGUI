@@ -327,6 +327,7 @@ bool FUI::uiResize(const Dimension &size)
    constrainedSize.set(min(max(constrainedSize.width, minSize.width), maxSize.width),
       min(max(constrainedSize.height, minSize.height), maxSize.height));
    setSize(constrainedSize);
+   window_size_ = constrainedSize;
 
    return constrainedSize == size;
 }

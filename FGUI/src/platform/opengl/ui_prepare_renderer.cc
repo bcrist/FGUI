@@ -25,7 +25,7 @@
 
 #ifdef FGUI_PLATFORM_OPENGL_UI_PREPARE_RENDERER_H_
 
-#include "component/f_component.h"
+#include "component/f_ui.h"
 
 #include "dimension.h"
 #include "point.h"
@@ -35,7 +35,9 @@ namespace stdgl {
 
 void UIPrepareRenderer::draw(FComponent *component)
 {
-   Dimension size = component->getSize();
+   FUI *comp = static_cast<FUI*>(component);
+
+   Dimension size = comp->getSize();
 
    glMatrixMode(GL_PROJECTION);
    glPushMatrix();
@@ -46,10 +48,16 @@ void UIPrepareRenderer::draw(FComponent *component)
    glPushMatrix();
    glLoadIdentity();
 
-   Rect clip = component->getClip();
+   const Rect &clip = comp->getClip();
 
    glEnable(GL_SCISSOR_TEST);
-   glScissor(clip.x, clip.y, clip.width, clip.height);
+   const Dimension &wnd = comp->getWindowSize();
+   GLfloat top = wnd.height - clip.y;
+   GLint sx((GLint)floor(clip.x)),
+         sy((GLint)floor(top - clip.height)),
+         sw((GLint)ceil(clip.width)),
+         sh((GLint)ceil(top));
+   glScissor(sx, sy, sw, sh);
 }
 
 }

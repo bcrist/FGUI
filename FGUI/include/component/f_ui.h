@@ -136,6 +136,8 @@ private:
 
    void populateRenderTasks();
 
+   Dimension window_size_;
+
 public:
    static const UID prepare_renderer_uid_;
    static const UID cleanup_renderer_uid_;
@@ -145,6 +147,8 @@ public:
    virtual void uiDraw();
    virtual void makeDirty(const Rect &absolute_rect);
    virtual void invalidateRenderTasks() { render_tasks_valid_ = false; }
+
+   const Dimension &getWindowSize() const { return window_size_; }
 
 
    // Simulation

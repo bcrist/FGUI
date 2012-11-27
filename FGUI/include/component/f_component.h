@@ -104,7 +104,6 @@ private:
    void uncheckedRemoveComponent(FComponent *c, bool destroy, std::vector<FComponent*>::iterator &it);
 
 protected:
-   PlatformInterface &getPlatform() { return platform_; }
 
    void setContentsLocked(bool contents_locked) { contents_locked_ = contents_locked; }
    void lockContents() { contents_locked_ = true; }
@@ -115,6 +114,7 @@ protected:
    void ignoreChildrenOnDeath() { destroy_children_ = false; }
 
 public:
+   PlatformInterface &getPlatform() { return platform_; }
    FUI *getUI() { return ui_; }
    FComponent *getParent() { return parent_; }
    

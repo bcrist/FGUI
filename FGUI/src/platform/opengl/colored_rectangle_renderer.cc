@@ -27,7 +27,7 @@
 
 #include <sstream>
 
-#include "component/f_component.h"
+#include "component/f_ui.h"
 #include "component/f_colored_rectangle.h"
 
 FGUI_BEGIN
@@ -53,7 +53,13 @@ void ColoredRectangleRenderer::draw(FComponent *component)
 
    cr->log(oss.str().c_str());
    
-   glScissor(clip.x, clip.y, clip.width, clip.height);
+   const Dimension &wnd = component->getUI()->getWindowSize();
+   GLfloat top = wnd.height - clip.y;
+   GLint sx((GLint)floor(clip.x)),
+         sy((GLint)floor(top - clip.height)),
+         sw((GLint)ceil(clip.width)),
+         sh((GLint)ceil(top));
+   glScissor(sx, sy, sw, sh);
 
    if (cr->isActive())
       glColor4fv(cr->getActiveColor().v);
