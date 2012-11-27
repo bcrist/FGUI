@@ -32,7 +32,7 @@ FGUI_BEGIN
 class UID
 {
 public:
-   UID() : uid_(next_uid_++) {}
+   UID() { uid_ = this; }
    UID(const UID &other) : uid_(other.uid_) {}
 
    UID &operator=(const UID &rhs) { uid_ = rhs.uid_; }
@@ -47,9 +47,7 @@ public:
    bool operator>(const UID &rhs) const { return uid_ > rhs.uid_; }
 
 private:
-   uint64_t uid_;
-
-   static uint64_t next_uid_;
+   UID *uid_;
 };
 
 FGUI_END

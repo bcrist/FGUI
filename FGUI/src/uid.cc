@@ -25,6 +25,6 @@
 
 FGUI_BEGIN
 
-uint64_t UID::next_uid_(0);
+//uint64_t UID::next_uid_(0);
 
 FGUI_END
