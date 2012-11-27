@@ -113,6 +113,24 @@ Rect &Rect::expand(const Rect &other)
    return *this;
 }
 
+Rect &Rect::intersect(const Rect &other)
+{
+   Point::component_t x0(max(x, other.x));
+   Point::component_t y0(max(y, other.y));
+
+   Point::component_t x1(min(getRight(), other.getRight()));
+   Point::component_t y1(min(getBottom(), other.getBottom()));
+
+   set(x0, y0, x1 - x0, y1 - y0);
+   return *this;
+}
+
+bool Rect::isInside(const Point &p) const
+{
+   return p.x >= getLeft() && p.x < getRight() &&
+          p.y >= getTop() && p.y < getBottom();
+}
+
 std::ostream &operator<<(std::ostream &os, const Rect &rect)
 {
    return os << rect.position << '|' << rect.size;

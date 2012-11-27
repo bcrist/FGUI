@@ -55,11 +55,17 @@ struct Rect
    Rect &expand(const Point &point);
    Rect &expand(const Rect &other);
 
+   Rect &intersect(const Rect &other);
+
    Point::component_t getLeft() const { return position.x; }
    Point::component_t getRight() const { return position.x + size.width; }
 
    Point::component_t getTop() const { return position.y; }
    Point::component_t getBottom() const { return position.y + size.height; }
+
+   bool hasSize() const { return width > 0 && height > 0; }
+   bool isInside(const Point &p) const;
+
 
    Point position;
    const Point::component_t &x;
