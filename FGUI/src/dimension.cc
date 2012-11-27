@@ -25,6 +25,8 @@
  
 FGUI_BEGIN
 
+const Dimension::component_t Dimension::kBIG(1000000);
+
 std::ostream &operator<<(std::ostream &os, const Dimension &dim)
 {
    return os << dim.width << 'x' << dim.height;

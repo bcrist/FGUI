@@ -19,7 +19,7 @@
 // IN THE SOFTWARE.
 //
 // Author: Benjamin Crist
-// File: platform/opengl/opengl_fui_cleanup_renderer.h
+// File: platform/opengl/colored_rectangle_renderer.h
 
 #ifndef FGUI_PLATFORM_OPENGL_COLORED_RECTANGLE_RENDERER_H_
 #ifndef FGUI_NO_OPENGL

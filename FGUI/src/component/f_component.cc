@@ -396,7 +396,6 @@ void FComponent::setPosition(const Point &newPosition)
    {
       makeDirty(); // the old position is dirty
       position_ = newPosition;
-      absolute_.position = parent_ == NULL ? position_ : parent_->clientToAbsolute(position_);
       invalidateLayout(); // the new position is made dirty when laid out
    }
 }
@@ -504,6 +503,8 @@ void FComponent::layoutComponent()
       else
          for (cvec_iter_t it(children_.begin()); it != children_.end(); ++it)
             (*it)->layoutComponent();
+
+      absolute_.position = parent_ == NULL ? position_ : parent_->clientToAbsolute(position_);
 
       valid_layout_ = true;
       makeDirty();

@@ -33,6 +33,8 @@ struct Dimension
 {
    typedef float_t component_t;
 
+   static const component_t kBIG;
+
    Dimension();
    Dimension(const Dimension &other);
    Dimension(component_t width, component_t height);

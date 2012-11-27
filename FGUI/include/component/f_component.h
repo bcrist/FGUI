@@ -151,9 +151,9 @@ public:
    const Point &getPosition() const { return position_; }
    const Rect &getAbsoluteRect() const { return absolute_; }
    const Point &getAbsolutePosition() const { return absolute_.position; }
-   void setPosition(const Point &position);
+   virtual void setPosition(const Point &position);
    const Dimension &getSize() const { return absolute_.size; }
-   void setSize(const Dimension &size);
+   virtual void setSize(const Dimension &size);
 
    virtual const Dimension &getMinimumSize() const { return min_size_; }
    virtual void setMinimumSize(const Dimension &size);

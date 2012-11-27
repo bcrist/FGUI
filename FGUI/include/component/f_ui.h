@@ -27,7 +27,7 @@
 
 #include "component/f_component.h"
 
-#include <stdint.h>
+#include <cstdint>
 #include <vector>
 #include <list>
 #include <algorithm>
@@ -176,6 +176,8 @@ public:
    FUI(const FUI_cfg &cfg);
    FUI(PlatformInterface &platform, const FUI_cfg &cfg);
    virtual ~FUI();
+
+   virtual const char *getComponentType() const { return "FUI"; }
 
 private:
    friend class FComponent;

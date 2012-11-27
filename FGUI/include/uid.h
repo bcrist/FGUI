@@ -25,7 +25,7 @@
 #define FGUI_UID_H_
 #include "fgui_std.h"
 
-#include <stdint.h>
+#include <cstdint>
 
 FGUI_BEGIN
 
