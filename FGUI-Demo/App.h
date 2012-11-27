@@ -37,6 +37,7 @@ private:
 	bool initOpenGL();
 	void initUI();
 	void startupError(const char *msg);
+    void debugGL();
 };
 
 BMC_END

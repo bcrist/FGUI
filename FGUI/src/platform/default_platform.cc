@@ -25,6 +25,7 @@
 
 #include "component/f_ui.h"
 #include "component/f_colored_rectangle.h"
+#include "component/f_label.h"
 
 #include "fgui_renderers.h"
 
@@ -38,6 +39,7 @@ DefaultPlatform::DefaultPlatform() : default_logger_(NULL)
    renderers_.insert(std::pair<UID, RendererInterface*>(FUI::cleanup_renderer_uid_, &default_ui_cleanup_r_));
 
    renderers_.insert(std::pair<UID, RendererInterface*>(FColoredRectangle::renderer_uid_, &default_colored_rectangle_r_));
+   renderers_.insert(std::pair<UID, RendererInterface*>(FLabel::renderer_uid_, &default_label_r_));
 
    #endif
 }

@@ -28,5 +28,6 @@
 #include "platform/opengl/ui_cleanup_renderer.h"
 
 #include "platform/opengl/colored_rectangle_renderer.h"
+#include "platform/opengl/label_renderer.h"
 
 #endif

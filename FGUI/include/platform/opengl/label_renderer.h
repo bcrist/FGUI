@@ -19,50 +19,37 @@
 // IN THE SOFTWARE.
 //
 // Author: Benjamin Crist
-// File: text_metrics.h
+// File: platform/opengl/label_renderer.h
 
-#ifndef FGUI_TEXT_METRICS_H_
-#define FGUI_TEXT_METRICS_H_
+#ifndef FGUI_PLATFORM_OPENGL_LABEL_RENDERER_H_
+#ifndef FGUI_NO_OPENGL
+#define FGUI_PLATFORM_OPENGL_LABEL_RENDERER_H_
 #include "fgui_std.h"
+#include "platform/opengl/opengl.h"
 
-#include "rect.h"
+#include "renderer_interface.h"
 
 FGUI_BEGIN
 
-struct TextMetrics
+struct Rect;
+
+namespace stdgl {
+
+class LabelRenderer : public RendererInterface
 {
-   TextMetrics()
-         : bounds(bounds_),
-           line(line_) {}
+public:
+   LabelRenderer() {}
+   virtual ~LabelRenderer() {}
 
-   TextMetrics(const Rect &bounds, const Rect &line):
-      bounds_(bounds),
-      line_(line),
-      bounds(bounds_),
-      line(line_) {}
-
-   TextMetrics(const TextMetrics &other):
-      bounds_(other.bounds_),
-      line_(other.line_),
-      bounds(bounds_),
-      line(line_) {}
-
-   TextMetrics &operator=(const TextMetrics &rhs)
-   {
-      bounds_ = rhs.bounds_;
-      line_ = rhs.line_;
-      return *this;
-   }
-
-   const Rect &bounds;
-   const Rect &line;
+   virtual bool checkPointOverComponent(const FComponent *component, const Point &absolute_coord) const;
+   virtual void draw(FComponent *component);
 
 private:
-   Rect bounds_;
-   Rect line_;
+   DISALLOW_COPY_AND_ASSIGN(LabelRenderer);
 };
 
+}
 FGUI_END
 
-
+#endif
 #endif

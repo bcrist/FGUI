@@ -68,6 +68,7 @@
 
 // Lightweight Components
 #include "component/f_colored_rectangle.h"
+#include "component/f_label.h"
 
 
 

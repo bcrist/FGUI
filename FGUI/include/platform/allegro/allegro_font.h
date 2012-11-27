@@ -36,7 +36,7 @@ FGUI_BEGIN
 class AllegroFont : public FontInterface
 {
 public:
-   explicit AllegroFont(ALLEGRO_FONT *afont);
+   AllegroFont(ALLEGRO_FONT *afont, float_t line_top, float_t line_height);
    virtual ~AllegroFont();
 
    virtual void drawString(const std::string &str, const Point &position, const Color &color);
@@ -44,8 +44,9 @@ public:
 
 private:
    ALLEGRO_FONT *afont_;
-   int line_ascent_;
-   int line_height_;
+
+   float_t line_top_;
+   float_t line_height_;
 
    DISALLOW_COPY_AND_ASSIGN(AllegroFont);
 };

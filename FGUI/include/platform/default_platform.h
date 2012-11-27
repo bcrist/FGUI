@@ -68,6 +68,7 @@ private:
    stdgl::UICleanupRenderer default_ui_cleanup_r_;
 
    stdgl::ColoredRectangleRenderer default_colored_rectangle_r_;
+   stdgl::LabelRenderer default_label_r_;
 
 #endif
 

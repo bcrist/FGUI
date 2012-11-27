@@ -27,6 +27,7 @@
 #include "fgui_std.h"
 
 #include <map>
+#include <set>
 #include <string>
 #include <cctype>
 #include <algorithm>
@@ -48,11 +49,9 @@ public:
    virtual FontInterface *getFont(const std::string &typeface, const std::string &style, float_t size);
    virtual void freeFont(FontInterface *font);
 
-   virtual void addFont(const std::string &typeface, const std::string &style, const std::string &filename);
+   virtual void addFont(const std::string &typeface, const std::string &style, const std::string &filename, float_t padding_top, float_t line_scale);
 
 private:
-   std::string getFilename(const std::string &typeface, const std::string &style);
-
    struct AFontSpec
    {
       AFontSpec() : filename_(""), size_(0.0f) {}
@@ -79,8 +78,10 @@ private:
 
    struct FontFileSpec
    {
-      FontFileSpec() : filename_(""), font_face_(""), font_style_("") {}
-      FontFileSpec(const std::string &typeface, const std::string &style) : font_face_(typeface), font_style_(style)
+      FontFileSpec() : filename_(""), font_face_(""), font_style_(""), padding_top_(0), line_scale_(1) {}
+      FontFileSpec(const std::string &typeface, const std::string &style)
+            : font_face_(typeface), font_style_(style),
+              padding_top_(0), line_scale_(1)
       {
          std::transform(font_face_.begin(), font_face_.end(), font_face_.begin(), tolower);
          std::transform(font_style_.begin(), font_style_.end(), font_style_.begin(), tolower);
@@ -93,21 +94,36 @@ private:
          filename_.append(".ttf");
       }
 
+      FontFileSpec(const std::string &typeface, const std::string &style, float_t padding_top, float_t line_scale, const std::string &filename)
+            : font_face_(typeface), font_style_(style), filename_(filename),
+              padding_top_(padding_top), line_scale_(line_scale)
+      {}
+
+      FontFileSpec &operator=(const FontFileSpec &rhs) { filename_ = rhs.filename_; font_face_ = rhs.font_face_; font_style_ = rhs.font_style_; padding_top_ = rhs.padding_top_; line_scale_ = rhs.line_scale_; return *this; }
+
       bool operator<(const FontFileSpec &rhs) const  { return rhs.font_face_ == font_face_ ? font_style_ < rhs.font_style_ : font_face_ < rhs.font_face_; }
       bool operator<=(const FontFileSpec &rhs) const { return rhs.font_face_ == font_face_ ? font_style_ <= rhs.font_style_ : font_face_ < rhs.font_face_; }
-      bool operator=(const FontFileSpec &rhs) const  { return rhs.font_face_ == font_face_ && font_style_ == rhs.font_style_; }
+      bool operator==(const FontFileSpec &rhs) const  { return rhs.font_face_ == font_face_ && font_style_ == rhs.font_style_; }
+      bool operator!=(const FontFileSpec &rhs) const  { return !(*this == rhs); }
       bool operator>=(const FontFileSpec &rhs) const { return rhs.font_face_ == font_face_ ? font_style_ >= rhs.font_style_ : font_face_ > rhs.font_face_; }
       bool operator>(const FontFileSpec &rhs) const  { return rhs.font_face_ == font_face_ ? font_style_ > rhs.font_style_ : font_face_ > rhs.font_face_; }
 
       const std::string &getFilename() const { return filename_; }
 
+      float_t getPadding() const { return padding_top_; }
+      float_t getLineScale() const { return line_scale_; }
+
    private:
       std::string filename_;
       std::string font_face_;
       std::string font_style_;
+      float_t padding_top_;
+      float_t line_scale_;
    };
 
-   std::map<FontFileSpec,std::string> font_files_;
+   FontFileSpec getFFS(const std::string &typeface, const std::string &style);
+
+   std::set<FontFileSpec> font_files_;
 
    std::map<AFontSpec,AFont> fonts_by_spec_;
    std::map<FontInterface*,AFontSpec> specs_by_font_;

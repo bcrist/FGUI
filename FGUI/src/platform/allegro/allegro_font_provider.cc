@@ -3,6 +3,10 @@
 
 #ifdef FGUI_PLATFORM_ALLEGRO_ALLEGRO_FONT_PROVIDER_H_
 
+#ifndef FGUI_NO_OPENGL
+#include "platform/opengl/opengl.h"
+#endif
+
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_font.h>
 
@@ -12,9 +16,8 @@ FGUI_BEGIN
 
 FontInterface *AllegroFontProvider::getFont(const std::string &typeface, const std::string &style, float_t size)
 {
-   std::string filename = getFilename(typeface, style);
-
-   AFontSpec afs(filename, size);
+   FontFileSpec ffs = getFFS(typeface, style);
+   AFontSpec afs(ffs.getFilename(), size);
 
    std::map<AFontSpec,AFont>::iterator it = fonts_by_spec_.find(afs);
    if (it != fonts_by_spec_.end())
@@ -26,11 +29,20 @@ FontInterface *AllegroFontProvider::getFont(const std::string &typeface, const s
    else
    {
       // create new font object
-      ALLEGRO_FONT *afont = al_load_font(filename.c_str(), size, 0);
+#     ifdef FGUI_NO_OPENGL
+         ALLEGRO_FONT *afont = al_load_font(filename.c_str(), size, 0);
+#     else
+         glPushAttrib(GL_COLOR_BUFFER_BIT | GL_ENABLE_BIT);
+
+         ALLEGRO_FONT *afont = al_load_font(ffs.getFilename().c_str(), size, 0);
+
+         glPopAttrib();
+#     endif
+      
       if (!afont)   // couldn't load font
          return NULL;
 
-      FontInterface *font = new AllegroFont(afont);
+      FontInterface *font = new AllegroFont(afont, ffs.getPadding() * size, ffs.getLineScale() * size);
 
       fonts_by_spec_[afs] = AFont(font);
       specs_by_font_[font] = afs;
@@ -59,21 +71,21 @@ void AllegroFontProvider::freeFont(FontInterface *font)
 }
 
 
-void AllegroFontProvider::addFont(const std::string &typeface, const std::string &style, const std::string &filename)
+void AllegroFontProvider::addFont(const std::string &typeface, const std::string &style, const std::string &filename, float_t padding_top, float_t line_scale)
 {
-   font_files_.insert(std::make_pair(FontFileSpec(typeface, style), filename));
+   font_files_.insert(FontFileSpec(typeface, style, padding_top, line_scale, filename));
 }
 
-std::string AllegroFontProvider::getFilename(const std::string &typeface, const std::string &style)
+AllegroFontProvider::FontFileSpec AllegroFontProvider::getFFS(const std::string &typeface, const std::string &style)
 {
    // look for this typeface/style in the registered fonts map
    FontFileSpec ffs(typeface, style);
-   std::map<FontFileSpec,std::string>::const_iterator it = font_files_.find(ffs);
+   std::set<FontFileSpec>::const_iterator it = font_files_.find(ffs);
    if (it != font_files_.end())
-      return it->second;
+      return *it;
 
    // otherwise, guess at what the filename might be
-   return ffs.getFilename();
+   return ffs;
 }
 
 FGUI_END

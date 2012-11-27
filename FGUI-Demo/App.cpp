@@ -7,6 +7,9 @@
 #include <tchar.h>
 #endif
 
+#include <allegro5/allegro_font.h>
+#include <allegro5/allegro_ttf.h>
+
 using fgui::Platform;
 using fgui::DefaultPlatform;
 using fgui::FComponent;
@@ -16,7 +19,8 @@ using fgui::Dimension;
 using fgui::Point;
 using fgui::Color;
 using fgui::Rect;
-
+using fgui::AllegroFontProvider;
+using fgui::FLabel;
 
 BMC_BEGIN
 
@@ -32,6 +36,14 @@ BMC_BEGIN
    if (!al_init())
    {
       startupError("The Allegro engine failed to initialize properly!");
+      return;
+   }
+
+   al_init_font_addon();
+
+   if (!al_init_ttf_addon())
+   {
+      startupError("There was a problem initializing the font loader!");
       return;
    }
 
@@ -73,6 +85,8 @@ BMC_BEGIN
 // and try one without multisampling if it fails.
 bool App::initOpenGL()
 {
+   al_set_new_window_position(25, 25);
+
    al_set_new_display_flags(ALLEGRO_OPENGL | ALLEGRO_WINDOWED | ALLEGRO_RESIZABLE);
 
    al_set_new_display_option(ALLEGRO_SAMPLE_BUFFERS, 1, ALLEGRO_REQUIRE);
@@ -90,8 +104,11 @@ bool App::initOpenGL()
    }
 
    glClearColor(0.75, 0.75, 0.75, 0);
+   
    glEnable (GL_BLEND);
    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+   //debugGL();
 
    return true;
 }
@@ -101,7 +118,14 @@ void App::initUI()
    DefaultPlatform &dp = static_cast<DefaultPlatform&>(Platform::get());
    dp.setLogger(&log_);
 
+   AllegroFontProvider &afp = static_cast<AllegroFontProvider&>(dp.getFontProvider());
+   afp.addFont("segoe ui", "regular", "segoe_ui.ttf", 0.29, 1);
+
+   //debugGL();
+
    ui_ = new FUI();
+
+   //debugGL();
 
    ui_->setMinimumSize(Dimension(100, 100));
    ui_->setMaximumSize(Dimension(800, 600));
@@ -111,9 +135,9 @@ void App::initUI()
    oss << ui_->getPreferredSize() << std::endl;
    log_.log(oss.str().c_str());
 
-   ui_->setSize(Dimension(640, 480)); //ui_->getPreferredSize());
+   ui_->uiResize(Dimension(640, 480)); //ui_->getPreferredSize());
 
-   FColoredRectangle *cr1 = new FColoredRectangle(Color(1, 0, 0, 0.5), Color(0, 1, 0, 0.5), Color(0, 0, 1, 0.5), Color(1, 1, 0, 0.5));
+   /*FColoredRectangle *cr1 = new FColoredRectangle(Color(1, 0, 0, 0.5), Color(0, 1, 0, 0.5), Color(0, 0, 1, 0.5), Color(1, 1, 0, 0.5));
    FColoredRectangle *cr2 = new FColoredRectangle(Color(1, 0, 0, 0.5), Color(0, 1, 0, 0.5), Color(0, 0, 1, 0.5), Color(1, 1, 0, 0.5));
    FColoredRectangle *cr3 = new FColoredRectangle(Color(1, 0, 0, 0.5), Color(0, 1, 0, 0.5), Color(0, 0, 1, 0.5), Color(1, 1, 0, 0.5));
    FColoredRectangle *cr4 = new FColoredRectangle(Color(1, 0, 0, 0.5), Color(0, 1, 0, 0.5), Color(0, 0, 1, 0.5), Color(1, 1, 0, 0.5));
@@ -123,7 +147,7 @@ void App::initUI()
    ui_->addComponent(cr3);
    ui_->addComponent(cr4);
 
-   cr1->setPosition(Point(5, 10));
+   cr1->setPosition(Point(5, 300));
    cr1->setSize(Dimension(200, 250));
 
    cr2->setPosition(Point(100, 10));
@@ -134,8 +158,175 @@ void App::initUI()
 
    cr4->setPosition(Point(400, 0));
    cr4->setSize(Dimension(100, 125));
+   */
+   //debugGL();
+
+   FLabel *label = new FLabel("Testing 1 2 3...");
+
+   //debugGL();
+
+   ui_->addComponent(label);
+
+   label->setPosition(Point(10, 10));
+   label->setSize(Dimension(200, 325));
 
    ui_->uiSimulate(0);
+}
+
+void App::debugGL()
+{
+   std::ostringstream oss;
+   GLboolean bool_[1];
+   GLfloat float_[4];
+   GLint int_[1];
+
+   glGetFloatv(GL_COLOR_CLEAR_VALUE, float_);
+   oss << "GL_COLOR_CLEAR_VALUE: " << Color(float_) << std::endl;
+
+   glGetBooleanv(GL_BLEND, bool_);
+   oss << "GL_BLEND:       " << (bool_[0] ? "enabled" : "disabled") << std::endl;
+
+   glGetFloatv(GL_BLEND_COLOR, float_);
+   oss << "GL_BLEND_COLOR: " << Color(float_) << std::endl;
+
+   glGetIntegerv(GL_BLEND_EQUATION_RGB, int_);
+   oss << "GL_BLEND_EQUATION_RGB: ";
+   switch (int_[0])
+   {
+      case GL_FUNC_ADD:              oss << "GL_FUNC_ADD"; break;
+      case GL_FUNC_SUBTRACT:         oss << "GL_FUNC_SUBTRACT"; break;
+      case GL_FUNC_REVERSE_SUBTRACT: oss << "GL_FUNC_REVERSE_SUBTRACT"; break;
+      case GL_MIN:                   oss << "GL_MIN"; break;
+      case GL_MAX:                   oss << "GL_MAX"; break;
+   }
+   oss << std::endl;
+
+   glGetIntegerv(GL_BLEND_SRC_RGB, int_);
+   oss << "GL_BLEND_SRC_RGB: ";
+   switch (int_[0])
+   {
+      case GL_ZERO:                     oss << "GL_ZERO"; break;
+      case GL_ONE:                      oss << "GL_ONE"; break;
+      case GL_SRC_COLOR:                oss << "GL_SRC_COLOR"; break;
+      case GL_ONE_MINUS_SRC_COLOR:      oss << "GL_ONE_MINUS_SRC_COLOR"; break;
+      case GL_DST_COLOR:                oss << "GL_DST_COLOR"; break;
+      case GL_ONE_MINUS_DST_COLOR:      oss << "GL_ONE_MINUS_DST_COLOR"; break;
+      case GL_SRC_ALPHA:                oss << "GL_SRC_ALPHA"; break;
+      case GL_ONE_MINUS_SRC_ALPHA:      oss << "GL_ONE_MINUS_SRC_ALPHA"; break;
+      case GL_DST_ALPHA:                oss << "GL_DST_ALPHA"; break;
+      case GL_ONE_MINUS_DST_ALPHA:      oss << "GL_ONE_MINUS_DST_ALPHA"; break;
+      case GL_CONSTANT_COLOR:           oss << "GL_CONSTANT_COLOR"; break;
+      case GL_ONE_MINUS_CONSTANT_COLOR: oss << "GL_ONE_MINUS_CONSTANT_COLOR"; break;
+      case GL_CONSTANT_ALPHA:           oss << "GL_CONSTANT_ALPHA"; break;
+      case GL_ONE_MINUS_CONSTANT_ALPHA: oss << "GL_ONE_MINUS_CONSTANT_ALPHA"; break;
+
+      case GL_SRC_ALPHA_SATURATE:	   oss << "GL_SRC_ALPHA_SATURATE"; break;
+      case GL_SRC1_COLOR:	           oss << "GL_SRC1_COLOR"; break;
+      case GL_ONE_MINUS_SRC1_COLOR:	   oss << "GL_ONE_MINUS_SRC1_COLOR"; break;
+      case GL_SRC1_ALPHA:	           oss << "GL_SRC1_ALPHA"; break;
+      case GL_ONE_MINUS_SRC1_ALPHA:    oss << "GL_ONE_MINUS_SRC1_ALPHA"; break;
+   }
+   oss << std::endl;
+
+   glGetIntegerv(GL_BLEND_DST_RGB, int_);
+   oss << "GL_BLEND_DST_RGB: ";
+   switch (int_[0])
+   {
+      case GL_ZERO:                     oss << "GL_ZERO"; break;
+      case GL_ONE:                      oss << "GL_ONE"; break;
+      case GL_SRC_COLOR:                oss << "GL_SRC_COLOR"; break;
+      case GL_ONE_MINUS_SRC_COLOR:      oss << "GL_ONE_MINUS_SRC_COLOR"; break;
+      case GL_DST_COLOR:                oss << "GL_DST_COLOR"; break;
+      case GL_ONE_MINUS_DST_COLOR:      oss << "GL_ONE_MINUS_DST_COLOR"; break;
+      case GL_SRC_ALPHA:                oss << "GL_SRC_ALPHA"; break;
+      case GL_ONE_MINUS_SRC_ALPHA:      oss << "GL_ONE_MINUS_SRC_ALPHA"; break;
+      case GL_DST_ALPHA:                oss << "GL_DST_ALPHA"; break;
+      case GL_ONE_MINUS_DST_ALPHA:      oss << "GL_ONE_MINUS_DST_ALPHA"; break;
+      case GL_CONSTANT_COLOR:           oss << "GL_CONSTANT_COLOR"; break;
+      case GL_ONE_MINUS_CONSTANT_COLOR: oss << "GL_ONE_MINUS_CONSTANT_COLOR"; break;
+      case GL_CONSTANT_ALPHA:           oss << "GL_CONSTANT_ALPHA"; break;
+      case GL_ONE_MINUS_CONSTANT_ALPHA: oss << "GL_ONE_MINUS_CONSTANT_ALPHA"; break;
+
+      case GL_SRC_ALPHA_SATURATE:	   oss << "GL_SRC_ALPHA_SATURATE"; break;
+      case GL_SRC1_COLOR:	           oss << "GL_SRC1_COLOR"; break;
+      case GL_ONE_MINUS_SRC1_COLOR:	   oss << "GL_ONE_MINUS_SRC1_COLOR"; break;
+      case GL_SRC1_ALPHA:	           oss << "GL_SRC1_ALPHA"; break;
+      case GL_ONE_MINUS_SRC1_ALPHA:    oss << "GL_ONE_MINUS_SRC1_ALPHA"; break;
+   }
+   oss << std::endl;
+
+   
+
+   glGetIntegerv(GL_BLEND_EQUATION_ALPHA, int_);
+   oss << "GL_BLEND_EQUATION_ALPHA: ";
+   switch (int_[0])
+   {
+      case GL_FUNC_ADD:              oss << "GL_FUNC_ADD"; break;
+      case GL_FUNC_SUBTRACT:         oss << "GL_FUNC_SUBTRACT"; break;
+      case GL_FUNC_REVERSE_SUBTRACT: oss << "GL_FUNC_REVERSE_SUBTRACT"; break;
+      case GL_MIN:                   oss << "GL_MIN"; break;
+      case GL_MAX:                   oss << "GL_MAX"; break;
+   }
+   oss << std::endl;
+   
+      glGetIntegerv(GL_BLEND_SRC_ALPHA, int_);
+   oss << "GL_BLEND_SRC_ALPHA: ";
+   switch (int_[0])
+   {
+      case GL_ZERO:                     oss << "GL_ZERO"; break;
+      case GL_ONE:                      oss << "GL_ONE"; break;
+      case GL_SRC_COLOR:                oss << "GL_SRC_COLOR"; break;
+      case GL_ONE_MINUS_SRC_COLOR:      oss << "GL_ONE_MINUS_SRC_COLOR"; break;
+      case GL_DST_COLOR:                oss << "GL_DST_COLOR"; break;
+      case GL_ONE_MINUS_DST_COLOR:      oss << "GL_ONE_MINUS_DST_COLOR"; break;
+      case GL_SRC_ALPHA:                oss << "GL_SRC_ALPHA"; break;
+      case GL_ONE_MINUS_SRC_ALPHA:      oss << "GL_ONE_MINUS_SRC_ALPHA"; break;
+      case GL_DST_ALPHA:                oss << "GL_DST_ALPHA"; break;
+      case GL_ONE_MINUS_DST_ALPHA:      oss << "GL_ONE_MINUS_DST_ALPHA"; break;
+      case GL_CONSTANT_COLOR:           oss << "GL_CONSTANT_COLOR"; break;
+      case GL_ONE_MINUS_CONSTANT_COLOR: oss << "GL_ONE_MINUS_CONSTANT_COLOR"; break;
+      case GL_CONSTANT_ALPHA:           oss << "GL_CONSTANT_ALPHA"; break;
+      case GL_ONE_MINUS_CONSTANT_ALPHA: oss << "GL_ONE_MINUS_CONSTANT_ALPHA"; break;
+
+      case GL_SRC_ALPHA_SATURATE:	   oss << "GL_SRC_ALPHA_SATURATE"; break;
+      case GL_SRC1_COLOR:	           oss << "GL_SRC1_COLOR"; break;
+      case GL_ONE_MINUS_SRC1_COLOR:	   oss << "GL_ONE_MINUS_SRC1_COLOR"; break;
+      case GL_SRC1_ALPHA:	           oss << "GL_SRC1_ALPHA"; break;
+      case GL_ONE_MINUS_SRC1_ALPHA:    oss << "GL_ONE_MINUS_SRC1_ALPHA"; break;
+   }
+   oss << std::endl;
+
+   glGetIntegerv(GL_BLEND_DST_ALPHA, int_);
+   oss << "GL_BLEND_DST_ALPHA: ";
+   switch (int_[0])
+   {
+      case GL_ZERO:                     oss << "GL_ZERO"; break;
+      case GL_ONE:                      oss << "GL_ONE"; break;
+      case GL_SRC_COLOR:                oss << "GL_SRC_COLOR"; break;
+      case GL_ONE_MINUS_SRC_COLOR:      oss << "GL_ONE_MINUS_SRC_COLOR"; break;
+      case GL_DST_COLOR:                oss << "GL_DST_COLOR"; break;
+      case GL_ONE_MINUS_DST_COLOR:      oss << "GL_ONE_MINUS_DST_COLOR"; break;
+      case GL_SRC_ALPHA:                oss << "GL_SRC_ALPHA"; break;
+      case GL_ONE_MINUS_SRC_ALPHA:      oss << "GL_ONE_MINUS_SRC_ALPHA"; break;
+      case GL_DST_ALPHA:                oss << "GL_DST_ALPHA"; break;
+      case GL_ONE_MINUS_DST_ALPHA:      oss << "GL_ONE_MINUS_DST_ALPHA"; break;
+      case GL_CONSTANT_COLOR:           oss << "GL_CONSTANT_COLOR"; break;
+      case GL_ONE_MINUS_CONSTANT_COLOR: oss << "GL_ONE_MINUS_CONSTANT_COLOR"; break;
+      case GL_CONSTANT_ALPHA:           oss << "GL_CONSTANT_ALPHA"; break;
+      case GL_ONE_MINUS_CONSTANT_ALPHA: oss << "GL_ONE_MINUS_CONSTANT_ALPHA"; break;
+
+      case GL_SRC_ALPHA_SATURATE:	   oss << "GL_SRC_ALPHA_SATURATE"; break;
+      case GL_SRC1_COLOR:	           oss << "GL_SRC1_COLOR"; break;
+      case GL_ONE_MINUS_SRC1_COLOR:	   oss << "GL_ONE_MINUS_SRC1_COLOR"; break;
+      case GL_SRC1_ALPHA:	           oss << "GL_SRC1_ALPHA"; break;
+      case GL_ONE_MINUS_SRC1_ALPHA:    oss << "GL_ONE_MINUS_SRC1_ALPHA"; break;
+   }
+   oss << std::endl;
+
+      
+
+
+   log_.log(oss.str().c_str());
 }
 
 void App::startupError(const char *msg)
@@ -247,6 +438,7 @@ int App::run()
 
       if (ui_->uiDrawRequested())
       {
+         //debugGL();
          glClear(GL_COLOR_BUFFER_BIT);
          ui_->makeDirty(ui_->getAbsoluteRect());
          ui_->uiDraw();

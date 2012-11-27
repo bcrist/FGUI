@@ -14,6 +14,7 @@
     <ClCompile Include="src\color.cc" />
     <ClCompile Include="src\component\f_colored_rectangle.cc" />
     <ClCompile Include="src\component\f_component.cc" />
+    <ClCompile Include="src\component\f_label.cc" />
     <ClCompile Include="src\component\f_ui.cc" />
     <ClCompile Include="src\default_focus_manager.cc" />
     <ClCompile Include="src\dimension.cc" />
@@ -23,6 +24,7 @@
     <ClCompile Include="src\platform\allegro\allegro_font_provider.cc" />
     <ClCompile Include="src\platform\default_platform.cc" />
     <ClCompile Include="src\platform\opengl\colored_rectangle_renderer.cc" />
+    <ClCompile Include="src\platform\opengl\label_renderer.cc" />
     <ClCompile Include="src\platform\opengl\ui_cleanup_renderer.cc" />
     <ClCompile Include="src\platform\opengl\ui_prepare_renderer.cc" />
     <ClCompile Include="src\platform\platform.cc" />
@@ -37,6 +39,7 @@
     <ClInclude Include="include\component\f_colored_rectangle.h" />
     <ClInclude Include="include\component\f_component.h" />
     <ClInclude Include="include\component\f_component_cfg.h" />
+    <ClInclude Include="include\component\f_label.h" />
     <ClInclude Include="include\component\f_ui.h" />
     <ClInclude Include="include\component\f_ui_cfg.h" />
     <ClInclude Include="include\event\focus_listener_interface.h" />
@@ -44,6 +47,7 @@
     <ClInclude Include="include\event\simulation_listener_interface.h" />
     <ClInclude Include="include\fgui_event.h" />
     <ClInclude Include="include\fgui_renderers.h" />
+    <ClInclude Include="include\platform\opengl\label_renderer.h" />
     <ClInclude Include="include\rect.h" />
     <ClInclude Include="include\uid.h" />
     <ClInclude Include="include\default_focus_manager.h" />
