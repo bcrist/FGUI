@@ -40,8 +40,8 @@ public:
    WindowsClipboard() {}
    virtual ~WindowsClipboard() {}
 
-   virtual std::string getText();
-   virtual void setText(const std::string &text);
+   virtual std::string getClipboard();
+   virtual void setClipboard(const std::string &text);
 
 private:
    DISALLOW_COPY_AND_ASSIGN(WindowsClipboard);
