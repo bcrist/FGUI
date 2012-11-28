@@ -85,7 +85,7 @@ BMC_BEGIN
 // and try one without multisampling if it fails.
 bool App::initOpenGL()
 {
-   al_set_new_window_position(25, 25);
+   al_set_new_window_position(2000, 250);
 
    al_set_new_display_flags(ALLEGRO_OPENGL | ALLEGRO_WINDOWED | ALLEGRO_RESIZABLE);
 
@@ -119,7 +119,41 @@ void App::initUI()
    dp.setLogger(&log_);
 
    AllegroFontProvider &afp = static_cast<AllegroFontProvider&>(dp.getFontProvider());
-   afp.addFont("segoe ui", "regular", "segoe_ui.ttf", 0.29, 1);
+   afp.addFont("alegreya", "black",        "font/Alegreya-Black.ttf",       0.26, 1);
+   afp.addFont("alegreya", "black italic", "font/Alegreya-BlackItalic.ttf", 0.26, 1);
+   afp.addFont("alegreya", "bold",         "font/Alegreya-Bold.ttf",        0.26, 1);
+   afp.addFont("alegreya", "bold italic",  "font/Alegreya-BoldItalic.ttf",  0.26, 1);
+   afp.addFont("alegreya", "italic",       "font/Alegreya-Italic.ttf",      0.26, 1);
+   afp.addFont("alegreya", "regular",      "font/Alegreya-Regular.ttf",     0.26, 1);
+
+   afp.addFont("comfortaa", "bold",        "font/Comfortaa-Bold.ttf",       0.22, 1);
+   afp.addFont("comfortaa", "light",       "font/Comfortaa-Light.ttf",      0.0, 1);
+   afp.addFont("comfortaa", "regular",     "font/Comfortaa-Regular.ttf",    0.0, 1);
+
+   afp.addFont("cousine", "bold italic",   "font/Cousine-BoldItalic-Latin.ttf", 0.1, 0.95);
+   afp.addFont("cousine", "bold",          "font/Cousine-Bold-Latin.ttf",       0.1, 0.95);
+   afp.addFont("cousine", "italic",        "font/Cousine-Italic-Latin.ttf",     0.1, 0.95);
+   afp.addFont("cousine", "regular",       "font/Cousine-Regular-Latin.ttf",    0.1, 0.95);
+
+   afp.addFont("didact gothic", "regular", "font/DidactGothic.ttf",         0.3, 0.95);
+
+   afp.addFont("junction", "regular",      "font/Junction 02.otf",         -0.1, 1.1);
+   afp.addFont("junction", "truetype",     "font/Junction 02.ttf",         -0.1, 1.1);
+
+   afp.addFont("jura", "book",             "font/Jura-Book.ttf",            0.18, 0.81);
+   afp.addFont("jura", "demibold",         "font/Jura-DemiBold.ttf",        0.22, 0.82);
+   afp.addFont("jura", "light",            "font/Jura-Light.ttf",           0.22, 0.82);
+   afp.addFont("jura", "medium",           "font/Jura-Medium.ttf",          0.22, 0.82);
+
+   afp.addFont("linear", "regular",        "font/linear.otf",               0.02, 0.84);
+
+   afp.addFont("news cycle", "bold",       "font/newscycle-bold.ttf",       0.47, 0.95);
+   afp.addFont("news cycle", "regular",    "font/newscycle-regular.ttf",    0.47, 0.95);
+
+   afp.addFont("pfennig", "regular",       "font/Pfennig.ttf",              0.36, 0.91);
+   afp.addFont("pfennig", "bold",          "font/PfennigBold.ttf",          0.36, 0.91);
+   afp.addFont("pfennig", "bold italic",   "font/PfennigBoldItalic.ttf",    0.36, 0.91);
+   afp.addFont("pfennig", "italic",        "font/PfennigItalic.ttf",        0.36, 0.91);
 
    //debugGL();
 
@@ -161,16 +195,114 @@ void App::initUI()
    */
    //debugGL();
 
-   FLabel *label = new FLabel("Testing 1 2 3...");
+   FLabel *label = new FLabel("The quick brown fox jumps over the sleeping dog...");
 
    //debugGL();
 
    ui_->addComponent(label);
-
-   label->setPosition(Point(10, 10));
-   label->setSize(Dimension(200, 325));
+   label->setSize(Dimension(640, 480));
 
    ui_->uiSimulate(0);
+}
+
+int App::run()
+{
+   if (!init_successful_)
+      return -1;
+
+   std::ostringstream oss;
+   oss << "sizeof(FComponent): " << sizeof(FComponent) << std::endl;
+   oss << "sizeof(FUI):        " << sizeof(FUI) << std::endl;
+
+   log_.log(oss.str().c_str());
+
+   ui_->logDebugRecursive();
+
+   al_start_timer(timer_);
+
+   while (true) {
+      ALLEGRO_EVENT ae;
+      bool windowResized = false;
+      al_wait_for_event(queue_, &ae);
+      do
+      {
+         switch (ae.type)
+         {
+            case ALLEGRO_EVENT_TIMER:
+               ui_->uiSimulate(10);
+               break;
+
+            case ALLEGRO_EVENT_DISPLAY_CLOSE:
+               return 0;
+
+            case ALLEGRO_EVENT_DISPLAY_RESIZE:
+               windowResized = true;
+               break;
+
+            case ALLEGRO_EVENT_DISPLAY_SWITCH_OUT:
+               ui_->uiActiveStatus(false);
+               break;
+
+            case ALLEGRO_EVENT_DISPLAY_SWITCH_IN:
+               ui_->uiActiveStatus(true);
+               break;
+
+            case ALLEGRO_EVENT_KEY_DOWN:
+               ui_->uiKeyState(ae.keyboard.keycode, true);
+
+               if (ae.keyboard.keycode == ALLEGRO_KEY_ESCAPE)
+                  return 0;
+               break;
+
+            case ALLEGRO_EVENT_KEY_UP:
+               ui_->uiKeyState(ae.keyboard.keycode, false);
+               break;
+
+            case ALLEGRO_EVENT_KEY_CHAR:
+               if ((ae.keyboard.modifiers & (ALLEGRO_KEYMOD_CTRL | ALLEGRO_KEYMOD_ALT | ALLEGRO_KEYMOD_LWIN | ALLEGRO_KEYMOD_RWIN | ALLEGRO_KEYMOD_MENU | ALLEGRO_KEYMOD_COMMAND)) == 0)
+                  ui_->uiCharacterEntry(ae.keyboard.unichar);
+               break;
+
+            case ALLEGRO_EVENT_MOUSE_LEAVE_DISPLAY:
+               ui_->uiMouseMove(Point(-9999, -9999));
+               break;
+
+            case ALLEGRO_EVENT_MOUSE_ENTER_DISPLAY:
+            case ALLEGRO_EVENT_MOUSE_AXES:
+            case ALLEGRO_EVENT_MOUSE_WARPED:
+               ui_->uiMouseMove(Point(ae.mouse.x + 0.5f, ae.mouse.y + 0.5f));
+               if (ae.mouse.dz != 0 || ae.mouse.dw != 0)
+                  ui_->uiMouseWheel(ae.mouse.dz, ae.mouse.dw);
+               break;
+            case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
+               ui_->uiMouseButton(ae.mouse.button, true);
+               break;
+            case ALLEGRO_EVENT_MOUSE_BUTTON_UP:
+               ui_->uiMouseButton(ae.mouse.button, false);
+               break;
+         }
+      } while (al_get_next_event(queue_, &ae));
+
+
+      if (windowResized)
+      {
+         if (ui_->uiResize(Dimension(ae.display.width, ae.display.height)))
+            al_acknowledge_resize(display_);
+         else
+            al_resize_display(display_, ceil(ui_->getSize().width), ceil(ui_->getSize().height));
+      }
+
+      if (ui_->uiDrawRequested())
+      {
+         //debugGL();
+         glClear(GL_COLOR_BUFFER_BIT);
+         ui_->makeDirty(ui_->getAbsoluteRect());
+         ui_->uiDraw();
+         al_flip_display();
+      }
+   }
+
+   return 0;
 }
 
 void App::debugGL()
@@ -349,105 +481,7 @@ void App::setWindowTitle(const char *title)
    al_set_window_title(display_, title);
 }
 
-int App::run()
-{
-   if (!init_successful_)
-      return -1;
 
-   std::ostringstream oss;
-   oss << "sizeof(FComponent): " << sizeof(FComponent) << std::endl;
-   oss << "sizeof(FUI):        " << sizeof(FUI) << std::endl;
-
-   log_.log(oss.str().c_str());
-
-   ui_->logDebugRecursive();
-
-   al_start_timer(timer_);
-
-   while (true) {
-      ALLEGRO_EVENT ae;
-      bool windowResized = false;
-      al_wait_for_event(queue_, &ae);
-      do
-      {
-         switch (ae.type)
-         {
-            case ALLEGRO_EVENT_TIMER:
-               ui_->uiSimulate(10);
-               break;
-
-            case ALLEGRO_EVENT_DISPLAY_CLOSE:
-               return 0;
-
-            case ALLEGRO_EVENT_DISPLAY_RESIZE:
-               windowResized = true;
-               break;
-
-            case ALLEGRO_EVENT_DISPLAY_SWITCH_OUT:
-               ui_->uiActiveStatus(false);
-               break;
-
-            case ALLEGRO_EVENT_DISPLAY_SWITCH_IN:
-               ui_->uiActiveStatus(true);
-               break;
-
-            case ALLEGRO_EVENT_KEY_DOWN:
-               ui_->uiKeyState(ae.keyboard.keycode, true);
-
-               if (ae.keyboard.keycode == ALLEGRO_KEY_ESCAPE)
-                  return 0;
-               break;
-
-            case ALLEGRO_EVENT_KEY_UP:
-               ui_->uiKeyState(ae.keyboard.keycode, false);
-               break;
-
-            case ALLEGRO_EVENT_KEY_CHAR:
-               if ((ae.keyboard.modifiers & (ALLEGRO_KEYMOD_CTRL | ALLEGRO_KEYMOD_ALT | ALLEGRO_KEYMOD_LWIN | ALLEGRO_KEYMOD_RWIN | ALLEGRO_KEYMOD_MENU | ALLEGRO_KEYMOD_COMMAND)) == 0)
-                  ui_->uiCharacterEntry(ae.keyboard.unichar);
-               break;
-
-            case ALLEGRO_EVENT_MOUSE_LEAVE_DISPLAY:
-               ui_->uiMouseMove(Point(-9999, -9999));
-               break;
-
-            case ALLEGRO_EVENT_MOUSE_ENTER_DISPLAY:
-            case ALLEGRO_EVENT_MOUSE_AXES:
-            case ALLEGRO_EVENT_MOUSE_WARPED:
-               ui_->uiMouseMove(Point(ae.mouse.x + 0.5f, ae.mouse.y + 0.5f));
-               if (ae.mouse.dz != 0 || ae.mouse.dw != 0)
-                  ui_->uiMouseWheel(ae.mouse.dz, ae.mouse.dw);
-               break;
-            case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
-               ui_->uiMouseButton(ae.mouse.button, true);
-               break;
-            case ALLEGRO_EVENT_MOUSE_BUTTON_UP:
-               ui_->uiMouseButton(ae.mouse.button, false);
-               break;
-         }
-      } while (al_get_next_event(queue_, &ae));
-
-
-      if (windowResized)
-      {
-         if (ui_->uiResize(Dimension(ae.display.width, ae.display.height)))
-            al_acknowledge_resize(display_);
-         else
-            al_resize_display(display_, ceil(ui_->getSize().width), ceil(ui_->getSize().height));
-      }
-
-      if (ui_->uiDrawRequested())
-      {
-         //debugGL();
-         glClear(GL_COLOR_BUFFER_BIT);
-         ui_->makeDirty(ui_->getAbsoluteRect());
-         ui_->uiDraw();
-         al_flip_display();
-      }
-   }
-
-   return 0;
-}
 
 BMC_END
 

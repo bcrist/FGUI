@@ -68,12 +68,17 @@ void LabelRenderer::draw(FComponent *component)
          sw((GLint)ceil(clip.width)),
          sh((GLint)ceil(top));
    glScissor(sx, sy, sw, sh);
-   /*
-   glColor4f(0, 1, 1, 0.2f);
-   Point p1(r.getLeft(), r.getTop()),
-         p2(r.getLeft(), r.getBottom()),
-         p3(r.getRight(), r.getBottom()),
-         p4(r.getRight(), r.getTop());
+   
+   Rect l = comp->getTextMetrics().line;
+   const Point &p = comp->getTextOrigin();
+
+   l.setPosition(Point(l.position.x + p.x, l.position.y + p.y));
+
+   glColor4f(0, 1, 1, 0.2);
+   Point p1(l.getLeft(), l.getTop()),
+         p2(l.getLeft(), l.getBottom()),
+         p3(l.getRight(), l.getBottom()),
+         p4(l.getRight(), l.getTop());
 
    glBegin(GL_QUADS);
       glVertex2fv(p1.v);
@@ -81,7 +86,7 @@ void LabelRenderer::draw(FComponent *component)
       glVertex2fv(p3.v);
       glVertex2fv(p4.v);
    glEnd();
-   */
+   
 
    FontInterface *font = comp->getFont();
    if (font)

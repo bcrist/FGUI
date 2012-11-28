@@ -27,7 +27,7 @@
 
 FGUI_BEGIN
 
-const UID FColoredRectangle::renderer_uid_;
+const UID FColoredRectangle::uid_;
 
 FColoredRectangle::FColoredRectangle():
    normal_color_(Color(1, 0, 0)),
@@ -37,7 +37,7 @@ FColoredRectangle::FColoredRectangle():
    active_(false),
    mouse_over_(false)
 {
-   setRenderer(getPlatform().checkoutRenderer(renderer_uid_));
+   setRenderer(getPlatform().checkoutRenderer(uid_));
    addFocusListener(this);
    addKeyboardListener(this);
    addMouseListener(this);
@@ -53,7 +53,7 @@ FColoredRectangle::FColoredRectangle(const Color &color):
    active_(false),
    mouse_over_(false)
 {
-   setRenderer(getPlatform().checkoutRenderer(renderer_uid_));
+   setRenderer(getPlatform().checkoutRenderer(uid_));
    addFocusListener(this);
    addKeyboardListener(this);
    addMouseListener(this);
@@ -72,7 +72,7 @@ FColoredRectangle::FColoredRectangle(const Color &normalColor,
       active_(false),
       mouse_over_(false)
 {
-   setRenderer(getPlatform().checkoutRenderer(renderer_uid_));
+   setRenderer(getPlatform().checkoutRenderer(uid_));
    addFocusListener(this);
    addKeyboardListener(this);
    addMouseListener(this);
@@ -82,7 +82,7 @@ FColoredRectangle::FColoredRectangle(const Color &normalColor,
 
 FColoredRectangle::~FColoredRectangle()
 {
-   getPlatform().returnRenderer(renderer_uid_, getRenderer());
+   getPlatform().returnRenderer(uid_, getRenderer());
 }
 
 

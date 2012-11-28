@@ -45,21 +45,20 @@ public:
    enum VAlign { kALIGN_MIDDLE = 0, kALIGN_TOP = 1, kALIGN_BOTTOM = 2 };
    enum HAlign { kALIGN_CENTER = 0, kALIGN_LEFT = 16, kALIGN_RIGHT = 32 };
    
-
    FLabel();
+   FLabel(PlatformInterface &platform);
    FLabel(const std::string &text);
-
+   FLabel(PlatformInterface &platform, const std::string &text);
    virtual ~FLabel();
 
-   static const UID renderer_uid_;
+   static const UID uid_;
+   static const UID typeface_uid_;
+   static const UID font_style_uid_;
 
    virtual const char *getComponentType() const { return "FLabel"; }
 
    const std::string &getText() const { return text_; }
    virtual void setText(const std::string &text);
-
-   //virtual void useFont(const std::string &typeface, const std::string &style);
-   FontInterface *getFont() { return font_; }
 
    uint8_t getAlign() const { return vertical_align_ | horizontal_align_; }
    uint8_t getVerticalAlign() const { return vertical_align_; }
@@ -68,10 +67,15 @@ public:
    virtual void setVerticalAlign(uint8_t align);
    virtual void setHorizontalAlign(uint8_t align);
 
-   const Point &getTextOrigin() const { return text_origin_; }
+   virtual void setFont(const std::string &typeface, const std::string &style, float_t size);
+   FontInterface *getFont() { return font_; }
 
+   virtual void setColor(const Color &color);
    const Color &getColor() const { return color_; }
 
+   virtual void setStyle(const Color &color, const std::string &typeface, const std::string &style, float_t size, uint8_t align);
+
+   const Point &getTextOrigin() const { return text_origin_; }
    const TextMetrics &getTextMetrics() const { return metrics_; }
 
    virtual void layoutComponent() { FComponent::layoutComponent(); recalcTextOrigin(); }
@@ -80,18 +84,18 @@ private:
    void recalcMetrics();
    void recalcTextOrigin();
 
-
    std::string text_;
 
    uint8_t vertical_align_;
    uint8_t horizontal_align_;
 
    Color color_;
+   FontInterface *font_;
 
    Point text_origin_;
-
-   FontInterface *font_;
    TextMetrics metrics_;
+
+   DISALLOW_COPY_AND_ASSIGN(FLabel);
 };
 
 FGUI_END

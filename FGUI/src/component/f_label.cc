@@ -27,34 +27,74 @@
 
 FGUI_BEGIN
 
-const UID FLabel::renderer_uid_;
+const UID FLabel::uid_;
+const UID FLabel::typeface_uid_;
+const UID FLabel::font_style_uid_;
 
 FLabel::FLabel()
-      : color_(Color(1, 1, 1)),
+      : text_(""),
         vertical_align_(kALIGN_MIDDLE),
-        horizontal_align_(kALIGN_CENTER)
+        horizontal_align_(kALIGN_CENTER),
+        color_(getPlatform().getColor(font_style_uid_))
 {
    PlatformInterface &platform = getPlatform();
-   setRenderer(platform.checkoutRenderer(renderer_uid_));
-   font_ = platform.getFontProvider().getFont("segoe ui", "regular", 14);
-   setText("");
+   setRenderer(platform.checkoutRenderer(uid_));
+   font_ = platform.getFont(
+      platform.getProperty(typeface_uid_), 
+      platform.getProperty(font_style_uid_),
+      platform.getReal(font_style_uid_));
+   recalcMetrics();
+}
+
+FLabel::FLabel(PlatformInterface &platform)
+      : FComponent(platform),
+        text_(""),
+        vertical_align_(kALIGN_MIDDLE),
+        horizontal_align_(kALIGN_CENTER),
+        color_(getPlatform().getColor(font_style_uid_))
+{
+   setRenderer(platform.checkoutRenderer(uid_));
+   font_ = platform.getFont(
+      platform.getProperty(typeface_uid_), 
+      platform.getProperty(font_style_uid_),
+      platform.getReal(font_style_uid_));
+   recalcMetrics();
 }
 
 FLabel::FLabel(const std::string &text)
-      : color_(Color(1, 1, 1)),
+      : text_(text),
         vertical_align_(kALIGN_MIDDLE),
-        horizontal_align_(kALIGN_CENTER)
+        horizontal_align_(kALIGN_CENTER),
+        color_(getPlatform().getColor(font_style_uid_))
 {
    PlatformInterface &platform = getPlatform();
-   setRenderer(platform.checkoutRenderer(renderer_uid_));
-   font_ = platform.getFontProvider().getFont("segoe ui", "regular", 14);
-   setText(text);
+   setRenderer(platform.checkoutRenderer(uid_));
+   font_ = platform.getFont(
+      platform.getProperty(typeface_uid_), 
+      platform.getProperty(font_style_uid_),
+      platform.getReal(font_style_uid_));
+   recalcMetrics();
+}
+
+FLabel::FLabel(PlatformInterface &platform, const std::string &text)
+      : FComponent(platform),
+        text_(text),
+        vertical_align_(kALIGN_MIDDLE),
+        horizontal_align_(kALIGN_CENTER),
+        color_(getPlatform().getColor(font_style_uid_))
+{
+   setRenderer(platform.checkoutRenderer(uid_));
+   font_ = platform.getFont(
+      platform.getProperty(typeface_uid_), 
+      platform.getProperty(font_style_uid_),
+      platform.getReal(font_style_uid_));
+   recalcMetrics();
 }
 
 FLabel::~FLabel()
 {
-   getPlatform().returnRenderer(renderer_uid_, getRenderer());
-   getPlatform().getFontProvider().freeFont(font_);
+   getPlatform().returnRenderer(uid_, getRenderer());
+   getPlatform().freeFont(font_);
 }
 
 void FLabel::setText(const std::string &text)
@@ -100,15 +140,45 @@ void FLabel::setHorizontalAlign(uint8_t align)
    }
 }
 
+void FLabel::setFont(const std::string &typeface, const std::string &style, float_t size)
+{
+   FontInterface *font = getPlatform().getFont(typeface, style, size);
+
+   if (font && font_ != font)
+   {
+      font_ = font;
+      recalcMetrics();
+   }
+}
+
+void FLabel::setColor(const Color &color)
+{
+   if (color_ != color)
+   {
+      color_ = color;
+      makeDirty();
+   }
+}
+
+void FLabel::setStyle(const Color &color, const std::string &typeface, const std::string &style, float_t size, uint8_t align)
+{
+   setFont(typeface, style, size);
+   setAlign(align);
+   setColor(color);
+}
+
 void FLabel::recalcMetrics()
 {
-   metrics_ = font_->getMetrics(text_);
+   if (font_)
+   {
+      metrics_ = font_->getMetrics(text_);
 
-   setMinimumSize(metrics_.bounds.size);
-   setPreferredSize(metrics_.bounds.size);
-   setMaximumSize(Dimension(Dimension::kBIG, Dimension::kBIG));
+      setMinimumSize(metrics_.bounds.size);
+      setPreferredSize(metrics_.bounds.size);
+      setMaximumSize(Dimension(Dimension::kBIG, Dimension::kBIG));
 
-   setSize(getPreferredSize());
+      setSize(getPreferredSize());
+   }
 }
 
 void FLabel::recalcTextOrigin()

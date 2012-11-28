@@ -50,7 +50,7 @@ public:
 
    virtual ~FColoredRectangle();
 
-   static const UID renderer_uid_;
+   static const UID uid_;
 
    virtual const char *getComponentType() const { return "FColoredRectangle"; }
 
