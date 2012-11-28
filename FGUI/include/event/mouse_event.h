@@ -59,8 +59,7 @@ struct MouseEvent : Event
            deltaW(0),
            down_location(Point(-1,-1)),
            down_component(NULL),
-           consumed_(false),
-           consumed(consumed_) {}
+           consumed(false) {}
 
    MouseEvent(int type, FComponent *target, const Point &loc, int button)
          : Event(type, target, false),
@@ -70,8 +69,7 @@ struct MouseEvent : Event
            deltaW(0),
            down_location(Point(-1,-1)),
            down_component(NULL),
-           consumed_(false),
-           consumed(consumed_) {}
+           consumed(false) {}
    
    MouseEvent(int type, FComponent *target, const Point &loc, int button, int deltaZ, int deltaW)
          : Event(type, target, false),
@@ -81,8 +79,7 @@ struct MouseEvent : Event
            deltaW(deltaW),
            down_location(Point(-1,-1)),
            down_component(NULL),
-           consumed_(false),
-           consumed(consumed_) {}
+           consumed(false) {}
 
    MouseEvent(int type, FComponent *target, const Point &loc, int button, int deltaZ, int deltaW, const Point &dloc, FComponent *dcomp)
          : Event(type, target, false),
@@ -92,8 +89,7 @@ struct MouseEvent : Event
            deltaW(deltaW),
            down_location(dloc),
            down_component(dcomp),
-           consumed_(false),
-           consumed(consumed_) {}
+           consumed(false) {}
 
    // if something is using a mouse event, usually it doesn't want anything else
    // to also use it.
@@ -109,9 +105,7 @@ struct MouseEvent : Event
 
    
 private:
-   // allows copying of event objects where copies are linked to the original's state
-   bool &consumed;
-   bool consumed_;
+   bool consumed;
 };
 
 FGUI_END

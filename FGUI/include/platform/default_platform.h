@@ -48,7 +48,7 @@ public:
    virtual FontInterface *getFont(const std::string &typeface, const std::string &style, float_t size) { return default_font_provider_.getFont(typeface, style, size); }
    virtual void freeFont(FontInterface *font) { default_font_provider_.freeFont(font); }
 
-   virtual FontProviderInterface &getFontProvider() { return default_font_provider_; }
+   virtual FontProviderInterface *getFontProvider() { return &default_font_provider_; }
 
    void setLogger(LoggerInterface *logger) { default_logger_ = logger; }
    virtual LoggerInterface *checkoutLogger() { return default_logger_; }

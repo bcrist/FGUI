@@ -114,7 +114,7 @@ bool scvecDiff(FUI *that, cvec_t &va, cvec_t &vb, void (*callback)(FUI *, FCompo
 
 void uimmFireLeave(FUI *that, FComponent *comp)
 {
-   comp->fireMouseEvent(MouseEvent(
+   comp->fireMouseEvent(&MouseEvent(
          MouseEvent::kMOUSE_LEAVE, comp, that->mouse_state_.getPosition()));
 
    // remove from hovered components vector
@@ -125,17 +125,17 @@ void uimmFireLeave(FUI *that, FComponent *comp)
 
 void uimmFireEnter(FUI *that, FComponent *comp)
 {
-   comp->fireMouseEvent(MouseEvent(
+   comp->fireMouseEvent(&MouseEvent(
          MouseEvent::kMOUSE_ENTER, comp, that->mouse_state_.getPosition()));
 }
 
 void uisimHover(FUI *that, FComponent *comp)
 {
    if (comp == that->components_under_mouse_->back())
-      comp->fireMouseEvent(MouseEvent(
+      comp->fireMouseEvent(&MouseEvent(
             MouseEvent::kMOUSE_HOVER_DIRECT, comp, that->mouse_state_.getPosition()));
 
-   comp->fireMouseEvent(MouseEvent(
+   comp->fireMouseEvent(&MouseEvent(
          MouseEvent::kMOUSE_HOVER, comp, that->mouse_state_.getPosition()));
 
    that->hovered_components_.push_back(comp);
@@ -202,13 +202,13 @@ bool FUI::setFocus(FComponent *component, FocusEvent::Cause cause)
       return false;
 
    if (focused_component_)
-      if (!focused_component_->fireFocusEvent(FocusEvent(
+      if (!focused_component_->fireFocusEvent(&FocusEvent(
             FocusEvent::kFOCUS_OUT, focused_component_,
             cause, focused_component_, component)))
          return false;
 
    if (component)
-      if (!component->fireFocusEvent(FocusEvent(
+      if (!component->fireFocusEvent(&FocusEvent(
             FocusEvent::kFOCUS_IN, component,
             cause, focused_component_, component)))
          return false;
@@ -301,14 +301,14 @@ void FUI::uiActiveStatus(bool active)
       {
          if (active)
          {
-            focused_component_->fireFocusEvent(FocusEvent(
+            focused_component_->fireFocusEvent(&FocusEvent(
                FocusEvent::kFOCUS_IN, focused_component_,
                FocusEvent::kSYSTEM, focused_component_, NULL));
             focused_component_->setFocused(true);
          }
          else
          {
-            focused_component_->fireFocusEvent(FocusEvent(
+            focused_component_->fireFocusEvent(&FocusEvent(
                FocusEvent::kFOCUS_OUT, focused_component_,
                FocusEvent::kSYSTEM, NULL, focused_component_));
             focused_component_->setFocused(false);
@@ -351,7 +351,7 @@ bool FUI::uiMouseMove(const Point &location)
 
    // get components under the mouse's new position and sort by z-index
    comps.clear();
-   getComponentsAt(comps, location);
+   getComponentsAt(&comps, location);
    std::stable_sort(comps.begin(), comps.end(), detail::zIndexLess);
 
    // compare with components under old mouse position and
@@ -359,7 +359,7 @@ bool FUI::uiMouseMove(const Point &location)
    if (!old_comps.empty())
    {
       if (comps.empty() || comps.back() != old_comps.back())
-         old_comps.back()->fireMouseEvent(MouseEvent(
+         old_comps.back()->fireMouseEvent(&MouseEvent(
                MouseEvent::kMOUSE_LEAVE_DIRECT, old_comps.back(), location));
 
       // components that are no longer under the mouse 
@@ -372,14 +372,14 @@ bool FUI::uiMouseMove(const Point &location)
       detail::scvecDiff(this, comps, old_comps, detail::uimmFireEnter);
 
       if (old_comps.empty() || comps.back() != old_comps.back())
-         comps.back()->fireMouseEvent(MouseEvent(
+         comps.back()->fireMouseEvent(&MouseEvent(
                MouseEvent::kMOUSE_ENTER_DIRECT, comps.back(), location));
    }
    
    // mouse move events for components that are under the mouse
    bool retval(false);
    for (cvec_iter_t it(comps.begin()); it != comps.end(); ++it)
-         retval = (*it)->fireMouseEvent(MouseEvent(
+         retval = (*it)->fireMouseEvent(&MouseEvent(
                MouseEvent::kMOUSE_MOVE, *it, location));
 
    return retval;
@@ -392,7 +392,7 @@ bool FUI::uiMouseButton(int button, bool is_down)
    FComponent *down_component = is_down ? NULL : mouse_state_.downComponent(button);
 
    if (down_component)
-      down_component->fireMouseEvent(MouseEvent(
+      down_component->fireMouseEvent(&MouseEvent(
             MouseEvent::kMOUSE_UP, down_component, mouse_state_.getPosition(), button, 0, 0,
             mouse_state_.downPosition(button), down_component));
 
@@ -404,7 +404,7 @@ bool FUI::uiMouseButton(int button, bool is_down)
 
       while (consuming_component && consuming_component != down_component &&
              !(checkModalDescendant(consuming_component) &&
-             consuming_component->fireMouseEvent(MouseEvent(
+             consuming_component->fireMouseEvent(&MouseEvent(
              is_down ? MouseEvent::kMOUSE_DOWN : MouseEvent::kMOUSE_UP,
              consuming_component, mouse_state_.getPosition(), button, 0, 0,
              is_down ? Point(-1, -1) : mouse_state_.downPosition(button),
@@ -427,7 +427,7 @@ bool FUI::uiMouseButton(int button, bool is_down)
          if (consuming_component == down_component)
          {
             // click
-            consuming_component->fireMouseEvent(MouseEvent(
+            consuming_component->fireMouseEvent(&MouseEvent(
                   MouseEvent::kMOUSE_CLICK, consuming_component,
                   mouse_state_.getPosition(), button, 0, 0,
                   mouse_state_.downPosition(button), down_component));
@@ -436,7 +436,7 @@ bool FUI::uiMouseButton(int button, bool is_down)
                 last_click_component_ == consuming_component)
             {
                // double click
-               consuming_component->fireMouseEvent(MouseEvent(
+               consuming_component->fireMouseEvent(&MouseEvent(
                      MouseEvent::kMOUSE_DOUBLE_CLICK, consuming_component,
                      mouse_state_.getPosition(), button, 0, 0,
                      mouse_state_.downPosition(button), down_component));
@@ -465,7 +465,7 @@ bool FUI::uiMouseWheel(int delta_z, int delta_w)
 {
    // try focused component first
    if (focused_component_ && checkModalDescendant(focused_component_) &&
-       focused_component_->fireMouseEvent(MouseEvent(
+       focused_component_->fireMouseEvent(&MouseEvent(
        MouseEvent::kMOUSE_WHEEL, focused_component_,
        mouse_state_.getPosition(), 0, delta_z, delta_w)))
    {
@@ -482,7 +482,7 @@ bool FUI::uiMouseWheel(int delta_z, int delta_w)
       ++rit;
 
       while (consuming_component && !(checkModalDescendant(consuming_component) &&
-             consuming_component->fireMouseEvent(MouseEvent(
+             consuming_component->fireMouseEvent(&MouseEvent(
              MouseEvent::kMOUSE_WHEEL, consuming_component,
              mouse_state_.getPosition(),0, delta_z, delta_w))))
       {
@@ -508,7 +508,7 @@ bool FUI::uiKeyState(int key, bool is_down)
 
    // first try focused component
    if (focused_component_ && checkModalDescendant(focused_component_) &&
-       focused_component_->fireKeyboardEvent(KeyboardEvent(
+       focused_component_->fireKeyboardEvent(&KeyboardEvent(
        is_down ? KeyboardEvent::kKEY_DOWN : KeyboardEvent::kKEY_UP,
        focused_component_, key, -1)))
    {
@@ -525,7 +525,7 @@ bool FUI::uiKeyState(int key, bool is_down)
       ++rit;
 
       while (consuming_component && !(checkModalDescendant(consuming_component) &&
-             consuming_component->fireKeyboardEvent(KeyboardEvent(
+             consuming_component->fireKeyboardEvent(&KeyboardEvent(
              is_down ? KeyboardEvent::kKEY_DOWN : KeyboardEvent::kKEY_UP,
              consuming_component, key, -1))))
       {
@@ -546,7 +546,7 @@ bool FUI::uiCharacterEntry(int codepoint)
 {
    // first try focused component
    if (focused_component_ && checkModalDescendant(focused_component_) &&
-       focused_component_->fireKeyboardEvent(KeyboardEvent(
+       focused_component_->fireKeyboardEvent(&KeyboardEvent(
        KeyboardEvent::kCHARACTER_INPUT, focused_component_, -1, codepoint)))
    {
       return true;
@@ -562,7 +562,7 @@ bool FUI::uiCharacterEntry(int codepoint)
       ++rit;
 
       while (consuming_component && !(checkModalDescendant(consuming_component) &&
-             consuming_component->fireKeyboardEvent(KeyboardEvent(
+             consuming_component->fireKeyboardEvent(&KeyboardEvent(
              KeyboardEvent::kCHARACTER_INPUT, consuming_component, -1, codepoint))))
       {
          if (rit == components_under_mouse_->rend())
@@ -587,7 +587,7 @@ void FUI::populateRenderTasks()
       return;
 
    render_tasks_.clear();
-   getRenderTasks(render_tasks_);
+   getRenderTasks(&render_tasks_);
 
    std::stable_sort(render_tasks_.begin(), render_tasks_.end());
 
@@ -653,7 +653,7 @@ void FUI::uiSimulate(int delta)
    // trigger simulate events if necessary
    if (last_simulate_ticks_ < 0 || ticks_ - last_simulate_ticks_ >= min_simulate_event_interval_)
    {
-      fireSimulateEvent(SimulateEvent(
+      fireSimulateEvent(&SimulateEvent(
             SimulateEvent::kSIMULATE, this, delta, ticks_, ticks_per_second_));
 
       last_simulate_ticks_ = ticks_;
@@ -667,7 +667,7 @@ void FUI::uiResetSimulation()
    last_click_ticks_ = -1;
    last_click_component_ = NULL;
 
-   fireSimulateEvent(SimulateEvent(
+   fireSimulateEvent(&SimulateEvent(
          SimulateEvent::kSIM_RESET, this, -1, ticks_, ticks_per_second_));
 }
 
@@ -692,8 +692,8 @@ FUI::FUI()
         max_double_click_interval_(350),
         hover_start_ticks_(-1),
         last_click_ticks_(-1),
-        prepare_renderer_(platform_.checkoutRenderer(prepare_renderer_uid_)),
-        cleanup_renderer_(platform_.checkoutRenderer(cleanup_renderer_uid_)),
+        prepare_renderer_(platform_->checkoutRenderer(prepare_renderer_uid_)),
+        cleanup_renderer_(platform_->checkoutRenderer(cleanup_renderer_uid_)),
         render_tasks_valid_(false),
         dirty_set_(true),
         ticks_per_second_(1000),
@@ -707,7 +707,7 @@ FUI::FUI()
    setFocusManager(&default_focus_manager_);
 }
 
-FUI::FUI(PlatformInterface &platform)
+FUI::FUI(PlatformInterface *platform)
       : FComponent(platform),
         modal_component_(NULL),
         focused_component_(NULL),
@@ -720,8 +720,8 @@ FUI::FUI(PlatformInterface &platform)
         max_double_click_interval_(350),
         hover_start_ticks_(-1),
         last_click_ticks_(-1),
-        prepare_renderer_(platform_.checkoutRenderer(prepare_renderer_uid_)),
-        cleanup_renderer_(platform_.checkoutRenderer(cleanup_renderer_uid_)),
+        prepare_renderer_(platform_->checkoutRenderer(prepare_renderer_uid_)),
+        cleanup_renderer_(platform_->checkoutRenderer(cleanup_renderer_uid_)),
         render_tasks_valid_(false),
         dirty_set_(true),
         ticks_per_second_(1000),
@@ -748,8 +748,8 @@ FUI::FUI(const FUI_cfg &cfg)
         max_double_click_interval_(cfg.getMaximumDoubleClickInterval()),
         hover_start_ticks_(-1),
         last_click_ticks_(-1),
-        prepare_renderer_(platform_.checkoutRenderer(prepare_renderer_uid_)),
-        cleanup_renderer_(platform_.checkoutRenderer(cleanup_renderer_uid_)),
+        prepare_renderer_(platform_->checkoutRenderer(prepare_renderer_uid_)),
+        cleanup_renderer_(platform_->checkoutRenderer(cleanup_renderer_uid_)),
         render_tasks_valid_(false),
         dirty_set_(true),
         ticks_per_second_(cfg.getTicksPerSecond()),
@@ -764,7 +764,7 @@ FUI::FUI(const FUI_cfg &cfg)
    setFocusManager(fm ? fm : &default_focus_manager_);
 }
 
-FUI::FUI(PlatformInterface &platform, const FUI_cfg &cfg)
+FUI::FUI(PlatformInterface *platform, const FUI_cfg &cfg)
       : FComponent(platform, cfg),
         modal_component_(NULL),
         focused_component_(NULL),
@@ -777,8 +777,8 @@ FUI::FUI(PlatformInterface &platform, const FUI_cfg &cfg)
         max_double_click_interval_(cfg.getMaximumDoubleClickInterval()),
         hover_start_ticks_(-1),
         last_click_ticks_(-1),
-        prepare_renderer_(platform_.checkoutRenderer(prepare_renderer_uid_)),
-        cleanup_renderer_(platform_.checkoutRenderer(cleanup_renderer_uid_)),
+        prepare_renderer_(platform_->checkoutRenderer(prepare_renderer_uid_)),
+        cleanup_renderer_(platform_->checkoutRenderer(cleanup_renderer_uid_)),
         render_tasks_valid_(false),
         dirty_set_(true),
         ticks_per_second_(cfg.getTicksPerSecond()),
@@ -795,8 +795,8 @@ FUI::FUI(PlatformInterface &platform, const FUI_cfg &cfg)
 
 FUI::~FUI()
 {
-   platform_.returnRenderer(prepare_renderer_uid_, prepare_renderer_);
-   platform_.returnRenderer(cleanup_renderer_uid_, cleanup_renderer_);
+   platform_->returnRenderer(prepare_renderer_uid_, prepare_renderer_);
+   platform_->returnRenderer(cleanup_renderer_uid_, cleanup_renderer_);
 }
 
 FGUI_END

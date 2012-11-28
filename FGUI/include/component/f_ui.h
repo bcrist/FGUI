@@ -176,9 +176,9 @@ public:
    // (De|Con)structors
 public:
    FUI();
-   FUI(PlatformInterface &platform);
+   FUI(PlatformInterface *platform);
    FUI(const FUI_cfg &cfg);
-   FUI(PlatformInterface &platform, const FUI_cfg &cfg);
+   FUI(PlatformInterface *platform, const FUI_cfg &cfg);
    virtual ~FUI();
 
    virtual const char *getComponentType() const { return "FUI"; }

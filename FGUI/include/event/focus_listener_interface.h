@@ -34,8 +34,8 @@ class FocusListenerInterface
 public:
    virtual ~FocusListenerInterface() {}
 
-   virtual void onFocusIn(FocusEvent &) = 0;
-   virtual void onFocusOut(FocusEvent &) = 0;
+   virtual void onFocusIn(FocusEvent *) = 0;
+   virtual void onFocusOut(FocusEvent *) = 0;
 };
 
 FGUI_END

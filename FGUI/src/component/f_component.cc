@@ -23,6 +23,7 @@
 
 #include "component/f_component.h"
 
+#include <cassert>
 #include <sstream>
 #include <algorithm>
 
@@ -36,22 +37,24 @@ typedef std::vector<FComponent*>::iterator cvec_iter_t;
 // Events
 
 // returns false if the focus operation was cancelled
-bool FComponent::fireFocusEvent(FocusEvent &evt)
+bool FComponent::fireFocusEvent(FocusEvent *evt)
 {
+   assert (evt);
+
    std::list<FocusListenerInterface*>::iterator it = focus_listeners_.begin();
    std::list<FocusListenerInterface*>::iterator end = focus_listeners_.end();
 
-   switch(evt.type)
+   switch(evt->type)
    {
       case FocusEvent::kFOCUS_IN: 
-         while (!evt.isCancelled() && it != end) 
+         while (!evt->isCancelled() && it != end) 
          { 
             (*it)->onFocusIn(evt); 
             ++it; 
          } 
          break;
       case FocusEvent::kFOCUS_OUT: 
-         while (!evt.isCancelled() && it != end) 
+         while (!evt->isCancelled() && it != end) 
          { 
             (*it)->onFocusOut(evt); 
             ++it;
@@ -61,22 +64,24 @@ bool FComponent::fireFocusEvent(FocusEvent &evt)
          return false;
    }
 
-   if (parent_ != NULL && !evt.isPropagationStopped())
+   if (parent_ != NULL && !evt->isPropagationStopped())
       return parent_->fireFocusEvent(evt);
 
-   return !evt.isCancelled();
+   return !evt->isCancelled();
 }
 
 // returns true if the component consumed the event
-bool FComponent::fireKeyboardEvent(KeyboardEvent &evt)
+bool FComponent::fireKeyboardEvent(KeyboardEvent *evt)
 {
+   assert (evt);
+
    std::list<KeyboardListenerInterface*>::iterator it = keyboard_listeners_.begin();
    std::list<KeyboardListenerInterface*>::iterator end = keyboard_listeners_.end();
 
-   switch(evt.type)
+   switch(evt->type)
    {
       case KeyboardEvent::kKEY_DOWN:  
-         while (!evt.isCancelled() && it != end) 
+         while (!evt->isCancelled() && it != end) 
          {
             (*it)->onKeyDown(evt);
             ++it;
@@ -84,7 +89,7 @@ bool FComponent::fireKeyboardEvent(KeyboardEvent &evt)
          break;
 
       case KeyboardEvent::kKEY_UP:     
-         while (!evt.isCancelled() && it != end)
+         while (!evt->isCancelled() && it != end)
          { 
             (*it)->onKeyUp(evt);
             ++it;
@@ -92,7 +97,7 @@ bool FComponent::fireKeyboardEvent(KeyboardEvent &evt)
          break;
 
       case KeyboardEvent::kCHARACTER_INPUT:
-         while (!evt.isCancelled() && it != end)
+         while (!evt->isCancelled() && it != end)
          { 
             (*it)->onCharacterInput(evt); 
             ++it;
@@ -103,22 +108,24 @@ bool FComponent::fireKeyboardEvent(KeyboardEvent &evt)
          return false;
    }
 
-   if (parent_ != NULL && !evt.isPropagationStopped())
+   if (parent_ != NULL && !evt->isPropagationStopped())
       return parent_->fireKeyboardEvent(evt);
 
-   return evt.isConsumed();
+   return evt->isConsumed();
 }
 
 // returns true if the component consumed the event
-bool FComponent::fireMouseEvent(MouseEvent &evt)
+bool FComponent::fireMouseEvent(MouseEvent *evt)
 {
+   assert (evt);
+
    std::list<MouseListenerInterface*>::iterator it = mouse_listeners_.begin();
    std::list<MouseListenerInterface*>::iterator end = mouse_listeners_.end();
 
-   switch(evt.type)
+   switch(evt->type)
    {
       case MouseEvent::kMOUSE_MOVE:
-         while (!evt.isCancelled() && it != end)
+         while (!evt->isCancelled() && it != end)
          {
             (*it)->onMouseMove(evt);
             ++it;
@@ -126,7 +133,7 @@ bool FComponent::fireMouseEvent(MouseEvent &evt)
          break;
 
       case MouseEvent::kMOUSE_ENTER:
-         while (!evt.isCancelled() && it != end)
+         while (!evt->isCancelled() && it != end)
          {
             (*it)->onMouseEnter(evt);
             ++it;
@@ -134,7 +141,7 @@ bool FComponent::fireMouseEvent(MouseEvent &evt)
          break;
 
       case MouseEvent::kMOUSE_ENTER_DIRECT:
-         while (!evt.isCancelled() && it != end)
+         while (!evt->isCancelled() && it != end)
          {
             (*it)->onMouseEnterDirect(evt);
             ++it;
@@ -142,7 +149,7 @@ bool FComponent::fireMouseEvent(MouseEvent &evt)
          break;
 
       case MouseEvent::kMOUSE_LEAVE:
-         while (!evt.isCancelled() && it != end)
+         while (!evt->isCancelled() && it != end)
          {
             (*it)->onMouseLeave(evt);
             ++it;
@@ -150,7 +157,7 @@ bool FComponent::fireMouseEvent(MouseEvent &evt)
          break;
 
       case MouseEvent::kMOUSE_LEAVE_DIRECT:
-         while (!evt.isCancelled() && it != end)
+         while (!evt->isCancelled() && it != end)
          {
             (*it)->onMouseLeaveDirect(evt);
             ++it;
@@ -158,7 +165,7 @@ bool FComponent::fireMouseEvent(MouseEvent &evt)
          break;
 
       case MouseEvent::kMOUSE_HOVER:
-         while (!evt.isCancelled() && it != end)
+         while (!evt->isCancelled() && it != end)
          {
             (*it)->onMouseHover(evt);
             ++it;
@@ -166,7 +173,7 @@ bool FComponent::fireMouseEvent(MouseEvent &evt)
          break;
 
       case MouseEvent::kMOUSE_HOVER_DIRECT:
-         while (!evt.isCancelled() && it != end)
+         while (!evt->isCancelled() && it != end)
          {
             (*it)->onMouseHoverDirect(evt);
             ++it;
@@ -174,7 +181,7 @@ bool FComponent::fireMouseEvent(MouseEvent &evt)
          break;
 
       case MouseEvent::kMOUSE_WHEEL:
-         while (!evt.isCancelled() && it != end)
+         while (!evt->isCancelled() && it != end)
          {
             (*it)->onMouseWheel(evt);
             ++it;
@@ -182,7 +189,7 @@ bool FComponent::fireMouseEvent(MouseEvent &evt)
          break;
       
       case MouseEvent::kMOUSE_DOWN:
-         while (!evt.isCancelled() && it != end)
+         while (!evt->isCancelled() && it != end)
          {
             (*it)->onMouseDown(evt); 
             ++it; 
@@ -190,7 +197,7 @@ bool FComponent::fireMouseEvent(MouseEvent &evt)
          break;
 
       case MouseEvent::kMOUSE_UP:
-         while (!evt.isCancelled() && it != end)
+         while (!evt->isCancelled() && it != end)
          { 
             (*it)->onMouseUp(evt); 
             ++it; 
@@ -198,7 +205,7 @@ bool FComponent::fireMouseEvent(MouseEvent &evt)
          break;
 
       case MouseEvent::kMOUSE_CLICK:
-         while (!evt.isCancelled() && it != end)
+         while (!evt->isCancelled() && it != end)
          { 
             (*it)->onMouseClick(evt); 
             ++it; 
@@ -206,7 +213,7 @@ bool FComponent::fireMouseEvent(MouseEvent &evt)
          break;
 
       case MouseEvent::kMOUSE_DOUBLE_CLICK:
-         while (!evt.isCancelled() && it != end)
+         while (!evt->isCancelled() && it != end)
          { 
             (*it)->onMouseDoubleClick(evt); 
             ++it; 
@@ -217,30 +224,32 @@ bool FComponent::fireMouseEvent(MouseEvent &evt)
          return false;
    }
 
-   if (parent_ != NULL && !evt.isPropagationStopped())
+   if (parent_ != NULL && !evt->isPropagationStopped())
       return parent_->fireMouseEvent(evt);
 
-   return evt.isConsumed();
+   return evt->isConsumed();
 }
 
 // returns false if propagation was stopped at this element
 // (may return true if a child component cancels)
-bool FComponent::fireSimulateEvent(SimulateEvent &evt)
+bool FComponent::fireSimulateEvent(SimulateEvent *evt)
 {
+   assert (evt);
+
    std::list<SimulationListenerInterface*>::iterator it = simulation_listeners_.begin();
    std::list<SimulationListenerInterface*>::iterator end = simulation_listeners_.end();
 
-   switch(evt.type)
+   switch(evt->type)
    {
       case SimulateEvent::kSIMULATE:  
-         while (!evt.isCancelled() && it != end) 
+         while (!evt->isCancelled() && it != end) 
          { 
             (*it)->onSimulate(evt); 
             ++it;
          }
          break;
       case SimulateEvent::kSIM_RESET:   
-         while (!evt.isCancelled() && it != end) 
+         while (!evt->isCancelled() && it != end) 
          { 
             (*it)->onResetSimulation(evt); 
             ++it; 
@@ -251,14 +260,14 @@ bool FComponent::fireSimulateEvent(SimulateEvent &evt)
    }
 
    // unlike most events, simulation events propagate down, not up
-   if (!evt.isPropagationStopped())
+   if (!evt->isPropagationStopped())
    {
       cvec_iter_t child_it = children_.begin(),
                   child_end = children_.end();
       while (child_it != child_end)
       {
-         (*child_it)->fireSimulateEvent(SimulateEvent(
-            evt.type, evt.target, evt.delta, evt.ticks, evt.ticksPerSecond));
+         (*child_it)->fireSimulateEvent(&SimulateEvent(
+            evt->type, evt->target, evt->delta, evt->ticks, evt->ticksPerSecond));
          ++child_it;
       }
 
@@ -329,7 +338,7 @@ bool FComponent::addComponent(FComponent *c)
    if (contents_locked_)
       return false;   // if changes aren't allowed right now
 
-   if (&platform_ != &c->platform_)
+   if (platform_ != c->platform_)
       return false;  // if the component was created using a different PlatformInterface
 
    if (c->parent_)
@@ -390,12 +399,12 @@ int FComponent::getComponentIndex(const FComponent *component) const
 }
 
 // Layout
-void FComponent::setPosition(const Point &newPosition)
+void FComponent::setPosition(const Point &position)
 {
-   if (position_ != newPosition)
+   if (position_ != position)
    {
       makeDirty(); // the old position is dirty
-      position_ = newPosition;
+      position_ = position;
       invalidateLayout(); // the new position is made dirty when laid out
    }
 }
@@ -558,12 +567,12 @@ void FComponent::makeDirty()
       ui_->makeDirty(absolute_);
 }
 
-void FComponent::getRenderTasks(std::vector<RenderTask> &tasks)
+void FComponent::getRenderTasks(std::vector<RenderTask> *tasks)
 {
    if (visible_)
    {
       if (renderer_)
-         tasks.push_back(RenderTask(this, renderer_));
+         tasks->push_back(RenderTask(this, renderer_));
 
       for(cvec_iter_t it(children_.begin()); it != children_.end(); ++it)
          (*it)->getRenderTasks(tasks);
@@ -591,12 +600,12 @@ Point FComponent::absoluteToClient(const Point &absolute_coord) const
    return Point(absolute_coord.x - absolute_.position.x, absolute_coord.y - absolute_.position.y);
 }
 
-void FComponent::getComponentsAt(std::vector<FComponent*> &components, const Point &absolute_coord)
+void FComponent::getComponentsAt(std::vector<FComponent*> *components, const Point &absolute_coord)
 {
    if (visible_)
    {
       if (checkPointOverComponent(absolute_coord))
-         components.push_back(this);
+         components->push_back(this);
 
       for (cvec_iter_t it(children_.begin()); it != children_.end(); ++it)
       {
@@ -826,11 +835,11 @@ FComponent::FComponent()
         focusable_(false),
         focus_mgr_(NULL),
 
-        logger_(platform_.checkoutLogger())
+        logger_(platform_->checkoutLogger())
 {}
 
-FComponent::FComponent(PlatformInterface &platform)
-      : platform_(platform),
+FComponent::FComponent(PlatformInterface *platform)
+      : platform_(platform ? platform : Platform::get()),
 
         ui_(NULL),
         parent_(NULL),
@@ -851,7 +860,7 @@ FComponent::FComponent(PlatformInterface &platform)
         focusable_(false),
         focus_mgr_(NULL),
 
-        logger_(platform_.checkoutLogger())
+        logger_(platform_->checkoutLogger())
 {}
 
 FComponent::FComponent(const FComponent_cfg &cfg)
@@ -882,14 +891,14 @@ FComponent::FComponent(const FComponent_cfg &cfg)
         focusable_(cfg.getFocusable()),
         focus_mgr_(cfg.getFocusMgr()),
 
-        logger_(platform_.checkoutLogger())
+        logger_(platform_->checkoutLogger())
 {
    absolute_.position = parent_ == NULL ? position_ : parent_->clientToAbsolute(position_);
    absolute_.size = cfg.getSize();
 }
 
-FComponent::FComponent(PlatformInterface &platform, const FComponent_cfg &cfg)
-      : platform_(platform),
+FComponent::FComponent(PlatformInterface *platform, const FComponent_cfg &cfg)
+      : platform_(platform ? platform : Platform::get()),
       
         ui_(NULL),
         parent_(NULL),
@@ -916,7 +925,7 @@ FComponent::FComponent(PlatformInterface &platform, const FComponent_cfg &cfg)
         focusable_(cfg.getFocusable()),
         focus_mgr_(cfg.getFocusMgr()),
 
-        logger_(platform_.checkoutLogger())
+        logger_(platform_->checkoutLogger())
 {
    absolute_.position = parent_ == NULL ? position_ : parent_->clientToAbsolute(position_);
    absolute_.size = cfg.getSize();
@@ -924,7 +933,7 @@ FComponent::FComponent(PlatformInterface &platform, const FComponent_cfg &cfg)
 
 FComponent::~FComponent()
 {
-   platform_.returnLogger(logger_);
+   platform_->returnLogger(logger_);
 
    if (destroy_children_)
       for (cvec_iter_t it(children_.begin()); it != children_.end(); ++it)

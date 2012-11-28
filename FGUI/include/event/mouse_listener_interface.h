@@ -34,18 +34,18 @@ class MouseListenerInterface
 public:
    virtual ~MouseListenerInterface() {}
 
-   virtual void onMouseMove(MouseEvent &) = 0;
-   virtual void onMouseEnter(MouseEvent &) = 0;
-   virtual void onMouseLeave(MouseEvent &) = 0;
-   virtual void onMouseEnterDirect(MouseEvent &) = 0;
-   virtual void onMouseLeaveDirect(MouseEvent &) = 0;
-   virtual void onMouseHover(MouseEvent &) = 0;
-   virtual void onMouseHoverDirect(MouseEvent &) = 0;
-   virtual void onMouseWheel(MouseEvent &) = 0;
-   virtual void onMouseDown(MouseEvent &) = 0;
-   virtual void onMouseUp(MouseEvent &) = 0;
-   virtual void onMouseClick(MouseEvent &) = 0;
-   virtual void onMouseDoubleClick(MouseEvent &) = 0;
+   virtual void onMouseMove(MouseEvent *) = 0;
+   virtual void onMouseEnter(MouseEvent *) = 0;
+   virtual void onMouseLeave(MouseEvent *) = 0;
+   virtual void onMouseEnterDirect(MouseEvent *) = 0;
+   virtual void onMouseLeaveDirect(MouseEvent *) = 0;
+   virtual void onMouseHover(MouseEvent *) = 0;
+   virtual void onMouseHoverDirect(MouseEvent *) = 0;
+   virtual void onMouseWheel(MouseEvent *) = 0;
+   virtual void onMouseDown(MouseEvent *) = 0;
+   virtual void onMouseUp(MouseEvent *) = 0;
+   virtual void onMouseClick(MouseEvent *) = 0;
+   virtual void onMouseDoubleClick(MouseEvent *) = 0;
 
 };
 

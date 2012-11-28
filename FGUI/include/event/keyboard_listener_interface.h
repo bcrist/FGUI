@@ -34,9 +34,9 @@ class KeyboardListenerInterface
 public:
    virtual ~KeyboardListenerInterface() {}
 
-   virtual void onKeyDown(KeyboardEvent &) = 0;
-   virtual void onKeyUp(KeyboardEvent &) = 0;
-   virtual void onCharacterInput(KeyboardEvent &) = 0;
+   virtual void onKeyDown(KeyboardEvent *) = 0;
+   virtual void onKeyUp(KeyboardEvent *) = 0;
+   virtual void onCharacterInput(KeyboardEvent *) = 0;
 };
 
 FGUI_END

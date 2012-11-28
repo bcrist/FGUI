@@ -75,24 +75,24 @@ private:
 public:
    void addFocusListener(FocusListenerInterface *listener) { focus_listeners_.push_back(listener); }
    void removeFocusListener(FocusListenerInterface *listener) { focus_listeners_.remove(listener); }
-   bool fireFocusEvent(FocusEvent &evt);
+   bool fireFocusEvent(FocusEvent *evt);
 
    void addKeyboardListener(KeyboardListenerInterface *listener) { keyboard_listeners_.push_back(listener); }
    void removeKeyboardListener(KeyboardListenerInterface *listener) { keyboard_listeners_.remove(listener); }
-   bool fireKeyboardEvent(KeyboardEvent &evt);
+   bool fireKeyboardEvent(KeyboardEvent *evt);
 
    void addMouseListener(MouseListenerInterface *listener) { mouse_listeners_.push_back(listener); }
    void removeMouseListener(MouseListenerInterface *listener) { mouse_listeners_.remove(listener); }
-   bool fireMouseEvent(MouseEvent &evt);
+   bool fireMouseEvent(MouseEvent *evt);
 
    void addSimulationListener(SimulationListenerInterface *listener) { simulation_listeners_.push_back(listener); }
    void removeSimulationListener(SimulationListenerInterface *listener) { simulation_listeners_.remove(listener); }
-   bool fireSimulateEvent(SimulateEvent &evt);
+   bool fireSimulateEvent(SimulateEvent *evt);
    
 
    // Contents
 private:
-   PlatformInterface &platform_;
+   PlatformInterface *platform_;
    FUI *ui_;
    FComponent *parent_;
    std::vector<FComponent*> children_;
@@ -114,7 +114,7 @@ protected:
    void ignoreChildrenOnDeath() { destroy_children_ = false; }
 
 public:
-   PlatformInterface &getPlatform() { return platform_; }
+   PlatformInterface *getPlatform() { return platform_; }
    FUI *getUI() { return ui_; }
    FComponent *getParent() { return parent_; }
    
@@ -193,14 +193,14 @@ public:
    const Rect &getClip() const { return clip_; }
 
    virtual void makeDirty();
-   virtual void getRenderTasks(std::vector<RenderTask> &tasks);
+   virtual void getRenderTasks(std::vector<RenderTask> *tasks);
    virtual void setClip(const Rect &clip);
 
 
    // Coordinate Processing
    virtual Point clientToAbsolute(const Point &client_coord) const;
    virtual Point absoluteToClient(const Point &absolute_coord) const;
-   virtual void getComponentsAt(std::vector<FComponent*> &components, const Point &absolute_coord);
+   virtual void getComponentsAt(std::vector<FComponent*> *components, const Point &absolute_coord);
    virtual bool checkPointOverComponent(const Point &absolute_coord) const;
    bool checkPointInBounds(const Point &absolute_coord) const;
 
@@ -250,9 +250,9 @@ public:
 
 public:
    FComponent();
-   FComponent(PlatformInterface &platform);
+   FComponent(PlatformInterface *platform);
    FComponent(const FComponent_cfg &cfg);
-   FComponent(PlatformInterface &platform, const FComponent_cfg &cfg);
+   FComponent(PlatformInterface *platform, const FComponent_cfg &cfg);
    virtual ~FComponent();
 
 private:

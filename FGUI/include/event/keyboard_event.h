@@ -42,8 +42,7 @@ struct KeyboardEvent : Event
          : Event(type, target, false),
            keycode(keycode),
            codepoint(codepoint),
-           consumed_(false),
-           consumed(consumed_) {}
+           consumed(false) {}
 
    // if something is using a key event, usually it doesn't want anything else
    // to also use it.
@@ -54,9 +53,7 @@ struct KeyboardEvent : Event
    const int codepoint;
 
 private:
-   // allows copying of event objects where copies are linked to the original's state
-   bool &consumed;
-   bool consumed_;
+   bool consumed;
 };
 
 FGUI_END

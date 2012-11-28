@@ -62,28 +62,28 @@ public:
    bool isActive() const { return active_ && mouse_over_; }
    bool isMouseOver() const { return mouse_over_; }
 
-   virtual void onFocusIn(FocusEvent &evt);
-   virtual void onFocusOut(FocusEvent &evt);
+   virtual void onFocusIn(FocusEvent *evt);
+   virtual void onFocusOut(FocusEvent *evt);
 
-   virtual void onKeyDown(KeyboardEvent &evt);
-   virtual void onKeyUp(KeyboardEvent &evt);
-   virtual void onCharacterInput(KeyboardEvent &evt);
+   virtual void onKeyDown(KeyboardEvent *evt);
+   virtual void onKeyUp(KeyboardEvent *evt);
+   virtual void onCharacterInput(KeyboardEvent *evt);
 
-   virtual void onMouseMove(MouseEvent &evt);
-   virtual void onMouseEnter(MouseEvent &evt);
-   virtual void onMouseLeave(MouseEvent &evt);
-   virtual void onMouseEnterDirect(MouseEvent &evt);
-   virtual void onMouseLeaveDirect(MouseEvent &evt);
-   virtual void onMouseHover(MouseEvent &evt);
-   virtual void onMouseHoverDirect(MouseEvent &evt);
-   virtual void onMouseWheel(MouseEvent &evt);
-   virtual void onMouseDown(MouseEvent &evt);
-   virtual void onMouseUp(MouseEvent &evt);
-   virtual void onMouseClick(MouseEvent &evt);
-   virtual void onMouseDoubleClick(MouseEvent &evt);
+   virtual void onMouseMove(MouseEvent *evt);
+   virtual void onMouseEnter(MouseEvent *evt);
+   virtual void onMouseLeave(MouseEvent *evt);
+   virtual void onMouseEnterDirect(MouseEvent *evt);
+   virtual void onMouseLeaveDirect(MouseEvent *evt);
+   virtual void onMouseHover(MouseEvent *evt);
+   virtual void onMouseHoverDirect(MouseEvent *evt);
+   virtual void onMouseWheel(MouseEvent *evt);
+   virtual void onMouseDown(MouseEvent *evt);
+   virtual void onMouseUp(MouseEvent *evt);
+   virtual void onMouseClick(MouseEvent *evt);
+   virtual void onMouseDoubleClick(MouseEvent *evt);
 
-   virtual void onSimulate(SimulateEvent &evt);
-   virtual void onResetSimulation(SimulateEvent &evt);
+   virtual void onSimulate(SimulateEvent *evt);
+   virtual void onResetSimulation(SimulateEvent *evt);
 
 protected:
    void setActive(bool active);

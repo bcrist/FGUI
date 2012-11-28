@@ -35,29 +35,30 @@ FLabel::FLabel()
       : text_(""),
         vertical_align_(kALIGN_MIDDLE),
         horizontal_align_(kALIGN_CENTER),
-        color_(getPlatform().getColor(font_style_uid_))
+        color_(getPlatform()->getColor(font_style_uid_))
 {
-   PlatformInterface &platform = getPlatform();
-   setRenderer(platform.checkoutRenderer(uid_));
-   font_ = platform.getFont(
-      platform.getProperty(typeface_uid_), 
-      platform.getProperty(font_style_uid_),
-      platform.getReal(font_style_uid_));
+   PlatformInterface *platform = getPlatform();
+   setRenderer(platform->checkoutRenderer(uid_));
+   font_ = platform->getFont(
+      platform->getProperty(typeface_uid_), 
+      platform->getProperty(font_style_uid_),
+      platform->getReal(font_style_uid_));
    recalcMetrics();
 }
 
-FLabel::FLabel(PlatformInterface &platform)
+FLabel::FLabel(PlatformInterface *platform)
       : FComponent(platform),
         text_(""),
         vertical_align_(kALIGN_MIDDLE),
         horizontal_align_(kALIGN_CENTER),
-        color_(getPlatform().getColor(font_style_uid_))
+        color_(getPlatform()->getColor(font_style_uid_))
 {
-   setRenderer(platform.checkoutRenderer(uid_));
-   font_ = platform.getFont(
-      platform.getProperty(typeface_uid_), 
-      platform.getProperty(font_style_uid_),
-      platform.getReal(font_style_uid_));
+   platform = getPlatform();
+   setRenderer(platform->checkoutRenderer(uid_));
+   font_ = platform->getFont(
+      platform->getProperty(typeface_uid_), 
+      platform->getProperty(font_style_uid_),
+      platform->getReal(font_style_uid_));
    recalcMetrics();
 }
 
@@ -65,36 +66,37 @@ FLabel::FLabel(const std::string &text)
       : text_(text),
         vertical_align_(kALIGN_MIDDLE),
         horizontal_align_(kALIGN_CENTER),
-        color_(getPlatform().getColor(font_style_uid_))
+        color_(getPlatform()->getColor(font_style_uid_))
 {
-   PlatformInterface &platform = getPlatform();
-   setRenderer(platform.checkoutRenderer(uid_));
-   font_ = platform.getFont(
-      platform.getProperty(typeface_uid_), 
-      platform.getProperty(font_style_uid_),
-      platform.getReal(font_style_uid_));
+   PlatformInterface *platform = getPlatform();
+   setRenderer(platform->checkoutRenderer(uid_));
+   font_ = platform->getFont(
+      platform->getProperty(typeface_uid_), 
+      platform->getProperty(font_style_uid_),
+      platform->getReal(font_style_uid_));
    recalcMetrics();
 }
 
-FLabel::FLabel(PlatformInterface &platform, const std::string &text)
+FLabel::FLabel(PlatformInterface *platform, const std::string &text)
       : FComponent(platform),
         text_(text),
         vertical_align_(kALIGN_MIDDLE),
         horizontal_align_(kALIGN_CENTER),
-        color_(getPlatform().getColor(font_style_uid_))
+        color_(getPlatform()->getColor(font_style_uid_))
 {
-   setRenderer(platform.checkoutRenderer(uid_));
-   font_ = platform.getFont(
-      platform.getProperty(typeface_uid_), 
-      platform.getProperty(font_style_uid_),
-      platform.getReal(font_style_uid_));
+   platform = getPlatform();
+   setRenderer(platform->checkoutRenderer(uid_));
+   font_ = platform->getFont(
+      platform->getProperty(typeface_uid_), 
+      platform->getProperty(font_style_uid_),
+      platform->getReal(font_style_uid_));
    recalcMetrics();
 }
 
 FLabel::~FLabel()
 {
-   getPlatform().returnRenderer(uid_, getRenderer());
-   getPlatform().freeFont(font_);
+   getPlatform()->returnRenderer(uid_, getRenderer());
+   getPlatform()->freeFont(font_);
 }
 
 void FLabel::setText(const std::string &text)
@@ -142,7 +144,7 @@ void FLabel::setHorizontalAlign(uint8_t align)
 
 void FLabel::setFont(const std::string &typeface, const std::string &style, float_t size)
 {
-   FontInterface *font = getPlatform().getFont(typeface, style, size);
+   FontInterface *font = getPlatform()->getFont(typeface, style, size);
 
    if (font && font_ != font)
    {

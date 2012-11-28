@@ -37,7 +37,7 @@ FColoredRectangle::FColoredRectangle():
    active_(false),
    mouse_over_(false)
 {
-   setRenderer(getPlatform().checkoutRenderer(uid_));
+   setRenderer(getPlatform()->checkoutRenderer(uid_));
    addFocusListener(this);
    addKeyboardListener(this);
    addMouseListener(this);
@@ -53,7 +53,7 @@ FColoredRectangle::FColoredRectangle(const Color &color):
    active_(false),
    mouse_over_(false)
 {
-   setRenderer(getPlatform().checkoutRenderer(uid_));
+   setRenderer(getPlatform()->checkoutRenderer(uid_));
    addFocusListener(this);
    addKeyboardListener(this);
    addMouseListener(this);
@@ -72,7 +72,7 @@ FColoredRectangle::FColoredRectangle(const Color &normalColor,
       active_(false),
       mouse_over_(false)
 {
-   setRenderer(getPlatform().checkoutRenderer(uid_));
+   setRenderer(getPlatform()->checkoutRenderer(uid_));
    addFocusListener(this);
    addKeyboardListener(this);
    addMouseListener(this);
@@ -82,98 +82,98 @@ FColoredRectangle::FColoredRectangle(const Color &normalColor,
 
 FColoredRectangle::~FColoredRectangle()
 {
-   getPlatform().returnRenderer(uid_, getRenderer());
+   getPlatform()->returnRenderer(uid_, getRenderer());
 }
 
 
-void FColoredRectangle::onFocusIn(FocusEvent &evt)
+void FColoredRectangle::onFocusIn(FocusEvent *evt)
 {
    log("FocusIn");
 }
-void FColoredRectangle::onFocusOut(FocusEvent &evt)
+void FColoredRectangle::onFocusOut(FocusEvent *evt)
 {
    log("FocusOut");
 }
 
-void FColoredRectangle::onKeyDown(KeyboardEvent &evt)
+void FColoredRectangle::onKeyDown(KeyboardEvent *evt)
 {
    log("KeyDown");
-   evt.consume();
+   evt->consume();
 }
-void FColoredRectangle::onKeyUp(KeyboardEvent &evt)
+void FColoredRectangle::onKeyUp(KeyboardEvent *evt)
 {
    log("KeyUp");
-   evt.consume();
+   evt->consume();
 }
-void FColoredRectangle::onCharacterInput(KeyboardEvent &evt)
+void FColoredRectangle::onCharacterInput(KeyboardEvent *evt)
 {
    log("CharacterInput");
-   evt.consume();
+   evt->consume();
 }
 
-void FColoredRectangle::onMouseMove(MouseEvent &evt)
+void FColoredRectangle::onMouseMove(MouseEvent *evt)
 {
    //log("MouseMove");
 }
-void FColoredRectangle::onMouseEnter(MouseEvent &evt)
+void FColoredRectangle::onMouseEnter(MouseEvent *evt)
 {
    log("MouseEnter");
 }
-void FColoredRectangle::onMouseLeave(MouseEvent &evt)
+void FColoredRectangle::onMouseLeave(MouseEvent *evt)
 {
    log("MouseLeave");
 }
-void FColoredRectangle::onMouseEnterDirect(MouseEvent &evt)
+void FColoredRectangle::onMouseEnterDirect(MouseEvent *evt)
 {
    log("MouseEnterDirect");
    setMouseOver(true);
 }
-void FColoredRectangle::onMouseLeaveDirect(MouseEvent &evt)
+void FColoredRectangle::onMouseLeaveDirect(MouseEvent *evt)
 {
    log("MouseLeaveDirect");
    setMouseOver(false);
 }
-void FColoredRectangle::onMouseHover(MouseEvent &evt)
+void FColoredRectangle::onMouseHover(MouseEvent *evt)
 {
    log("MouseHover");
 }
-void FColoredRectangle::onMouseHoverDirect(MouseEvent &evt)
+void FColoredRectangle::onMouseHoverDirect(MouseEvent *evt)
 {
    log("MouseHoverDirect");
 }
-void FColoredRectangle::onMouseWheel(MouseEvent &evt)
+void FColoredRectangle::onMouseWheel(MouseEvent *evt)
 {
    log("MouseWheel");
-   evt.consume();
+   evt->consume();
 }
-void FColoredRectangle::onMouseDown(MouseEvent &evt)
+void FColoredRectangle::onMouseDown(MouseEvent *evt)
 {
    log("MouseDown");
-   if (mouse_over_ && evt.button == 1)
+   if (mouse_over_ && evt->button == 1)
       setActive(true);
-   evt.consume();
+   evt->consume();
 }
-void FColoredRectangle::onMouseUp(MouseEvent &evt)
+void FColoredRectangle::onMouseUp(MouseEvent *evt)
 {
    log("MouseUp");
    setActive(false);
-   evt.consume();
+   evt->consume();
 }
-void FColoredRectangle::onMouseClick(MouseEvent &evt)
+void FColoredRectangle::onMouseClick(MouseEvent *evt)
 {
    log("MouseClick");
 }
-void FColoredRectangle::onMouseDoubleClick(MouseEvent &evt)
+void FColoredRectangle::onMouseDoubleClick(MouseEvent *evt)
 {
    log("MouseDoubleClick");
    logDebug();
 }
 
-void FColoredRectangle::onSimulate(SimulateEvent &evt)
+void FColoredRectangle::onSimulate(SimulateEvent *evt)
 {
    //log("Simulate");
 }
-void FColoredRectangle::onResetSimulation(SimulateEvent &evt)
+void FColoredRectangle::onResetSimulation(SimulateEvent *evt)
 {
    log("ResetSimulation");
 }

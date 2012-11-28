@@ -115,10 +115,10 @@ bool App::initOpenGL()
 
 void App::initUI()
 {
-   DefaultPlatform &dp = static_cast<DefaultPlatform&>(Platform::get());
-   dp.setLogger(&log_);
+   DefaultPlatform *dp = static_cast<DefaultPlatform*>(Platform::get());
+   dp->setLogger(&log_);
 
-   AllegroFontProvider &afp = static_cast<AllegroFontProvider&>(dp.getFontProvider());
+   AllegroFontProvider &afp = *(static_cast<AllegroFontProvider*>(dp->getFontProvider()));
    afp.addFont("alegreya", "black",        "font/Alegreya-Black.ttf",       0.26, 1);
    afp.addFont("alegreya", "black italic", "font/Alegreya-BlackItalic.ttf", 0.26, 1);
    afp.addFont("alegreya", "bold",         "font/Alegreya-Bold.ttf",        0.26, 1);

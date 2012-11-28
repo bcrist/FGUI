@@ -74,7 +74,7 @@ void LabelRenderer::draw(FComponent *component)
 
    l.setPosition(Point(l.position.x + p.x, l.position.y + p.y));
 
-   glColor4f(0, 1, 1, 0.2);
+   glColor4f(0, 1, 1, 0.2f);
    Point p1(l.getLeft(), l.getTop()),
          p2(l.getLeft(), l.getBottom()),
          p3(l.getRight(), l.getBottom()),

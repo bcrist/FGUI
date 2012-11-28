@@ -34,8 +34,8 @@ class SimulationListenerInterface
 public:
    virtual ~SimulationListenerInterface() {}
 
-   virtual void onSimulate(SimulateEvent &) = 0;
-   virtual void onResetSimulation(SimulateEvent &) = 0;
+   virtual void onSimulate(SimulateEvent *) = 0;
+   virtual void onResetSimulation(SimulateEvent *) = 0;
 };
 
 FGUI_END

@@ -33,9 +33,9 @@ class Platform
 {
 public:
    static void useDefault() { platform_ = &default_; }
-   static void use(PlatformInterface &platform) { platform_ = &platform; }
+   static void use(PlatformInterface *platform) { platform_ = platform ? platform : &default_; }
 
-   static PlatformInterface &get() { return *platform_; }
+   static PlatformInterface *get() { return platform_; }
 
 private:
    static PlatformInterface *platform_;

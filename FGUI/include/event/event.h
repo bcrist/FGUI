@@ -37,20 +37,16 @@ class FComponent;
 struct Event
 {
    Event(int type, FComponent *target)
-         : cancelled(cancelled_),
-           propagation_stopped(propagation_stopped_),
-           type(type),
+         : type(type),
            target(target),
-           cancelled_(false),
-           propagation_stopped_(false) {}
+           cancelled(false),
+           propagation_stopped(false) {}
 
    Event(int type, FComponent *target, bool propagates)
-         : cancelled(cancelled_),
-           propagation_stopped(propagation_stopped_),
-           type(type),
+         : type(type),
            target(target),
-           cancelled_(false),
-           propagation_stopped_(!propagates) {}
+           cancelled(false),
+           propagation_stopped(!propagates) {}
 
    virtual ~Event() {}
    
@@ -67,14 +63,10 @@ struct Event
    FComponent * const target;
 
 private:
-   Event &operator=(const Event &other);  // disallow assignment
+   bool cancelled;
+   bool propagation_stopped;
 
-   // allows copying of event objects where copies are linked to the original's state
-   bool &cancelled;
-   bool &propagation_stopped;
-
-   bool cancelled_;
-   bool propagation_stopped_;
+   DISALLOW_COPY_AND_ASSIGN(Event);
 };
 
 FGUI_END

@@ -46,9 +46,9 @@ public:
    enum HAlign { kALIGN_CENTER = 0, kALIGN_LEFT = 16, kALIGN_RIGHT = 32 };
    
    FLabel();
-   FLabel(PlatformInterface &platform);
+   FLabel(PlatformInterface *platform);
    FLabel(const std::string &text);
-   FLabel(PlatformInterface &platform, const std::string &text);
+   FLabel(PlatformInterface *platform, const std::string &text);
    virtual ~FLabel();
 
    static const UID uid_;
