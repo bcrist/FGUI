@@ -42,7 +42,12 @@ public:
    DefaultPlatform();
    virtual ~DefaultPlatform() {}
 
-   virtual ClipboardInterface &getClipboard() { return default_clipboard_; }
+   virtual std::string getClipboard() { return default_clipboard_.getClipboard(); };
+   virtual void setClipboard(const std::string &text) { default_clipboard_.setClipboard(text); }
+
+   virtual FontInterface *getFont(const std::string &typeface, const std::string &style, float_t size) { return default_font_provider_.getFont(typeface, style, size); }
+   virtual void freeFont(FontInterface *font) { default_font_provider_.freeFont(font); }
+
    virtual FontProviderInterface &getFontProvider() { return default_font_provider_; }
 
    void setLogger(LoggerInterface *logger) { default_logger_ = logger; }
@@ -52,7 +57,9 @@ public:
    virtual RendererInterface *checkoutRenderer(const UID &uid);
    virtual void returnRenderer(const UID &uid, RendererInterface *renderer) {}
 
-   
+   virtual const std::string &getProperty(const UID &uid);
+   virtual const Color &getColor(const UID &uid);
+   virtual float_t getReal(const UID &uid);
 
 private:
    LoggerInterface *default_logger_;
@@ -61,6 +68,12 @@ private:
    FGUI_DEFAULT_FONT_PROVIDER default_font_provider_;
    
    std::map<UID, RendererInterface*> renderers_;
+   std::map<UID, std::string> properties_;
+   std::map<UID, Color> colors_;
+   std::map<UID, float_t> reals_;
+
+   std::string null_property_;
+   Color null_color_;
    
 #ifndef FGUI_NO_OPENGL
 

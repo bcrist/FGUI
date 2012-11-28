@@ -38,16 +38,39 @@ DefaultPlatform::DefaultPlatform() : default_logger_(NULL)
    renderers_.insert(std::pair<UID, RendererInterface*>(FUI::prepare_renderer_uid_, &default_ui_prepare_r_));
    renderers_.insert(std::pair<UID, RendererInterface*>(FUI::cleanup_renderer_uid_, &default_ui_cleanup_r_));
 
-   renderers_.insert(std::pair<UID, RendererInterface*>(FColoredRectangle::renderer_uid_, &default_colored_rectangle_r_));
-   renderers_.insert(std::pair<UID, RendererInterface*>(FLabel::renderer_uid_, &default_label_r_));
+   renderers_.insert(std::pair<UID, RendererInterface*>(FColoredRectangle::uid_, &default_colored_rectangle_r_));
+   renderers_.insert(std::pair<UID, RendererInterface*>(FLabel::uid_, &default_label_r_));
 
    #endif
+
+   properties_.insert(std::pair<UID, std::string>(FLabel::typeface_uid_, "junction"));
+   properties_.insert(std::pair<UID, std::string>(FLabel::font_style_uid_, "regular"));
+   reals_.insert(std::pair<UID, float_t>(FLabel::font_style_uid_, 14.0f));
+   colors_.insert(std::pair<UID, Color>(FLabel::font_style_uid_, Color(0.0f)));
 }
 
 RendererInterface *DefaultPlatform::checkoutRenderer(const UID &uid)
 {
    std::map<UID, RendererInterface*>::iterator it(renderers_.find(uid));
    return it == renderers_.end() ? NULL : it->second;
+}
+
+const std::string &DefaultPlatform::getProperty(const UID &uid)
+{
+   std::map<UID, std::string>::const_iterator it(properties_.find(uid));
+   return it == properties_.end() ? null_property_ : it->second;
+}
+
+const Color &DefaultPlatform::getColor(const UID &uid)
+{
+   std::map<UID, Color>::const_iterator it(colors_.find(uid));
+   return it == colors_.end() ? null_color_ : it->second;
+}
+
+float_t DefaultPlatform::getReal(const UID &uid)
+{
+   std::map<UID, float_t>::const_iterator it(reals_.find(uid));
+   return it == reals_.end() ? 0.0f : it->second;
 }
 
 FGUI_END

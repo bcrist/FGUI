@@ -25,27 +25,30 @@
 #define FGUI_PLATFORM_PLATFORM_INTERFACE_H_
 #include "fgui_std.h"
 
+#include "font_provider_interface.h"
+#include "clipboard_interface.h"
+
 FGUI_BEGIN
 
 class UID;
-class ClipboardInterface;
-class FontProviderInterface;
 class RendererInterface;
 class LoggerInterface;
+struct Color;
 
-class PlatformInterface
+class PlatformInterface : public FontProviderInterface, public ClipboardInterface
 {
 public:
    virtual ~PlatformInterface() {}
-
-   virtual ClipboardInterface &getClipboard() = 0;
-   virtual FontProviderInterface &getFontProvider() = 0;
 
    virtual RendererInterface *checkoutRenderer(const UID &uid) = 0;
    virtual void returnRenderer(const UID &uid, RendererInterface *renderer) = 0;
 
    virtual LoggerInterface *checkoutLogger() = 0;
    virtual void returnLogger(LoggerInterface *logger) = 0;
+
+   virtual const std::string &getProperty(const UID &uid) = 0;
+   virtual const Color &getColor(const UID &uid) = 0;
+   virtual float_t getReal(const UID &uid) = 0;
 };
 
 FGUI_END
