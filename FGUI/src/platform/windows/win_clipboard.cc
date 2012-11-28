@@ -7,7 +7,7 @@
 
 FGUI_BEGIN
 
-void WindowsClipboard::setText(const std::string &text)
+void WindowsClipboard::setClipboard(const std::string &text)
 {
    // open clipboard
    if (!OpenClipboard(NULL))
@@ -39,7 +39,7 @@ void WindowsClipboard::setText(const std::string &text)
    CloseClipboard();
 }
 
-std::string WindowsClipboard::getText()
+std::string WindowsClipboard::getClipboard()
 {
    // return a null string if there is no text on the clipboard or we can't open it
    if (!IsClipboardFormatAvailable(CF_UNICODETEXT))

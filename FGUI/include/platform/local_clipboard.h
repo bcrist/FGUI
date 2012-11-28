@@ -41,8 +41,8 @@ public:
    LocalClipboard() {}
    virtual ~LocalClipboard() {}
 
-   virtual std::string getText() { return clipboard_; }
-   virtual void setText(const std::string &text) { clipboard_ = text; }
+   virtual std::string getClipboard() { return clipboard_; }
+   virtual void setClipboard(const std::string &text) { clipboard_ = text; }
 
 protected:
    std::string clipboard_;

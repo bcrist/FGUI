@@ -34,8 +34,8 @@ class ClipboardInterface
 public:
    virtual ~ClipboardInterface() {}
 
-   virtual std::string getText() = 0;
-   virtual void setText(const std::string &text) = 0;
+   virtual std::string getClipboard() = 0;
+   virtual void setClipboard(const std::string &text) = 0;
 };
 
 FGUI_END
