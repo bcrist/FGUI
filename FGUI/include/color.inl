@@ -127,6 +127,16 @@ inline Color &Color::operator/=(const Color &rhs)
    return *this;
 }
 
+inline bool Color::operator==(const Color &rhs) const
+{
+   return memcmp(v, rhs.v, 4 * sizeof(component_t)) == 0;
+}
+
+inline bool Color::operator!=(const Color &rhs) const
+{
+   return !(*this == rhs);
+}
+
 
 inline const Color Color::operator+(const Color &rhs) const
 {

@@ -69,6 +69,10 @@ struct Color
    Color &operator-=(const Color &rhs);
    Color &operator*=(const Color &rhs);
    Color &operator/=(const Color &rhs);
+
+   // equality
+   bool operator==(const Color &rhs) const;
+   bool operator!=(const Color &rhs) const;
    
    // arithmetic operators
    const Color operator+(const Color &rhs) const;
